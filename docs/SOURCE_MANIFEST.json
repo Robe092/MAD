@@ -154,5 +154,11 @@
     "frontend-payflow/src/lib/display-message.ts",
     "frontend-payflow/tests/display-message.test.cjs",
     "tests/test_scripts/test_payflow_jury_language.cjs"
+  ],
+  "added_prepublication_files": [
+    "scripts/check-gemini-language.cjs",
+    "tests/gemini-language-runner.test.cjs",
+    "docs/GEMINI_LANGUAGE_TEST.md",
+    "docs/PREPUBLICATION_PLAN.md"
   ]
 }

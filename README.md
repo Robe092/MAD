@@ -6,6 +6,8 @@ PayFlow AI is a B2B quote-to-payment cockpit prepared for the PayPal AI Hackatho
 
 This standalone repository contains the existing frontend and engine 13, with English user-facing text and English Gemini output instructions. Gemini can still understand requests in French or English. [The demo guide](docs/DEMO.md) explains every step. It is a local working application, not a static mockup. It requires configured Gemini and PayPal Sandbox credentials to exercise those providers. Read [judge access and remaining prerequisites](docs/JUDGE_ACCESS.md) before evaluating the full provider flow.
 
+Application development is frozen at the English jury baseline. The [pre-publication plan](docs/PREPUBLICATION_PLAN.md) records the remaining access and licence decisions. The [isolated Gemini check](docs/GEMINI_LANGUAGE_TEST.md) can be prepared offline and deliberately run with a candidate-only private key; it performs no payment and does not certify a complete n8n installation.
+
 ## Requirements
 
 - Node.js 20 or later, npm and Docker with Compose v2 (`docker compose`).
