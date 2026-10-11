@@ -8,6 +8,8 @@ This standalone repository contains the existing frontend and engine 13, with En
 
 Application development is frozen at the English jury baseline. The [pre-publication plan](docs/PREPUBLICATION_PLAN.md) records the remaining access and licence decisions. The [isolated Gemini check](docs/GEMINI_LANGUAGE_TEST.md) can be prepared offline and deliberately run with a candidate-only private key; it performs no payment and does not certify a complete n8n installation.
 
+The [adversarial coverage report](docs/ADVERSARIAL_COVERAGE.md) distinguishes historical provider proof, isolated runtime checks, unit fixtures and remaining gaps. It records thirteen additional local security checks without changing the application or making a payment.
+
 ## Requirements
 
 - Node.js 20 or later, npm and Docker with Compose v2 (`docker compose`).

@@ -1,5 +1,7 @@
 # Jury preparation — targeted verification scope
 
+Subsequent evidence consolidation at baseline `9b9d3d1`: see [ADVERSARIAL_COVERAGE.md](ADVERSARIAL_COVERAGE.md) for thirteen additional isolated runtime security checks and bounded historical provider/rotation evidence. No further application change or provider/payment call was made.
+
 This pass translates presentation text in the standalone candidate and improves judge instructions. The owner authorized translating the engine's language instructions and visible messages only. The current reference installation, provider credentials, financial calculations and SQL remain outside the change scope.
 
 | Category | Applicability | Planned evidence |

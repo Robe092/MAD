@@ -160,5 +160,11 @@
     "tests/gemini-language-runner.test.cjs",
     "docs/GEMINI_LANGUAGE_TEST.md",
     "docs/PREPUBLICATION_PLAN.md"
+  ],
+  "added_coverage_reports": [
+    "docs/ADVERSARIAL_COVERAGE.md",
+    "docs/ADVERSARIAL_COVERAGE.json",
+    "docs/ADVERSARIAL_NEW_CHECKS.json",
+    "docs/ADVERSARIAL_REVIEW.json"
   ]
 }
