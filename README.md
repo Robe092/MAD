@@ -16,6 +16,8 @@ This standalone repository contains the existing frontend and engine 13. The Fre
 
 The reference stack pins n8n 2.41.5 and PostgreSQL 17. The application is intended for one local operator, with persistent filesystem sessions. This Compose configuration binds n8n to loopback and does not expose the database. It is not a serverless/multi-instance deployment recipe.
 
+The cockpit runs as a **Node.js process on the host**, not inside the provided Compose stack. Keep `.payflow-private/` on a persistent, writable filesystem: it contains the operator configuration and `sessions/*.json`, with directory/file permissions restricted to the app user. Do not deploy this version as a Vercel/serverless function or with ephemeral/read-only app storage. If you later containerize the cockpit, persist that entire directory at the configured operator path and use one app instance; the supplied Compose volumes persist PostgreSQL and n8n only. No containerized cockpit deployment has been validated here.
+
 ## Install and run
 
 All commands below run from this repository root unless indicated otherwise.
@@ -92,6 +94,8 @@ The configured Gemini identifiers are `gemini-3-flash-preview` (primary) and `ge
 AG Studio uses its commercial package. Local evaluation can display a watermark; an appropriate licence or sponsor/trial permission is needed for the intended hosted demonstration. Confirm that permission and its validity throughout judging; do not redistribute a licence key. See [AG Studio licence installation](https://www.ag-grid.com/studio/react/licence-install/) and the [hackathon sponsor page](https://paypalaihackathon.devpost.com/details/aggrid).
 
 `payflow_config.public_origin` is initialized explicitly. The inherited backend fallback is port 3006; it is not used by this setup. If you deploy elsewhere, update the database origin and frontend origin together instead of relying on that fallback. Public hosting requires HTTPS, private persistent configuration, an appropriate session store if multiple app instances are used, and a deployment-specific review.
+
+Do not bypass `npm run setup`: an absent/empty database `public_origin` would make both PayPal return and cancellation URLs fall back to port 3006, whereas the default cockpit runs on 3005. The documented setup sets `public_origin` from `PAYFLOW_PUBLIC_ORIGIN`, and a repeat setup refuses a conflicting value. This is a configuration prerequisite, not a claim that every manual installation is protected.
 
 ## Security, stopping and publication
 
