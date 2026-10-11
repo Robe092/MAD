@@ -1,0 +1,13 @@
+.env
+.env.*
+!.env.example
+.payflow-private/
+node_modules/
+.next/
+.next-*/
+*.tsbuildinfo
+__pycache__/
+*.pyc
+.DS_Store
+backups/
+scratch/
