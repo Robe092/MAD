@@ -1,0 +1,37 @@
+{
+  "date": "2026-10-11",
+  "class": "STATIC_ANALYSIS",
+  "scope": "Saved and published n8n configuration; no workflow execution or provider call",
+  "workflow_name": "[PayFlow Hackathon] 13 - PayPal Invoicing v2 & Deterministic Control",
+  "changed_nodes": [
+    "Stage 1: Auth, Guardrails & PayPal Engine",
+    "Stage 2: Verify DB Mutation & Format Response",
+    "Vérifier la session opérateur",
+    "Préparer la demande Gemini"
+  ],
+  "local_equals_saved": true,
+  "published_nodes_and_connections_equal": true,
+  "active": true,
+  "credentials_connections_settings_positions_preserved": true,
+  "other_workflows_written": false,
+  "credentials_modified": false,
+  "provider_calls": 0,
+  "payments": 0,
+  "frontend_synced_to_n8n": "NON APPLICABLE — frontend source is separate",
+  "before_definition_sha256": "8b38be362e5b692809e9ea03206d0a3e932194d2e0ea0cf13e6b782d0cc3de6d",
+  "after_definition_sha256": "d8b6f49529822dfe6370fb74a9356af19866406d0dbc70ae59b9c1ecafd3afe0",
+  "backup_created": true,
+  "remaining": "Live candidate English Gemini response remains NOT_VERIFIED",
+  "verdict": "PASS",
+  "independent_review": {
+    "class": "STATIC_ANALYSIS",
+    "verdict": "PASS",
+    "scope": "Four language-only Code node deltas and guarded merge; not provider/runtime certification",
+    "saved_published_local_comparison": "PASS — exact four Code block delta; all other node fields preserved"
+  },
+  "new_report_secret_scan": {
+    "tool": "Gitleaks 8.30.1",
+    "scope": "staged synchronization documentation",
+    "findings": 0
+  }
+}

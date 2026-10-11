@@ -1,5 +1,7 @@
 # Jury preparation — targeted verification scope
 
+Update on 2026-10-11: the owner subsequently authorized synchronization of completed changes. The four English Code blocks are now saved and published in the existing active Hackathon engine 13, with live credential bindings and business configuration preserved. See [N8N_SYNC.md](N8N_SYNC.md). This is configuration evidence, with no new Gemini response or payment. The temporary Gemini test has not been deployed or executed. Earlier statements that the English engine is undeployed describe the previous preparation scope.
+
 Subsequent evidence consolidation at baseline `9b9d3d1`: see [ADVERSARIAL_COVERAGE.md](ADVERSARIAL_COVERAGE.md) for thirteen additional isolated runtime security checks and bounded historical provider/rotation evidence. No further application change or provider/payment call was made.
 
 This pass translates presentation text in the standalone candidate and improves judge instructions. The owner authorized translating the engine's language instructions and visible messages only. The current reference installation, provider credentials, financial calculations and SQL remain outside the change scope.

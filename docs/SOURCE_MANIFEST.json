@@ -166,5 +166,14 @@
     "docs/ADVERSARIAL_COVERAGE.json",
     "docs/ADVERSARIAL_NEW_CHECKS.json",
     "docs/ADVERSARIAL_REVIEW.json"
-  ]
+  ],
+  "reference_sync": {
+    "date": "2026-10-11",
+    "scope": "Owner-authorized synchronization of four English Code blocks only; earlier hashes remain extraction provenance.",
+    "reference_workflow_sha256": "d7257ad1753a8d127391785781e27720b5bf722017e8678556dac70146f8160c",
+    "reports": [
+      "docs/N8N_SYNC.md",
+      "docs/N8N_SYNC.json"
+    ]
+  }
 }

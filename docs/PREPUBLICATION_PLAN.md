@@ -1,5 +1,7 @@
 # Pre-publication decisions and isolated provider test
 
+Update on 2026-10-11: the owner subsequently authorized synchronization of completed changes. The four English Code blocks are now saved and published in the existing active Hackathon engine 13, with live credential bindings and business configuration preserved. See [N8N_SYNC.md](N8N_SYNC.md). This is configuration evidence, with no new Gemini response or payment. The temporary Gemini test has not been deployed or executed. Earlier statements that the English engine is undeployed describe the previous preparation scope.
+
 Base: `32dc901`. Date: October 11, 2026. Application development is frozen. This pass adds instructions and a provider-language test harness only; it does not change the frontend, engine, SQL, credentials or reference installation.
 
 ## Verification scope recorded before execution
