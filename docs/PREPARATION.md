@@ -42,6 +42,8 @@ Any demonstrated failure is documented before correction. This report does not c
 | Fresh app/operator/n8n/PostgreSQL checks | INTEGRATION_TEST / DYNAMIC_TEST | 16/16 PASS; `INSTALLATION_CHECKS.json` |
 | Real isolated n8n execution inspection | DYNAMIC_TEST | 8 successful executions, no provider node visited; `ISOLATED_EXECUTIONS.json` |
 | Contradictory packaging review | STATIC_ANALYSIS | PASS; resolved PACK-01/02, no open finding; `REVIEW.json` |
+| Actual new Git clone | INTEGRATION_TEST / UNIT_LOGIC / STATIC_ANALYSIS | PASS; private data/dependencies/build absent initially, `npm ci`, 44+28+3 tests and build successful; `CLEAN_CLONE.json` |
+| Staged tree and entire new Git history | STATIC_ANALYSIS | Gitleaks 8.30.1 PASS, 0 findings; known original/test secret values absent from staged files; `SECRET_SCAN.json` |
 
 The dynamic flow starts with a genuine empty dashboard, creates one deterministic USD 240 quote, reserves one unit, cancels it, then replays cancellation without a second release. On-hand stock remains 15; reserved stock returns to zero. No invoice/payment operation/capture is created. The fixture exists only in the disposable installation, not in distributed source data. All observed execution statuses and database effects were checked; success is not inferred from the build.
 
@@ -53,4 +55,6 @@ This candidate has no remote and is not published. A new installation with real 
 
 Before publication, the owner must review source ownership/MIT attribution, hackathon-period provenance, English submission materials and the intended AG Studio licence/sponsor permission (including the judging period). Invoicing remains an externally permission-dependent branch, not the recommended Orders v2 demo. Local disk sessions are supported for this single-instance demo, not certified for distributed hosting.
 
-Clean-clone and Gitleaks results will be added after the final candidate scan. The original monorepo history is not copied; no private environment, backup, execution payload, real customer record or screenshot is included.
+The new local history starts with the extracted candidate; the original monorepo history is not copied. No private environment, backup, execution payload, real customer record, personal identity in Git author metadata or screenshot is included. The source code tested by the clean clone is commit `a71e18d`; subsequent preparation commits only add verification evidence/documentation.
+
+Disposable services and their test data are removed after the checks. A clone contains no `.env`, operator keys, database contents or dependency/build tree. The setup creates a fresh local operator and empty order list when used by a reviewer. Provider keys are supplied by that reviewer or later configured for an authorized hosted demonstration.
