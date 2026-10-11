@@ -1,0 +1,111 @@
+{
+  "scope": "Targeted language and frontend rendering tests only. Fixture data clearly labelled VISUAL QA; no Gemini, n8n/PostgreSQL or PayPal action executed.",
+  "screenshots": "Private workspace backup; excluded from repository",
+  "checks": [
+    {
+      "name": "English signed-out welcome",
+      "class": "INTEGRATION_TEST",
+      "verdict": "PASS",
+      "scope": "Real Next.js/operator UI; upstream dashboard is a labelled fixture, not n8n/provider evidence"
+    },
+    {
+      "name": "Real auth refusal displayed in English",
+      "class": "INTEGRATION_TEST",
+      "verdict": "PASS",
+      "scope": "Real Next.js/operator UI; upstream dashboard is a labelled fixture, not n8n/provider evidence"
+    },
+    {
+      "name": "Real operator signs in; English overview renders fixture data",
+      "class": "INTEGRATION_TEST",
+      "verdict": "PASS",
+      "scope": "Real Next.js/operator UI; upstream dashboard is a labelled fixture, not n8n/provider evidence"
+    },
+    {
+      "name": "English quote placeholders rejected before provider action",
+      "class": "INTEGRATION_TEST",
+      "verdict": "PASS",
+      "scope": "Real Next.js/operator UI; upstream dashboard is a labelled fixture, not n8n/provider evidence"
+    },
+    {
+      "name": "English order table and status filters",
+      "class": "INTEGRATION_TEST",
+      "verdict": "PASS",
+      "scope": "Real Next.js/operator UI; upstream dashboard is a labelled fixture, not n8n/provider evidence"
+    },
+    {
+      "name": "English discount guidance preserves recorded values and acceptance distinction",
+      "class": "INTEGRATION_TEST",
+      "verdict": "PASS",
+      "scope": "Real Next.js/operator UI; upstream dashboard is a labelled fixture, not n8n/provider evidence"
+    },
+    {
+      "name": "English blocked-stock explanation",
+      "class": "INTEGRATION_TEST",
+      "verdict": "PASS",
+      "scope": "Real Next.js/operator UI; upstream dashboard is a labelled fixture, not n8n/provider evidence"
+    },
+    {
+      "name": "Simulated settlement remains explicitly separate from capture",
+      "class": "INTEGRATION_TEST",
+      "verdict": "PASS",
+      "scope": "Real Next.js/operator UI; upstream dashboard is a labelled fixture, not n8n/provider evidence"
+    },
+    {
+      "name": "English catalogue columns and stock totals",
+      "class": "INTEGRATION_TEST",
+      "verdict": "PASS",
+      "scope": "Real Next.js/operator UI; upstream dashboard is a labelled fixture, not n8n/provider evidence"
+    },
+    {
+      "name": "Native AG Studio English widget labels and relational data render",
+      "class": "INTEGRATION_TEST",
+      "verdict": "PASS",
+      "scope": "Real Next.js/operator UI; upstream dashboard is a labelled fixture, not n8n/provider evidence"
+    },
+    {
+      "name": "Studio customization and reset controls remain usable",
+      "class": "INTEGRATION_TEST",
+      "verdict": "PASS",
+      "scope": "Real Next.js/operator UI; upstream dashboard is a labelled fixture, not n8n/provider evidence"
+    },
+    {
+      "name": "English PayPal return never claims a confirmed payment",
+      "class": "INTEGRATION_TEST",
+      "verdict": "PASS",
+      "scope": "Real Next.js/operator UI; upstream dashboard is a labelled fixture, not n8n/provider evidence"
+    },
+    {
+      "name": "Mobile English overview renders primary quote action",
+      "class": "INTEGRATION_TEST",
+      "verdict": "PASS",
+      "scope": "Real Next.js/operator UI; upstream dashboard is a labelled fixture, not n8n/provider evidence"
+    },
+    {
+      "name": "Real logout returns to the English welcome",
+      "class": "INTEGRATION_TEST",
+      "verdict": "PASS",
+      "scope": "Real Next.js/operator UI; upstream dashboard is a labelled fixture, not n8n/provider evidence"
+    },
+    {
+      "name": "No uncaught browser runtime errors",
+      "class": "INTEGRATION_TEST",
+      "verdict": "PASS",
+      "scope": "Real Next.js/operator UI; upstream dashboard is a labelled fixture, not n8n/provider evidence"
+    },
+    {
+      "name": "AG Studio English number formatting even with French browser locale",
+      "class": "INTEGRATION_TEST",
+      "verdict": "PASS",
+      "scope": "Fixture UI; underlying numbers unchanged"
+    },
+    {
+      "name": "Native chart/grid content inspected after asynchronous rendering",
+      "class": "INTEGRATION_TEST",
+      "verdict": "PASS",
+      "scope": "Fixture UI; no provider calls"
+    }
+  ],
+  "uncaught_browser_errors": [],
+  "provider_language": "NOT_VERIFIED",
+  "payment": "NOT_EXECUTED"
+}

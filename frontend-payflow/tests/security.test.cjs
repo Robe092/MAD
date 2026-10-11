@@ -3,7 +3,7 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs'), path=require('node:path'), os=require('node:os'), crypto=require('node:crypto');
 const Module=require('node:module'),ts=require('typescript');
 const cache={};
-const compile=(file)=>{if(cache[file])return cache[file];const mod=new Module(file,module);mod.filename=file;mod.paths=module.paths;mod.require=(id)=>id.startsWith('@/')?compile(path.resolve('src',id.slice(2)+'.ts')):Module.prototype.require.call(mod,id);mod._compile(ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,esModuleInterop:true,target:ts.ScriptTarget.ES2022}}).outputText,file);return cache[file]=mod.exports;};
+const compile=(file)=>{if(cache[file])return cache[file];const mod=new Module(file,module);mod.filename=file;mod.paths=module.paths;mod.require=(id)=>id.startsWith('@/')?compile(path.resolve('src',id.slice(2)+'.ts')):id.startsWith('.')?compile(path.resolve(path.dirname(file),id+'.ts')):Module.prototype.require.call(mod,id);mod._compile(ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,esModuleInterop:true,target:ts.ScriptTarget.ES2022}}).outputText,file);return cache[file]=mod.exports;};
 const dir=fs.mkdtempSync(path.join(os.tmpdir(),'payflow-auth-'));
 const keys=crypto.generateKeyPairSync('ed25519');const salt=crypto.randomBytes(32).toString('hex');
 const config={version:'unit-v1',username:'unit-operator',subject:crypto.randomUUID(),role:'operator',salt,passwordHash:crypto.scryptSync('unit-test-password',salt,64).toString('hex'),sessionSecret:crypto.randomBytes(32).toString('hex'),privateKey:keys.privateKey.export({type:'pkcs8',format:'pem'}),publicKey:keys.publicKey.export({type:'spki',format:'pem'})};
@@ -32,7 +32,7 @@ test('only verified captures count as receipts',()=>{
  assert.equal(isCaptured({...order,invoice:{paypal_status:'COMPLETED'}}),false);
  assert.equal(isCaptured({...order,invoice:{capture_id:'capture',paypal_status:'PENDING'}}),false);
  assert.equal(isSimulated({...order,invoice:{capture_id:'CAP-TEST-123'}}),true);
- assert.equal(settlementLabel({...order,invoice:{}}),'Capture à vérifier');
+ assert.equal(settlementLabel({...order,invoice:{}}),'Capture needs verification');
 });
 
 const {withStatusFilter}=compile(require('node:path').resolve('src/lib/studio-state.ts'));

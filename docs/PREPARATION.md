@@ -1,5 +1,7 @@
 # Repository preparation — not published
 
+This report records the installation baseline before the English jury pass. Later presentation/prompt changes and their targeted verification are documented in JURY_FINALIZATION.md; byte-identical frontend/engine claims below apply to that earlier baseline, not to the later translated candidate.
+
 Scope: prepare a standalone source repository from the existing PayFlow frontend and engine 13. Keep the current n8n instance, credentials, data and unrelated projects untouched. No provider or buyer payment is triggered. This directory is a local candidate, not a hosted demo.
 
 ## Applicability established before verification

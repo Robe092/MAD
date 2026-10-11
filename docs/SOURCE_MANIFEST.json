@@ -2,116 +2,157 @@
   "files": [
     {
       "source": "frontend-payflow/src/app/layout.tsx",
-      "sha256": "8c366989bb9525693d46d8a9aa9a920590a15abe62539ffa4c137da7c9747d12"
+      "sha256": "8c366989bb9525693d46d8a9aa9a920590a15abe62539ffa4c137da7c9747d12",
+      "candidate_sha256": "00d411726be0b3c16f114917a085d1100d26104d6f2ed14ce42468ad87c50288",
+      "jury_changes": "English presentation text/locales only; API identifiers and business rules preserved."
     },
     {
       "source": "frontend-payflow/src/app/page.tsx",
-      "sha256": "9c87ab8d9bed84c8f0fb3cf48959fa199c5795bb06bb5a3779ad405a80e0a5c2"
+      "sha256": "9c87ab8d9bed84c8f0fb3cf48959fa199c5795bb06bb5a3779ad405a80e0a5c2",
+      "candidate_sha256": "cbbf87a0d2be07307067c40d7cde399bd0c52313588b6b1d6998e844cfba6ffe",
+      "jury_changes": "English presentation text/locales only; API identifiers and business rules preserved."
     },
     {
       "source": "frontend-payflow/src/app/globals.css",
-      "sha256": "a10d34f45e30226392893fdafc1c817c21847f886dbb9df2424022ca645beb32"
+      "sha256": "a10d34f45e30226392893fdafc1c817c21847f886dbb9df2424022ca645beb32",
+      "candidate_sha256": "a10d34f45e30226392893fdafc1c817c21847f886dbb9df2424022ca645beb32"
     },
     {
       "source": "frontend-payflow/src/app/payflow/payment-success/page.tsx",
-      "sha256": "8f7e6d22b47750894f6d2591651543a5b404b354be8201ff5076f2a9d0ac4f21"
+      "sha256": "8f7e6d22b47750894f6d2591651543a5b404b354be8201ff5076f2a9d0ac4f21",
+      "candidate_sha256": "527cfbe83e093b34020d47d5169dfd40d2919061fadc6718be994c6f0f9f8751",
+      "jury_changes": "English presentation text/locales only; API identifiers and business rules preserved."
     },
     {
       "source": "frontend-payflow/src/app/api/payflow/route.ts",
-      "sha256": "e38c812394f20d98d910dc6df2b4d0de45353be6afed61c45e85cc4bf2e0327e"
+      "sha256": "e38c812394f20d98d910dc6df2b4d0de45353be6afed61c45e85cc4bf2e0327e",
+      "candidate_sha256": "e38c812394f20d98d910dc6df2b4d0de45353be6afed61c45e85cc4bf2e0327e"
     },
     {
       "source": "frontend-payflow/src/app/api/operator/route.ts",
-      "sha256": "567b27e1dd114301ee72e3668ddfe4d3a8e716c4d9a819bdce0cc1450c6ea8bd"
+      "sha256": "567b27e1dd114301ee72e3668ddfe4d3a8e716c4d9a819bdce0cc1450c6ea8bd",
+      "candidate_sha256": "567b27e1dd114301ee72e3668ddfe4d3a8e716c4d9a819bdce0cc1450c6ea8bd"
     },
     {
       "source": "frontend-payflow/src/components/PayFlowStudioCanvas.tsx",
-      "sha256": "6ce001450d42fefb88be4c3003d871ba321a41bbd0a021cc406655b2a1f00aec"
+      "sha256": "6ce001450d42fefb88be4c3003d871ba321a41bbd0a021cc406655b2a1f00aec",
+      "candidate_sha256": "f83dc48ff6ec2e0ac788515e941f89a601ed52e01c2e25af20dffafa3472c49f",
+      "jury_changes": "English presentation text/locales only; API identifiers and business rules preserved."
     },
     {
       "source": "frontend-payflow/src/lib/control-explanations.ts",
-      "sha256": "0415550f95f64e1cc103bf31c852daf8ccd420f7b8140f73a21425b2746e0cfa"
+      "sha256": "0415550f95f64e1cc103bf31c852daf8ccd420f7b8140f73a21425b2746e0cfa",
+      "candidate_sha256": "1af58f1669884b0951c209d5ae4b78d047dd9e38425b0d88d6db4c537a8dd18e",
+      "jury_changes": "English presentation text/locales only; API identifiers and business rules preserved."
     },
     {
       "source": "frontend-payflow/src/lib/operator-auth.ts",
-      "sha256": "705b4b631d4740cf5d155258c6749e30afea31bbefb4b0c60f8314dae0b630cd"
+      "sha256": "705b4b631d4740cf5d155258c6749e30afea31bbefb4b0c60f8314dae0b630cd",
+      "candidate_sha256": "705b4b631d4740cf5d155258c6749e30afea31bbefb4b0c60f8314dae0b630cd"
     },
     {
       "source": "frontend-payflow/src/lib/experience.ts",
-      "sha256": "fbfaaf393e9ee34545f940ea3407d5ef8c5aeae3f561f53a7d909f5b6a33e9ab"
+      "sha256": "fbfaaf393e9ee34545f940ea3407d5ef8c5aeae3f561f53a7d909f5b6a33e9ab",
+      "candidate_sha256": "06601bd3a929418265ab7b89cfff36817b0b9cdbddc7962f7af6b351d700f977",
+      "jury_changes": "English presentation text/locales only; API identifiers and business rules preserved."
     },
     {
       "source": "frontend-payflow/src/lib/studio-state.ts",
-      "sha256": "f6fbb1eb922850abc51100f54c0a1faf190acc391a6aa692c27ca4dd95087d1a"
+      "sha256": "f6fbb1eb922850abc51100f54c0a1faf190acc391a6aa692c27ca4dd95087d1a",
+      "candidate_sha256": "f6fbb1eb922850abc51100f54c0a1faf190acc391a6aa692c27ca4dd95087d1a"
     },
     {
       "source": "frontend-payflow/src/lib/payflow.ts",
-      "sha256": "0a58986aa5a2e9335bec647c23ff226819b0275b155141e2c06952bbb094d718"
+      "sha256": "0a58986aa5a2e9335bec647c23ff226819b0275b155141e2c06952bbb094d718",
+      "candidate_sha256": "f3cce01ab589325002eb080b552514e08cdc78082d640ec7ad3b26a5117834a5",
+      "jury_changes": "English presentation text/locales only; API identifiers and business rules preserved."
     },
     {
       "source": "frontend-payflow/tests/control-explanations.test.cjs",
-      "sha256": "65ff3935b4e0f3a3739ac10dff7bb1b04b34451f6eeafee2e90e16b2c722281a"
+      "sha256": "65ff3935b4e0f3a3739ac10dff7bb1b04b34451f6eeafee2e90e16b2c722281a",
+      "candidate_sha256": "4a469f8a94e87fae24b346e611b99363fe90e423f37aa05de5652b26652c5499"
     },
     {
       "source": "frontend-payflow/tests/security.test.cjs",
-      "sha256": "d092dc0cf633332bc79b9cd00b38f376b8a545c252bf383b401acd1b345a1ab9"
+      "sha256": "d092dc0cf633332bc79b9cd00b38f376b8a545c252bf383b401acd1b345a1ab9",
+      "candidate_sha256": "fc3de361f6f986f24916807e498b8d6077c5d210249b405ed788c5df76103633"
     },
     {
       "source": "frontend-payflow/tests/experience.test.cjs",
-      "sha256": "152a37330843ce3b9cacc083c38837e34866587384575202ae35620040e15e8a"
+      "sha256": "152a37330843ce3b9cacc083c38837e34866587384575202ae35620040e15e8a",
+      "candidate_sha256": "f3d18d5d7cf216d69de659dad5b747d11e8a0b0cc4e4e328853759cf9de3e4f7"
     },
     {
       "source": "frontend-payflow/package.json",
-      "sha256": "140c4f6e260dbb7a95099e5f77fff8c99a50d667abccc2f2a3f131c874c2a966"
+      "sha256": "140c4f6e260dbb7a95099e5f77fff8c99a50d667abccc2f2a3f131c874c2a966",
+      "candidate_sha256": "569f3c3138ae5d3aa653f2b3bc65f5c1e63da0ebb58cd8c3ca31f9c4a85be025"
     },
     {
       "source": "frontend-payflow/package-lock.json",
-      "sha256": "46184373d30d5f787f049dfd55e526f2d69af16be7f82f33843bda6892f218c0"
+      "sha256": "46184373d30d5f787f049dfd55e526f2d69af16be7f82f33843bda6892f218c0",
+      "candidate_sha256": "e8e67c22351917dfab73ace48b801643a8cb31258f06bb080d07e60ce231569b"
     },
     {
       "source": "frontend-payflow/postcss.config.js",
-      "sha256": "fa650b380adfabb151a0b352f7135e107e6352345f899060f1c5c231228f94bf"
+      "sha256": "fa650b380adfabb151a0b352f7135e107e6352345f899060f1c5c231228f94bf",
+      "candidate_sha256": "fa650b380adfabb151a0b352f7135e107e6352345f899060f1c5c231228f94bf"
     },
     {
       "source": "frontend-payflow/tailwind.config.ts",
-      "sha256": "b161585408ca67e7eeeb3c7a0b90791a62f25c15f7eb50cf062f7d6c3c099a48"
+      "sha256": "b161585408ca67e7eeeb3c7a0b90791a62f25c15f7eb50cf062f7d6c3c099a48",
+      "candidate_sha256": "b161585408ca67e7eeeb3c7a0b90791a62f25c15f7eb50cf062f7d6c3c099a48"
     },
     {
       "source": "frontend-payflow/tsconfig.json",
-      "sha256": "a81dd008cb9d4cbf204d62dc529cb7202fa5cd5a7eefe2739ace247cd2cd22d6"
+      "sha256": "a81dd008cb9d4cbf204d62dc529cb7202fa5cd5a7eefe2739ace247cd2cd22d6",
+      "candidate_sha256": "a81dd008cb9d4cbf204d62dc529cb7202fa5cd5a7eefe2739ace247cd2cd22d6"
     },
     {
       "source": "frontend-payflow/next.config.mjs",
-      "sha256": "e62ad16835a52d2675632913f6a8719f6334adaa412875e2010bf0a2eac03029"
+      "sha256": "e62ad16835a52d2675632913f6a8719f6334adaa412875e2010bf0a2eac03029",
+      "candidate_sha256": "e62ad16835a52d2675632913f6a8719f6334adaa412875e2010bf0a2eac03029"
     },
     {
       "source": "frontend-payflow/next-env.d.ts",
-      "sha256": "9dd9d642cdb87d4d5b3173217e0c45429b3e47a6f5cf5fb0ead6c644ec5fed01"
+      "sha256": "9dd9d642cdb87d4d5b3173217e0c45429b3e47a6f5cf5fb0ead6c644ec5fed01",
+      "candidate_sha256": "9dd9d642cdb87d4d5b3173217e0c45429b3e47a6f5cf5fb0ead6c644ec5fed01"
     },
     {
       "source": "sql/10_payflow_init.sql",
-      "sha256": "f6bd996470f28387f6322fb5517d5ccd8bc4f234c895e12f736145cf0a12cf5b"
+      "sha256": "f6bd996470f28387f6322fb5517d5ccd8bc4f234c895e12f736145cf0a12cf5b",
+      "candidate_sha256": "f6bd996470f28387f6322fb5517d5ccd8bc4f234c895e12f736145cf0a12cf5b"
     },
     {
       "source": "sql/11_payflow_stabilization.sql",
-      "sha256": "9972364bb65eb1d35a01ac63541b560779ecce11fd0a6e73f6b0487a6a99fc00"
+      "sha256": "9972364bb65eb1d35a01ac63541b560779ecce11fd0a6e73f6b0487a6a99fc00",
+      "candidate_sha256": "9972364bb65eb1d35a01ac63541b560779ecce11fd0a6e73f6b0487a6a99fc00"
     },
     {
       "source": "sql/12_payflow_quote_lifecycle.sql",
-      "sha256": "791cec04ade0151c8354877610b2bea7fd40ff74b37876a184b9be6f8bf436db"
+      "sha256": "791cec04ade0151c8354877610b2bea7fd40ff74b37876a184b9be6f8bf436db",
+      "candidate_sha256": "791cec04ade0151c8354877610b2bea7fd40ff74b37876a184b9be6f8bf436db"
     },
     {
       "source": "tests/test_scripts/test_payflow_stabilized_logic.cjs",
-      "sha256": "ca7e4f08b907fed56298399ec64ea520b3dd91622fc3c0adeeddef0c4f7ba8f7"
+      "sha256": "ca7e4f08b907fed56298399ec64ea520b3dd91622fc3c0adeeddef0c4f7ba8f7",
+      "candidate_sha256": "ca7e4f08b907fed56298399ec64ea520b3dd91622fc3c0adeeddef0c4f7ba8f7"
     },
     {
       "source": "scripts/payflow_operator_setup.cjs",
-      "sha256": "fc420342d1bfcbb7399a7d3fbf7f80cc768420ec0e604f445441084f15f8d398"
+      "sha256": "fc420342d1bfcbb7399a7d3fbf7f80cc768420ec0e604f445441084f15f8d398",
+      "candidate_sha256": "fc420342d1bfcbb7399a7d3fbf7f80cc768420ec0e604f445441084f15f8d398"
     },
     {
       "source": "workflows/10_payflow_hackathon/13_PayFlow_PayPal_Invoicing_Sandbox.json",
       "sha256": "db7e7b72a6bd501a659ec94d744f6583156dd802ba9f923e2cd401beafe767d9",
-      "export_changes": "Only root deployment metadata and credential reference ids/names; executable node parameters, positions, notes and connections unchanged."
+      "export_changes": "Portable deployment metadata/credential references; authorized English prompt and user-visible message text. Node IDs, positions, notes, expressions, business rules, models and connections preserved.",
+      "candidate_sha256": "3bbfa2bd44d6f88cc4332f70c0d54b13cc72c24d0e78fdd7eb052ff5ceda2bdc"
     }
+  ],
+  "scope": "Original source hashes at extraction, plus candidate hashes after the English jury pass. Reference sources are not modified by this pass.",
+  "added_jury_files": [
+    "frontend-payflow/src/lib/display-message.ts",
+    "frontend-payflow/tests/display-message.test.cjs",
+    "tests/test_scripts/test_payflow_jury_language.cjs"
   ]
 }

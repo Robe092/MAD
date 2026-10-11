@@ -4,9 +4,9 @@
 
 PayFlow AI turns a commercial request into a controlled B2B quote and a PayPal Sandbox checkout. Gemini proposes catalogue lines; deterministic rules compute amounts and identify stock, margin and discount issues. A human operator reviews exceptions. AG Studio makes the resulting catalogue, orders, lines and payment operations explorable.
 
-## French interface labels
+## Main interface labels
 
-| UI label | English meaning |
+| Earlier French label | Current English label / meaning |
 | --- | --- |
 | Se connecter / Déconnexion | Operator sign in / Sign out |
 | Vue d'ensemble | Overview |

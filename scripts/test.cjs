@@ -4,7 +4,7 @@ const {spawnSync} = require('node:child_process');
 const root = path.resolve(__dirname, '..');
 const frontend = path.join(root, 'frontend-payflow');
 const suites = [
-  {cwd:root, files:['tests/test_scripts/test_payflow_stabilized_logic.cjs']},
+  {cwd:root, files:fs.readdirSync(path.join(root,'tests/test_scripts')).filter(f=>f.startsWith('test_payflow_') && f.endsWith('.cjs')).map(f=>'tests/test_scripts/'+f)},
   {cwd:frontend, files:fs.readdirSync(path.join(frontend,'tests')).filter(f=>f.endsWith('.test.cjs')).map(f=>'tests/'+f)},
   {cwd:root, files:fs.readdirSync(path.join(root,'tests')).filter(f=>f.endsWith('.test.cjs')).map(f=>'tests/'+f)}
 ];

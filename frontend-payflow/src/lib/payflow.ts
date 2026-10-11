@@ -1,3 +1,4 @@
+import { displayMessage } from './display-message';
 export interface ControlAnomaly {
     code: string;
     message: string;
@@ -122,24 +123,24 @@ export interface DashboardSummary {
     average_margin_pct?: number;
     pipeline_revenue_usd?: number;
 }
-export const money = (value: unknown) => new Intl.NumberFormat("fr-FR", { style: "currency", currency: "USD" }).format(Number(value) || 0);
+export const money = (value: unknown) => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(Number(value) || 0);
 export const isSimulated = (order: OrderRow) => String(order.invoice?.capture_id || "").startsWith("CAP-TEST-") || order.settlement_mode === "SIMULATED_SQL_TEST_T6C";
 export const isCaptured = (order: OrderRow) => order.status === "PAID" && !isSimulated(order) && Boolean(order.invoice?.capture_id) && order.invoice?.paypal_status === "COMPLETED";
 export function settlementLabel(order: OrderRow): string {
     if (isSimulated(order))
-        return "Paiement simulé";
+        return "Simulated payment";
     if (isCaptured(order))
-        return "PayPal capturé";
-    return ({ PAID: "Capture à vérifier", PENDING_APPROVAL: "Validation interne requise", APPROVED: "Validée en interne", INVOICE_SENT: "Paiement attendu", BLOCKED_ANOMALY: "Bloquée", REJECTED: "Refusée", CANCELLED:"Annulée", OVERDUE:"Devis expiré" } as Record<string, string>)[order.status] || order.status;
+        return "PayPal captured";
+    return ({ PAID: "Capture needs verification", PENDING_APPROVAL: "Internal approval required", APPROVED: "Internally approved", INVOICE_SENT: "Awaiting payment", BLOCKED_ANOMALY: "Blocked", REJECTED: "Rejected", CANCELLED:"Cancelled", OVERDUE:"Quote expired" } as Record<string, string>)[order.status] || order.status;
 }
 export async function callPayFlow(payload: Record<string, unknown>) {
     const session = await fetch("/api/operator", {cache:"no-store"}).then(r=>r.json());
-    if (!session.authenticated || !session.csrf) throw new Error("Connectez-vous avec votre compte opérateur.");
+    if (!session.authenticated || !session.csrf) throw new Error("Sign in with your operator account.");
     let response: Response;
     try { response = await fetch("/api/payflow", { method: "POST", headers: { "Content-Type": "application/json", "X-PayFlow-Csrf": session.csrf }, body: JSON.stringify(payload), signal: AbortSignal.timeout(90000) }); }
-    catch { throw new Error("La demande prend trop de temps. Réessayez ; les contrôles protègent contre les doublons."); }
+    catch { throw new Error("The request is taking too long. Try again; the checks protect against duplicates."); }
     const data = await response.json();
     if ((!response.ok && response.status !== 422) || data.status === "error")
-        throw new Error(/error in workflow/i.test(data.message || "") ? "Le moteur PayFlow n’a pas pu traiter la demande. Consultez les diagnostics du service et réessayez." : data.message || "Le service est indisponible. Réessayez dans un instant.");
+        throw new Error(/error in workflow/i.test(data.message || "") ? "The PayFlow engine could not process the request. Check service diagnostics and try again." : displayMessage(data.message, "The service is unavailable. Please try again shortly."));
     return { data, httpStatus: response.status };
 }

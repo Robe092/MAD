@@ -4,7 +4,7 @@
 
 PayFlow AI is a B2B quote-to-payment cockpit prepared for the PayPal AI Hackathon 2026. It combines Gemini, n8n, PostgreSQL, PayPal Sandbox Orders v2 and AG Studio. Prices, margins, discounts, reservations and settlement are checked by code and database transactions rather than delegated to the model.
 
-This standalone repository contains the existing frontend and engine 13. The French interface is preserved; [the English demo guide](docs/DEMO.md) translates the key labels and explains every step. It is a local working application, not a static mockup. It requires your own Gemini and PayPal Sandbox credentials to exercise those providers.
+This standalone repository contains the existing frontend and engine 13, with English user-facing text and English Gemini output instructions. Gemini can still understand requests in French or English. [The demo guide](docs/DEMO.md) explains every step. It is a local working application, not a static mockup. It requires configured Gemini and PayPal Sandbox credentials to exercise those providers. Read [judge access and remaining prerequisites](docs/JUDGE_ACCESS.md) before evaluating the full provider flow.
 
 ## Requirements
 
@@ -84,7 +84,7 @@ Do not click a payment/capture action simply to check installation. Every Sandbo
 ## Components and limits
 
 - `frontend-payflow/`: existing Next.js interface, gateway, operator authentication, AG Studio/AG Grid integration and tests.
-- `workflows/10_payflow_hackathon/13_*.json`: only the current engine, with the preserved five-block layout. Credential references and root instance metadata are portable; business code, settings and connections are preserved.
+- `workflows/10_payflow_hackathon/13_*.json`: only the current engine, with the preserved five-block layout. Credential references and root instance metadata are portable. The jury pass translates language instructions and visible messages; rules, calculations, JSON contracts, models, settings and connections are preserved.
 - `sql/`: existing schema and lifecycle/atomic persistence migrations.
 - `scripts/`: independent local provisioning, database binding, import and launch.
 - `tests/`: existing isolated engine tests; they do not themselves prove provider success.
@@ -103,6 +103,6 @@ The reference application has deterministic financial guardrails, CSRF/origin ch
 
 Stop only this dedicated stack with `docker compose stop`. To remove its containers while keeping the two persistent volumes use `docker compose down`. `docker compose down --volumes` deletes **this demo's data**; it is a destructive reset, not a routine upgrade.
 
-This repository is **prepared locally and not published**. No remote is configured. Review the [preparation report](docs/PREPARATION.md), authorship, licensing, provider availability and judge access before any publication. For a private hosted demo, give judges a dedicated test account through the submission's testing instructions rather than publishing private keys or provider secrets.
+This repository is **prepared locally and not published**. No remote is configured. Review the [jury preparation report](docs/JURY_FINALIZATION.md), [earlier installation report](docs/PREPARATION.md), authorship, licensing, provider availability and judge access before any publication. For a private hosted demo, give judges a dedicated test account through the submission's testing instructions rather than publishing private keys or provider secrets.
 
-The source licence is MIT; third-party packages retain their own licences. No n8n or AG Studio binaries are vendored. Before submitting, document which foundation predates the hackathon and the work added during it; see [provenance](docs/PROVENANCE.md). Official submission requirements are in the [hackathon rules](https://paypalaihackathon.devpost.com/rules).
+The local preparation currently includes a proposed MIT licence. The owner has not finalized that choice; do not publish until the owner approves the licence and attribution. [The licence recommendation](docs/LICENSE_RECOMMENDATION.md) compares protection and compatibility. Third-party packages retain their own licences; no n8n or AG Studio binaries are vendored. Before submitting, confirm which foundation predates the hackathon and the work added during it; see [provenance](docs/PROVENANCE.md). Official submission requirements are in the [hackathon rules](https://paypalaihackathon.devpost.com/rules).
