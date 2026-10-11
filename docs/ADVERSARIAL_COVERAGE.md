@@ -74,3 +74,9 @@ Contradictory review: the evidence boundaries and counts were accepted within th
 4. **Hosting:** public HTTPS, proxy trust, exposed routes, persistent sessions and deployment-specific limits remain untested because there is no hosted target. Local PASS must not become hosted PASS by inference. No hosted deployment is authorized by this report.
 
 Publication/access readiness remains **BLOCKED**, with no new demonstrated product defect. Missing provider configuration and the previously documented access/licence decisions remain concrete prerequisites. This report does not revoke earlier scoped PASS results or reopen development.
+
+## Existing n8n Gemini credentials — owner clarification
+
+The owner confirmed two Gemini keys already exist in n8n. A read-only lookup shows engine 13's primary and fallback both reference the same existing account labelled "Google Gemini(PaLM) Api account 2". Credential values were not read/exported and nothing was changed. Existing n8n credentials can avoid creating/copying a new key for a provider-only test, but using them requires running the temporary test inside that reference instance, which differs from the owner's previous strict instance-isolation instruction.
+
+A separate five-node test definition is prepared privately, not deployed: protected webhook, synthetic context, candidate prompt, unchanged primary Gemini HTTP configuration with the existing credential reference, and response. Four offline comparisons prove its generated Gemini requests match the candidate prompt for the supplied contexts. No PostgreSQL/PayPal node or permanent feature is included. Owner approval for this limited instance-isolation exception is pending; no live call or reference workflow/credential mutation occurred. This preparation is not a fresh English-provider PASS.
