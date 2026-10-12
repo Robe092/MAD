@@ -1,0 +1,322 @@
+{
+  "date": "2026-10-12",
+  "proof_class": "INTEGRATION_TEST",
+  "scope": "Actual candidate frontend gateway, operator login/assertions, real existing n8n temporary copy, dedicated real PostgreSQL, native Gemini and PayPal Sandbox Orders v2 unpaid only",
+  "cases": {
+    "nominal": {
+      "http_status": 200,
+      "body": {
+        "status": "success",
+        "currency": "USD",
+        "anomalies": [],
+        "llm_proof": {
+          "model": "models/gemini-3-flash-preview",
+          "n8n_node": "Gemini Copilot API",
+          "provider": "Google Gemini (API native n8n, credential chiffré)",
+          "llm_invoked": true,
+          "studio_command": null,
+          "raw_response_chars": 544,
+          "executive_reasoning": "The user requested a quote for 1 case of Château Margaux Grand Cru 2018 for the client 'Candidate qualification nominal'. A 5% discount was requested, which is within the maximum allowed discount of 10% for this product. Stock is sufficient."
+        },
+        "order_status": "APPROVED",
+        "total_amount": 427.5,
+        "requires_hitl": false,
+        "computed_margin_pct": 32.16,
+        "copilot_explanation": "🤖 [Gemini LLM analysis] The user requested a quote for 1 case of Château Margaux Grand Cru 2018 for the client 'Candidate qualification nominal'. A 5% discount was requested, which is within the maximum allowed discount of 10% for this product. Stock is sufficient. — ✅ Quote DEV-QA-560f7b8-nominal-6ddd9ffdeb9a created for null ($427.50 USD, net margin 32.16%). All financial and stock checks passed: the order is internally approved (no customer acceptance recorded) and ready for PayPal Sandbox creation."
+      }
+    },
+    "hitl": {
+      "http_status": 200,
+      "body": {
+        "status": "success",
+        "currency": "USD",
+        "anomalies": [
+          {
+            "code": "HIGH_VALUE_THRESHOLD",
+            "message": "Order total $1282.50 requires manager approval (threshold $1000.00).",
+            "threshold": 1000,
+            "total_amount": 1282.5
+          }
+        ],
+        "llm_proof": {
+          "model": "models/gemini-3-flash-preview",
+          "n8n_node": "Gemini Copilot API",
+          "provider": "Google Gemini (API native n8n, credential chiffré)",
+          "llm_invoked": true,
+          "studio_command": null,
+          "raw_response_chars": 552,
+          "executive_reasoning": "The user requested a quote for 3 cases of Château Margaux Grand Cru 2018 (SKU: VIN-CHATEAU-2018) with a 5% discount. The requested discount is within the product's maximum allowed discount of 10% and there is sufficient stock available (40 cases on hand)."
+        },
+        "order_status": "PENDING_APPROVAL",
+        "total_amount": 1282.5,
+        "requires_hitl": true,
+        "computed_margin_pct": 32.16,
+        "copilot_explanation": "🤖 [Gemini LLM analysis] The user requested a quote for 3 cases of Château Margaux Grand Cru 2018 (SKU: VIN-CHATEAU-2018) with a 5% discount. The requested discount is within the product's maximum allowed discount of 10% and there is sufficient stock available (40 cases on hand). — ⚠️ Quote DEV-QA-560f7b8-hitl-2062eac8462f prepared for null ($1282.50 USD, net margin 32.16%). Issues detected [HIGH_VALUE_THRESHOLD]: stock has been reserved and the order awaits internal human review (HITL) by Finance."
+      }
+    },
+    "approve": {
+      "http_status": 200,
+      "body": {
+        "status": "success",
+        "order_status": "APPROVED"
+      }
+    },
+    "approval_replay": {
+      "http_status": 403,
+      "body": {
+        "status": "error",
+        "code": "APPROVAL_DENIED_INVALID_EXPIRED_OR_CONSUMED_TOKEN",
+        "order_status": "APPROVED"
+      }
+    },
+    "paypal_unpaid_creation": {
+      "http_status": 200,
+      "body": {
+        "status": "success",
+        "channel_used": "ORDERS_V2",
+        "resource_type": "PAYPAL_ORDER_V2",
+        "db_verified_amount": 427.5,
+        "currency": "USD",
+        "paypal_status": "PAYER_ACTION_REQUIRED"
+      }
+    },
+    "paypal_unpaid_reconciliation": {
+      "http_status": 200,
+      "body": {
+        "status": "success",
+        "paypal_status": "PAYER_ACTION_REQUIRED",
+        "capture_verified": false,
+        "is_paid_and_settled": false,
+        "verification_checks": {
+          "refMatches": true,
+          "amountMatches": true,
+          "merchantMatches": true,
+          "captureCompleted": false
+        }
+      }
+    },
+    "studio": {
+      "http_status": 200,
+      "body": {
+        "status": "success",
+        "executive_reasoning": "The portfolio contains two distinct orders with a combined volume of 1,710.00 USD. One order (1,282.50 USD) is currently in 'APPROVED' status, while the other (427.50 USD) is in 'INVOICE_SENT' status, representing the amount awaiting payment. There are no orders marked as 'PAID' in this dataset. It is mandatory to clarify that this system tracks internal order statuses and cannot verify external payment captures.",
+        "studio_command": {
+          "recommended_view": "studio",
+          "status_filter": "ALL",
+          "assistant_reply": "The portfolio summary shows a total recorded order volume of 1,710.00 USD. This is comprised of 1,282.50 USD in approved orders and 427.50 USD currently awaiting payment (status: INVOICE_SENT). Please be advised that this context only provides recorded order statuses; actual payment capture, settlement, or the receipt of funds cannot be verified from this data."
+        },
+        "llm_proof": {
+          "llm_invoked": true,
+          "provider": "Google Gemini (API native n8n, credential chiffré)",
+          "model": "models/gemini-3-flash-preview",
+          "n8n_node": "Gemini Copilot API",
+          "raw_response_chars": 925,
+          "executive_reasoning": "The portfolio contains two distinct orders with a combined volume of 1,710.00 USD. One order (1,282.50 USD) is currently in 'APPROVED' status, while the other (427.50 USD) is in 'INVOICE_SENT' status, representing the amount awaiting payment. There are no orders marked as 'PAID' in this dataset. It is mandatory to clarify that this system tracks internal order statuses and cannot verify external payment captures.",
+          "studio_command": {
+            "recommended_view": "studio",
+            "status_filter": "ALL",
+            "assistant_reply": "The portfolio summary shows a total recorded order volume of 1,710.00 USD. This is comprised of 1,282.50 USD in approved orders and 427.50 USD currently awaiting payment (status: INVOICE_SENT). Please be advised that this context only provides recorded order statuses; actual payment capture, settlement, or the receipt of funds cannot be verified from this data."
+          }
+        }
+      }
+    }
+  },
+  "dashboard_snapshot_after_studio": {
+    "summary": {
+      "total_orders": 2,
+      "paid_orders_count": 0,
+      "paid_revenue_usd": 0,
+      "simulated_test_paid_count": 0,
+      "simulated_test_paid_usd": 0,
+      "pending_approval_count": 0,
+      "pending_approval_usd": 0,
+      "awaiting_payment_count": 2,
+      "awaiting_payment_usd": 1710,
+      "blocked_or_rejected_count": 0,
+      "idempotent_replays_saved": 0
+    },
+    "order_count": 2,
+    "order_statuses": [
+      "APPROVED",
+      "INVOICE_SENT"
+    ],
+    "catalogue_stock": [
+      {
+        "sku": "VIN-CHATEAU-2018",
+        "stock_on_hand": 40,
+        "stock_reserved": 4,
+        "available_stock": 36
+      },
+      {
+        "sku": "VIN-POMEROL-2020",
+        "stock_on_hand": 25,
+        "stock_reserved": 0,
+        "available_stock": 25
+      },
+      {
+        "sku": "VIN-CHAMP-BRUT",
+        "stock_on_hand": 60,
+        "stock_reserved": 0,
+        "available_stock": 60
+      },
+      {
+        "sku": "VIN-SANCERRE-BIO",
+        "stock_on_hand": 80,
+        "stock_reserved": 0,
+        "available_stock": 80
+      },
+      {
+        "sku": "SPIRIT-RHUM-XO",
+        "stock_on_hand": 15,
+        "stock_reserved": 0,
+        "available_stock": 15
+      }
+    ]
+  },
+  "limits": [
+    "No buyer checkout/capture/refund; no hosted deployment; no public GitHub",
+    "No independent new-n8n provider installation: owner chose existing n8n",
+    "Primary returned actual 503 UNAVAILABLE on corrective replay; fallback daily quota429",
+    "Small candidate-only label correction: six UNIT_LOGIC cases and47 existing unit regressions PASS; real provider replay BLOCKED"
+  ],
+  "provider_failure_after_successful_path": {
+    "Gemini Copilot API": {
+      "output_keys": [
+        "error"
+      ],
+      "error_code": 503,
+      "error_status": "UNAVAILABLE",
+      "finish_reason": null,
+      "text_chars": 0,
+      "usage": null
+    },
+    "Gemini Fallback API": {
+      "output_keys": [
+        "error"
+      ],
+      "error_code": 429,
+      "error_status": "RESOURCE_EXHAUSTED",
+      "finish_reason": null,
+      "text_chars": 0,
+      "usage": null
+    }
+  },
+  "quote_label_correction": {
+    "local_correction": "Two explanation label interpolations only",
+    "targeted_unit_logic": {
+      "verdict": "PASS",
+      "proof_class": "UNIT_LOGIC",
+      "cases": 6,
+      "conditions": [
+        "company null",
+        "company empty",
+        "company present",
+        "APPROVED",
+        "PENDING_APPROVAL"
+      ],
+      "real_Gemini": false,
+      "real_DB": false
+    },
+    "existing_backend_language_regression": {
+      "verdict": "PASS",
+      "proof_class": "UNIT_LOGIC",
+      "passed": 47
+    },
+    "static_analysis": {
+      "verdict": "PASS",
+      "blocking_violations": 0
+    },
+    "real_provider_replay": {
+      "verdict": "BLOCKED",
+      "proof_class": "INTEGRATION_TEST",
+      "http_status": 503,
+      "code": "GEMINI_UNAVAILABLE",
+      "diagnosed_primary": {
+        "code": 503,
+        "status": "UNAVAILABLE"
+      },
+      "diagnosed_fallback": {
+        "code": 429,
+        "status": "RESOURCE_EXHAUSTED"
+      },
+      "explanation_output_produced": false
+    },
+    "further_provider_retries": 0,
+    "reference_workflow_changed": false
+  },
+  "cleanup": {
+    "temporary_workflow_deleted": true,
+    "temporary_credentials_deleted": true,
+    "temporary_database_network_connection_removed": true,
+    "owned_diagnostic_executions_deleted": 16
+  },
+  "reference_configuration_unchanged": true,
+  "qualification_database_final": {
+    "persistent_private_isolated_database": true,
+    "order_count": 3,
+    "statuses": [
+      "CANCELLED",
+      "CANCELLED",
+      "INVOICE_SENT"
+    ],
+    "summary": {
+      "total_orders": 3,
+      "paid_orders_count": 0,
+      "paid_revenue_usd": 0,
+      "simulated_test_paid_count": 0,
+      "simulated_test_paid_usd": 0,
+      "pending_approval_count": 0,
+      "pending_approval_usd": 0,
+      "awaiting_payment_count": 1,
+      "awaiting_payment_usd": 427.5,
+      "blocked_or_rejected_count": 0,
+      "idempotent_replays_saved": 0
+    },
+    "catalog_stock": [
+      {
+        "sku": "VIN-CHATEAU-2018",
+        "stock_on_hand": 40,
+        "stock_reserved": 1,
+        "available_stock": 39
+      },
+      {
+        "sku": "VIN-POMEROL-2020",
+        "stock_on_hand": 25,
+        "stock_reserved": 0,
+        "available_stock": 25
+      },
+      {
+        "sku": "VIN-CHAMP-BRUT",
+        "stock_on_hand": 60,
+        "stock_reserved": 0,
+        "available_stock": 60
+      },
+      {
+        "sku": "VIN-SANCERRE-BIO",
+        "stock_on_hand": 80,
+        "stock_reserved": 0,
+        "available_stock": 80
+      },
+      {
+        "sku": "SPIRIT-RHUM-XO",
+        "stock_on_hand": 15,
+        "stock_reserved": 0,
+        "available_stock": 15
+      }
+    ],
+    "retained_unpaid_order_for_future_buyer_test": true,
+    "reason": "PayPal unpaid resource retains its reservation and financial history; no settlement, no forced closure"
+  },
+  "scoped_verdicts": {
+    "authenticated_frontend_n8n_DB": "PASS",
+    "English_Gemini_quote_and_Studio_observed_successes": "PASS",
+    "HITL_approval_replay": "PASS",
+    "PayPal_Orders_v2_unpaid_creation_and_read_only_reconciliation": "PASS",
+    "Gemini_availability_and_fallback_today": "BLOCKED",
+    "small_label_fix_actual_provider_replay": "BLOCKED",
+    "complete_buyer_payment_capture": "NOT_VERIFIED",
+    "hosting": "NOT_VERIFIED",
+    "independent_new_n8n_provider_install": "NOT_VERIFIED",
+    "overall_final_qualification": "BLOCKED"
+  }
+}

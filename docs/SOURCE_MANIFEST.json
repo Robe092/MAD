@@ -149,7 +149,8 @@
       "source": "workflows/10_payflow_hackathon/13_PayFlow_PayPal_Invoicing_Sandbox.json",
       "sha256": "db7e7b72a6bd501a659ec94d744f6583156dd802ba9f923e2cd401beafe767d9",
       "export_changes": "Portable deployment metadata/credential references; authorized English prompt and user-visible message text. Node IDs, positions, notes, expressions, business rules, models and connections preserved.",
-      "candidate_sha256": "d87b67f036333518567f3fa191a8d6fcf5dfb09f5d1e0d58a4f4d07ce666c6aa"
+      "candidate_sha256": "bd7b987b6e0fb544f125d24a2a38404caf03392a6bb985a0f7e25da6f471fe96",
+      "quote_label_correction": "Optional company falls back to validated customer name in two explanation strings; local checks PASS; actual provider replay BLOCKED (503/429)."
     }
   ],
   "scope": "Original source hashes at extraction, plus candidate hashes after the English jury pass. Reference sources are not modified by this pass.",
