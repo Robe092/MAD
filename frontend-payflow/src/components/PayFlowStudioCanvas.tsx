@@ -1,5 +1,5 @@
 "use client";
-import React, { Component, useMemo, useRef, useState } from "react";
+import React, { Component, useEffect, useMemo, useRef, useState } from "react";
 import { AgStudio, createWidgets } from "ag-studio-react";
 import { callPayFlow } from "@/lib/payflow";
 import { withStatusFilter } from "@/lib/studio-state";
@@ -141,9 +141,9 @@ const payflowStudioTheme = studioTheme.withParams({
     backgroundColor: "#ffffff",
     textColor: "#15243b",
     borderColor: "#e0e5ee",
-    studioMinWidth: 850,
+    studioMinWidth: 300,
     studioMinHeight: 580,
-    studioCanvasMinWidth: 1000,
+    studioCanvasMinWidth: 280,
     studioCanvasBackgroundColor: "#f4f6fa",
     studioWidgetBackgroundColor: "#ffffff",
     studioWidgetBorder: { width: 1, color: "#e0e5ee" },
@@ -206,6 +206,15 @@ const payflowStudioWidgets = createWidgets<any>({
 });
 export default function PayFlowStudioCanvas({ orders, orderItems, products, operations, onApplyStatusFilter, }: PayFlowStudioCanvasProps) {
     const studioRef = useRef<any>(null);
+    const [narrowLayout, setNarrowLayout] = useState(false);
+    const statusCount = new Set(orders.map(order => order.settlement_label)).size;
+    const filterExtra = filterExtraTracks(narrowLayout, statusCount);
+    useEffect(() => {
+        const media = window.matchMedia("(max-width: 1050px)");
+        const update = () => setNarrowLayout(media.matches);
+        update(); media.addEventListener("change", update);
+        return () => media.removeEventListener("change", update);
+    }, []);
     const [studioMode, setStudioMode] = useState<"view" | "edit">("view");
     const [agentPrompt, setAgentPrompt] = useState("Analyse margins and filter orders awaiting internal approval. Please reply in English.");
     const [agentBusy, setAgentBusy] = useState(false);
@@ -436,7 +445,7 @@ export default function PayFlowStudioCanvas({ orders, orderItems, products, oper
                             },
                             style: {
                                 selection: { type: "multiple" },
-                                dimensions: { minWidth: 215, height: 40 },
+                                dimensions: { minWidth: 180, height: 40 },
                                 defaultItem: {
                                     backgroundColor: "#f1f5fc",
                                     color: "#304664",
@@ -584,19 +593,16 @@ export default function PayFlowStudioCanvas({ orders, orderItems, products, oper
                         },
                     },
                 },
-                widgetLayout: {
-                    "filter-settlement": { xTrack: 0, yTrack: 0, xSpan: 24, ySpan: 12 },
-                    "kpi-portfolio-volume": { xTrack: 0, yTrack: 12, xSpan: 9, ySpan: 12 },
-                    "kpi-margin-avg": { xTrack: 9, yTrack: 12, xSpan: 7, ySpan: 12 },
-                    "custom-guard-widget": { xTrack: 16, yTrack: 12, xSpan: 8, ySpan: 12 },
-                    "chart-company-revenue": { xTrack: 0, yTrack: 24, xSpan: 24, ySpan: 30 },
-                    "chart-sku-demand": { xTrack: 0, yTrack: 54, xSpan: 24, ySpan: 22 },
-                    "chart-settlement-donut": { xTrack: 0, yTrack: 76, xSpan: 24, ySpan: 22 },
-                    "grid-studio-orders": { xTrack: 0, yTrack: 98, xSpan: 24, ySpan: 26 },
-                },
+                widgetLayout: dashboardLayout(narrowLayout, statusCount),
             },
         ],
-    }), []);
+    }), [narrowLayout, statusCount]);
+    useEffect(() => {
+        const api = studioRef.current?.api;
+        if (!api) return;
+        const state = api.getState();
+        api.setState({ ...state, pages: state.pages.map((page: any) => page.id === "payflow-executive-studio" ? { ...page, widgetLayout: { ...page.widgetLayout, ...dashboardLayout(narrowLayout, statusCount) } } : page) });
+    }, [narrowLayout, statusCount]);
     function applyAgentFilter(rawStatus: string) {
         const api = studioRef.current?.api;
         if (!api)
@@ -687,8 +693,36 @@ export default function PayFlowStudioCanvas({ orders, orderItems, products, oper
     </section>
     <div className="studio-controls"><p>AG Studio · Select a customer or status in the charts to explore related orders.</p><div><button className="button secondary" onClick={() => applyAgentFilter("ALL")}><RotateCcw size={14}/>Reset filters</button><button className="button secondary" onClick={() => setStudioMode(mode => mode === "view" ? "edit" : "view")}>{studioMode === "view" ? "Customize dashboard" : "Finish customizing"}</button></div></div>
     {orders.length === 0 && <div className="notice warning" role="status"><span>No orders available. Charts will populate with your first quotes.</span></div>}
-    <StudioErrorBoundary><div className="studio-scroll"><div id="ag-studio-live-container" className="studio-canvas">
+    <StudioErrorBoundary><div className="studio-scroll"><div id="ag-studio-live-container" className="studio-canvas" style={{ height: (narrowLayout ? 2320 : 1280) + filterExtra * 16 }}>
       <AgStudio ref={studioRef} modules={[AgStudioAiModule]} theme={payflowStudioTheme} mode={studioMode} widgets={payflowStudioWidgets} data={studioData as any} initialState={initialState as any} ai={({ api }) => createAiHarness(api, { adapter: payflowGeminiStudioAdapter })} style={{ width: "100%", height: "100%" }}/>
-    </div></div></StudioErrorBoundary><p className="studio-help">Order volume is not a receipt. On mobile, scroll the dashboard horizontally to explore the charts.</p>
+    </div></div></StudioErrorBoundary><p className="studio-help">Order volume is not a receipt. Select a chart or status to explore the related orders.</p>
   </div>;
+}
+
+// Responsive native layout only; widget data, relations and filters are preserved.
+function filterExtraTracks(narrow: boolean, statuses: number) {
+    return Math.max(0, narrow ? statuses * 3 + 8 - 18 : Math.ceil(statuses / 3) * 3 + 6 - 12);
+}
+function dashboardLayout(narrow: boolean, statuses: number) {
+    const layout = narrow ? {
+        "filter-settlement": { xTrack: 0, yTrack: 0, xSpan: 24, ySpan: 18 },
+        "kpi-portfolio-volume": { xTrack: 0, yTrack: 18, xSpan: 24, ySpan: 10 },
+        "kpi-margin-avg": { xTrack: 0, yTrack: 28, xSpan: 24, ySpan: 10 },
+        "custom-guard-widget": { xTrack: 0, yTrack: 38, xSpan: 24, ySpan: 12 },
+        "chart-company-revenue": { xTrack: 0, yTrack: 50, xSpan: 24, ySpan: 28 },
+        "chart-settlement-donut": { xTrack: 0, yTrack: 78, xSpan: 24, ySpan: 24 },
+        "chart-sku-demand": { xTrack: 0, yTrack: 102, xSpan: 24, ySpan: 22 },
+        "grid-studio-orders": { xTrack: 0, yTrack: 124, xSpan: 24, ySpan: 26 },
+    } : {
+        "filter-settlement": { xTrack: 0, yTrack: 0, xSpan: 24, ySpan: 12 },
+        "kpi-portfolio-volume": { xTrack: 0, yTrack: 12, xSpan: 8, ySpan: 12 },
+        "kpi-margin-avg": { xTrack: 8, yTrack: 12, xSpan: 8, ySpan: 12 },
+        "custom-guard-widget": { xTrack: 16, yTrack: 12, xSpan: 8, ySpan: 12 },
+        "chart-company-revenue": { xTrack: 0, yTrack: 24, xSpan: 12, ySpan: 26 },
+        "chart-settlement-donut": { xTrack: 12, yTrack: 24, xSpan: 12, ySpan: 26 },
+        "chart-sku-demand": { xTrack: 0, yTrack: 50, xSpan: 12, ySpan: 26 },
+        "grid-studio-orders": { xTrack: 12, yTrack: 50, xSpan: 12, ySpan: 26 },
+    };
+    const extra = filterExtraTracks(narrow, statuses);
+    return Object.fromEntries(Object.entries(layout).map(([id, position]) => [id, { ...position, yTrack: position.yTrack + (id === "filter-settlement" ? 0 : extra), ySpan: position.ySpan + (id === "filter-settlement" ? extra : 0) }]));
 }

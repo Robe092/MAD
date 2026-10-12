@@ -9,13 +9,15 @@
     {
       "source": "frontend-payflow/src/app/page.tsx",
       "sha256": "9c87ab8d9bed84c8f0fb3cf48959fa199c5795bb06bb5a3779ad405a80e0a5c2",
-      "candidate_sha256": "cbbf87a0d2be07307067c40d7cde399bd0c52313588b6b1d6998e844cfba6ffe",
-      "jury_changes": "English presentation text/locales only; API identifiers and business rules preserved."
+      "candidate_sha256": "a571649e5ce30723684d526dbe66094e16f783d0f80d5f247935fde9322c1b73",
+      "jury_changes": "English presentation text/locales only; API identifiers and business rules preserved.",
+      "ui_simplification": "Authorized presentation/form/layout change, October 12; backend financial/auth contracts preserved."
     },
     {
       "source": "frontend-payflow/src/app/globals.css",
       "sha256": "a10d34f45e30226392893fdafc1c817c21847f886dbb9df2424022ca645beb32",
-      "candidate_sha256": "a10d34f45e30226392893fdafc1c817c21847f886dbb9df2424022ca645beb32"
+      "candidate_sha256": "94df30768d1ef72ff450f839e98f9784968317b2d950144732ebdc0e8da209f8",
+      "ui_simplification": "Authorized presentation/form/layout change, October 12; backend financial/auth contracts preserved."
     },
     {
       "source": "frontend-payflow/src/app/payflow/payment-success/page.tsx",
@@ -36,8 +38,9 @@
     {
       "source": "frontend-payflow/src/components/PayFlowStudioCanvas.tsx",
       "sha256": "6ce001450d42fefb88be4c3003d871ba321a41bbd0a021cc406655b2a1f00aec",
-      "candidate_sha256": "f83dc48ff6ec2e0ac788515e941f89a601ed52e01c2e25af20dffafa3472c49f",
-      "jury_changes": "English presentation text/locales only; API identifiers and business rules preserved."
+      "candidate_sha256": "d60e17f06f1270b556a494048d4e493550ce76ad6e61470d7b05e1ac1f4c3dee",
+      "jury_changes": "English presentation text/locales only; API identifiers and business rules preserved.",
+      "ui_simplification": "Authorized presentation/form/layout change, October 12; backend financial/auth contracts preserved."
     },
     {
       "source": "frontend-payflow/src/lib/control-explanations.ts",
@@ -186,5 +189,13 @@
       "docs/GEMINI_STUDIO_CORRECTION.md",
       "docs/GEMINI_STUDIO_CORRECTION.json"
     ]
+  },
+  "ui_simplification": {
+    "date": "2026-10-12",
+    "reports": [
+      "docs/UI_SIMPLIFICATION.md",
+      "docs/UI_SIMPLIFICATION.json"
+    ],
+    "screenshots": "Private workspace only; synthetic VISUAL QA data, excluded from candidate Git repository."
   }
 }

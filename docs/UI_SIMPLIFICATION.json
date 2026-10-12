@@ -1,0 +1,81 @@
+{
+  "date": "2026-10-12",
+  "baseline": "338a01b",
+  "verdict": "PASS",
+  "scope": "Candidate frontend only; real browser/Next.js with labeled synthetic read-only upstream, no providers or reference DB",
+  "unit_logic": {
+    "existing_frontend_tests": 31,
+    "passed": 31
+  },
+  "static_analysis": {
+    "TypeScript": "PASS",
+    "final_production_build": "PASS",
+    "financial_action_conditions_confirmations_auth_API_n8n_SQL_models": "UNCHANGED"
+  },
+  "browser_checks": {
+    "customer_prompt_composition": "PASS",
+    "unchanged_retry_reuses_order_id": "PASS",
+    "changed_customer_gets_new_order_id": "PASS",
+    "financial_confirmation_retained_and_cancelled": "PASS",
+    "one_overview_action_list_and_collapsed_guide": "PASS",
+    "simulations_separate_from_confirmed_receipts": "PASS",
+    "grid_height_one_row_px": 170,
+    "grid_height_three_products_px": 318,
+    "large_grid_height_limit_px": 560,
+    "Studio_native_cross_filter_and_responsive_preservation": "PASS",
+    "Studio_edit_and_reset_controls": "PASS",
+    "all_supported_Studio_statuses_visible_mobile": {
+      "allButtonsInsideWidget": true,
+      "content": {
+        "clientHeight": 560,
+        "clientWidth": 216,
+        "scrollHeight": 560,
+        "scrollWidth": 216
+      },
+      "labels": [
+        "Internal approval required",
+        "Blocked",
+        "Internally approved",
+        "Simulated payment",
+        "DRAFT",
+        "Awaiting payment",
+        "Rejected",
+        "Cancelled",
+        "Quote expired",
+        "Capture needs verification",
+        "PayPal captured"
+      ],
+      "pageWidth": 390,
+      "statusCount": 11,
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    "modal_actions_visible_mobile": {
+      "actionBarInsideViewport": true,
+      "bottom": 809.234375,
+      "top": 606.640625,
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    }
+  },
+  "proof_class": "UNIT_LOGIC / STATIC_ANALYSIS / INTEGRATION_TEST (frontend with synthetic upstream)",
+  "findings_closed": [
+    "UI-01: tracking warning outside disclosure",
+    "UI-02: adaptive native status layout and reduced minimum button width"
+  ],
+  "provider_calls": 0,
+  "payments": 0,
+  "existing_credentials_modified": false,
+  "existing_workflows_modified": false,
+  "real_business_rows_written": 0,
+  "limits": "No new Gemini/PayPal/DB end-to-end claim. Known AG Studio unlicensed trial console notices remain; licence decision unchanged. Images show synthetic UI fixtures, never payment proof.",
+  "independent_review": {
+    "verdict": "PASS",
+    "scope": "Modified frontend diff and targeted visual measurements; no open issue"
+  },
+  "preview": "Loopback read-only preview intentionally left open for owner review; isolated temporary operator/session files outside existing installations."
+}
