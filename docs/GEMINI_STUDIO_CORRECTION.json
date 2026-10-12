@@ -1,0 +1,116 @@
+{
+  "synchronization": {
+    "date": "2026-10-12",
+    "scope": "One Studio prompt instruction; saved/published configuration",
+    "verdict": "PASS",
+    "changed_node": "Préparer la demande Gemini",
+    "credentials_models_financial_code_connections_settings_preserved": true,
+    "active": true,
+    "saved_published_match": true,
+    "local_reference_matches_saved": true,
+    "before_definition_sha256": "fc5a8805423876eb19fe00f0e227cb6ff5f7e2b12eb270370a1eb8cb40b454a2",
+    "after_definition_sha256": "a55bdece6d976c93e82fdb63a918392ad86cc771fba1c1e8b9b6ccc801cb140f",
+    "provider_calls": 0,
+    "payments": 0,
+    "proof_class": "STATIC_ANALYSIS"
+  },
+  "execution": {
+    "date": "2026-10-12",
+    "candidate_commit": "13fc9a6 + authorized Studio prompt correction",
+    "workflow_sha256": "d87b67f036333518567f3fa191a8d6fcf5dfb09f5d1e0d58a4f4d07ce666c6aa",
+    "authorization": "Owner authorized necessary corrections and targeted recheck.",
+    "applicability": {
+      "native_Gemini_and_English_JSON": "APPLICABLE",
+      "native_candidate_Stage1_guardrails": "APPLICABLE",
+      "synthetic_catalogue_and_Studio_grounding": "APPLICABLE",
+      "temporary_webhook_security_and_cleanup": "APPLICABLE",
+      "existing_operator_auth_retest": "NON APPLICABLE: prior proof; synthetic operator fixture in probe",
+      "database_persistence": "NOT_VERIFIED: no PostgreSQL node in this provider probe",
+      "PayPal": "NON APPLICABLE: no credential node, call or payment",
+      "hosting": "NON APPLICABLE"
+    },
+    "case_ids": [
+      "studio-en"
+    ],
+    "maximum_provider_calls": 1,
+    "automatic_retries": 0,
+    "existing_credentials": "Reference binding only; no credential values read or exported",
+    "existing_workflow_changes": 0,
+    "existing_database_changes": 0,
+    "started_at": "2026-10-12T12:39:19Z",
+    "cases": [
+      {
+        "id": "studio-en",
+        "proof_class": "DYNAMIC_TEST",
+        "context": "Synthetic; actual native n8n Gemini and unchanged candidate Stage1",
+        "input": {
+          "id": "studio-en",
+          "action": "ai_studio_agent",
+          "prompt": "Show pending internal approval orders in AG Studio and explain this three-order portfolio. Distinguish order volume from confirmed captured payments. Do not invent payment receipts."
+        },
+        "http": 200,
+        "result": {
+          "provider_finish_reason": "STOP",
+          "provider_error_code": null,
+          "provider_json": {
+            "executive_reasoning": "The portfolio consists of three orders for 'Qualification QA', each with a total amount of 200 USD, resulting in a total order volume of 600 USD. The orders are distributed across three statuses: PAID, PENDING_APPROVAL, and BLOCKED_ANOMALY. The analysis focuses on identifying the specific order awaiting internal approval while clarifying that order volume does not equate to confirmed payment capture.",
+            "studio_command": {
+              "recommended_view": "studio",
+              "status_filter": "PENDING_APPROVAL",
+              "assistant_reply": "I have filtered the view to show the order currently pending internal approval. The portfolio contains three recorded orders for Qualification QA with a total order volume of 600 USD: one is PENDING_APPROVAL (200 USD), one is BLOCKED_ANOMALY (200 USD), and one is marked as PAID (200 USD). Please be advised that these figures represent recorded order amounts only. The 'PAID' status indicates the internal record state and does not confirm that funds have been captured, settled, or verified by a payment provider. Actual payment capture cannot be verified from this context."
+            }
+          },
+          "provider_text_chars": 1138,
+          "stage1": {
+            "_http_code": 200,
+            "status": "success",
+            "llm_proof": {
+              "llm_invoked": true,
+              "provider": "Google Gemini (API native n8n, credential chiffré)",
+              "model": "models/gemini-3-flash-preview",
+              "n8n_node": "Gemini Copilot API",
+              "raw_response_chars": 1138,
+              "executive_reasoning": "The portfolio consists of three orders for 'Qualification QA', each with a total amount of 200 USD, resulting in a total order volume of 600 USD. The orders are distributed across three statuses: PAID, PENDING_APPROVAL, and BLOCKED_ANOMALY. The analysis focuses on identifying the specific order awaiting internal approval while clarifying that order volume does not equate to confirmed payment capture.",
+              "studio_command": {
+                "recommended_view": "studio",
+                "status_filter": "PENDING_APPROVAL",
+                "assistant_reply": "I have filtered the view to show the order currently pending internal approval. The portfolio contains three recorded orders for Qualification QA with a total order volume of 600 USD: one is PENDING_APPROVAL (200 USD), one is BLOCKED_ANOMALY (200 USD), and one is marked as PAID (200 USD). Please be advised that these figures represent recorded order amounts only. The 'PAID' status indicates the internal record state and does not confirm that funds have been captured, settled, or verified by a payment provider. Actual payment capture cannot be verified from this context."
+              }
+            },
+            "studio_command": {
+              "recommended_view": "studio",
+              "status_filter": "PENDING_APPROVAL",
+              "assistant_reply": "I have filtered the view to show the order currently pending internal approval. The portfolio contains three recorded orders for Qualification QA with a total order volume of 600 USD: one is PENDING_APPROVAL (200 USD), one is BLOCKED_ANOMALY (200 USD), and one is marked as PAID (200 USD). Please be advised that these figures represent recorded order amounts only. The 'PAID' status indicates the internal record state and does not confirm that funds have been captured, settled, or verified by a payment provider. Actual payment capture cannot be verified from this context."
+            }
+          },
+          "sql_generated": true,
+          "database_executed": false,
+          "paypal_calls": 0
+        }
+      }
+    ],
+    "cleanup": {
+      "temporary_workflow_deleted": true,
+      "temporary_header_credential_deleted": true
+    },
+    "temporary_definition_sha256": "f91934089a1288d8caa0e5d28631cd964ec6b8c68984b548094b14f1fa0f8b6d",
+    "reference_definition_unchanged": true,
+    "finished_at": "2026-10-12T12:39:27Z"
+  },
+  "review": {
+    "date": "2026-10-12",
+    "proof_class": "STATIC_ANALYSIS of DYNAMIC_TEST evidence",
+    "verdict": "PASS",
+    "scope": "Exact reproduced English Studio case after prompt-only correction",
+    "closed_finding": "GEMINI-STUDIO-01 (MEDIUM), for the reproduced case",
+    "checks": [
+      "Only Studio instruction changed; schemas/models/financial code preserved",
+      "English JSON and pending-approval filter correct",
+      "Three order amounts total USD 600; PAID USD 200 described as recorded amount",
+      "No confirmed-capture inference; verification unavailable explicitly stated",
+      "One real Gemini call; no retries, database execution or PayPal",
+      "Temporary workflow/header credential deleted; corrected reference unchanged during probe"
+    ],
+    "limits": "Synthetic context. No full frontend/PostgreSQL/PayPal E2E. Passing one real response does not guarantee every future model response."
+  }
+}

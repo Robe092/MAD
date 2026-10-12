@@ -146,7 +146,7 @@
       "source": "workflows/10_payflow_hackathon/13_PayFlow_PayPal_Invoicing_Sandbox.json",
       "sha256": "db7e7b72a6bd501a659ec94d744f6583156dd802ba9f923e2cd401beafe767d9",
       "export_changes": "Portable deployment metadata/credential references; authorized English prompt and user-visible message text. Node IDs, positions, notes, expressions, business rules, models and connections preserved.",
-      "candidate_sha256": "3bbfa2bd44d6f88cc4332f70c0d54b13cc72c24d0e78fdd7eb052ff5ceda2bdc"
+      "candidate_sha256": "d87b67f036333518567f3fa191a8d6fcf5dfb09f5d1e0d58a4f4d07ce666c6aa"
     }
   ],
   "scope": "Original source hashes at extraction, plus candidate hashes after the English jury pass. Reference sources are not modified by this pass.",
@@ -174,6 +174,17 @@
     "reports": [
       "docs/N8N_SYNC.md",
       "docs/N8N_SYNC.json"
+    ]
+  },
+  "studio_correction": {
+    "date": "2026-10-12",
+    "scope": "Owner-authorized prompt-only correction after documented Gemini Studio capture-inference failure; extraction hashes remain historical provenance.",
+    "reference_workflow_sha256": "5e23c30bd0c39d4a48b4177dff1de2b73267d1758c6dce06c448959990b4acc4",
+    "reports": [
+      "docs/GEMINI_THREE_CASES.md",
+      "docs/GEMINI_THREE_CASES.json",
+      "docs/GEMINI_STUDIO_CORRECTION.md",
+      "docs/GEMINI_STUDIO_CORRECTION.json"
     ]
   }
 }

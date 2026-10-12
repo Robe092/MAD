@@ -1,5 +1,7 @@
 # Minimal candidate-only Gemini language check
 
+Update on 2026-10-12: three English cases were executed through a temporary protected workflow on the existing n8n instance using its encrypted Gemini binding and synthetic context. Nominal/adversarial cases passed; a demonstrated Studio capture-inference issue was corrected and its exact case passed one real recheck. See [GEMINI_THREE_CASES.md](GEMINI_THREE_CASES.md) and [GEMINI_STUDIO_CORRECTION.md](GEMINI_STUDIO_CORRECTION.md). This does not execute the four-case direct FR/EN runner below or certify the full frontend/database/PayPal chain.
+
 Update on 2026-10-11: the owner subsequently authorized synchronization of completed changes. The four English Code blocks are now saved and published in the existing active Hackathon engine 13, with live credential bindings and business configuration preserved. See [N8N_SYNC.md](N8N_SYNC.md). This is configuration evidence, with no new Gemini response or payment. The temporary Gemini test has not been deployed or executed. Earlier statements that the English engine is undeployed describe the previous preparation scope.
 
 This check does not launch or edit n8n, PostgreSQL, the frontend or PayPal. It constructs the request from the candidate workflow's existing prompt node and sends it directly to the workflow's primary Gemini URL. Catalogue and portfolio context are small, explicitly synthetic fixtures. Neither a successful HTTP call nor an English excerpt proves a new n8n end-to-end flow.
