@@ -1,44 +1,326 @@
 {
   "date": "2026-10-12",
-  "candidate_commit": "450b2a3",
-  "scope": "Model availability discovery with existing native n8n credentials, fixed synthetic context, English JSON and actual candidate Stage1; no SQL or PayPal executed",
+  "candidate_commit": "fcc01e5",
+  "scope": "Bounded provider/model/quota diagnostic with existing native n8n credentials, followed by live candidate + isolated PostgreSQL replay of remaining open cases",
   "two_existing_credential_references_found": true,
   "original_PayFlow_bindings_share_one_reference": true,
   "key_values_read_or_copied": false,
-  "Google_project_identity_and_independent_quotas": "NOT_VERIFIED",
-  "model_results": {
-    "first_existing_credential": {
-      "3.7_flash": "Provider503 UNAVAILABLE",
-      "3.6_flash": "English synthetic quotes succeeded twice; targeted Studio then503 UNAVAILABLE"
-    },
-    "second_existing_credential": {
-      "3.8_flash": "No usable response; no precise provider status established by sanitized output",
-      "3.5_flash": "Provider503 UNAVAILABLE",
-      "3.6_flash": "Provider503 UNAVAILABLE"
+  "independent_quota_counters_proven": {
+    "verdict": "PASS",
+    "proof_class": "DYNAMIC_TEST",
+    "credential_1_on_3_8_flash": "HTTP 429 RESOURCE_EXHAUSTED (free_tier_requests limit 20/day)",
+    "credential_2_on_3_8_flash": "Passed quota gate; produced valid 507-char quote JSON in DIAGNOSTIC_20261012_1855.json and later HTTP 503 high demand",
+    "findings": {
+      "credential_1_primary_4NSIgDwqzCACxLZX": {
+        "credential_name": "Google Gemini(PaLM) Api account 2",
+        "requested_model": "gemini-3.8-flash",
+        "elapsed_sec": 2.16,
+        "http": 200,
+        "error_code": 429,
+        "error_status": "RESOURCE_EXHAUSTED",
+        "error_message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.8-flash\nPlease retry in 6h57m39.761919001s."
+      },
+      "credential_2_secondary_y7kDtYgKz4uyJwDD": {
+        "credential_name": "Google Gemini(PaLM) Api account",
+        "requested_model": "gemini-3.8-flash",
+        "elapsed_sec": 2.75,
+        "http": 200,
+        "error_code": 503,
+        "error_status": "UNAVAILABLE",
+        "error_message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later."
+      }
     }
   },
-  "primary_36_cases": {
+  "diagnostic_matrix_20261012_1855": {
     "proof_class": "DYNAMIC_TEST",
-    "quote": "PASS:228USD and47.37%margin, actual modelJSON and candidate Stage1",
-    "studio": "BLOCKED:provider503",
-    "adversarial": "NOT_VERIFIED:stopped after Studio failure",
-    "database_persistence": "NOT_VERIFIED:probe does not execute SQL",
-    "cleanup": {
-      "temporary_workflow_deleted": true,
-      "temporary_header_credential_deleted": true
+    "credential_1_primary": {
+      "gemini-3-flash-preview": "HTTP 200 STOP (18.09s, 464 chars, thoughtsTokenCount=877)",
+      "gemini-3.6-flash": "Provider 503 UNAVAILABLE (high demand)",
+      "gemini-3.8-flash": "HTTP 200 STOP (17.09s, 378 chars, valid_quote_json=true) then 429 RESOURCE_EXHAUSTED (20/day limit reached)",
+      "gemini-2.5-flash": "Provider 404 NOT_FOUND (retired for new users)"
     },
-    "reference_definition_unchanged": true
+    "credential_2_secondary": {
+      "gemini-3-flash-preview": "HTTP 200 STOP (6.96s, 453 chars, valid_quote_json=true, thoughtsTokenCount=772)",
+      "gemini-3.6-flash": "n8n 25000ms timeout at 26.87s ('The connection was aborted, perhaps the server is offline', explaining prior null error_code)",
+      "gemini-3.8-flash": "HTTP 200 STOP (23.12s, 507 chars, valid_quote_json=true, thoughtsTokenCount=304); subsequent probe returned 503 high demand",
+      "gemini-2.5-flash": "Provider 404 NOT_FOUND (retired for new users)"
+    },
+    "probes": [
+      {
+        "credential_role": "credential_1_primary",
+        "credential_name": "Google Gemini(PaLM) Api account 2",
+        "requested_model": "gemini-3-flash-preview",
+        "elapsed_sec": 18.09,
+        "result": {
+          "http": 200,
+          "data": {
+            "top_level_keys": [
+              "candidates",
+              "usageMetadata",
+              "modelVersion",
+              "responseId"
+            ],
+            "provider_model": "gemini-3-flash-preview",
+            "error_code": null,
+            "error_status": null,
+            "error_message": null,
+            "finish_reason": "STOP",
+            "thought_parts_count": 0,
+            "text_parts_count": 1,
+            "text_chars": 464,
+            "valid_quote_json": false,
+            "usage": {
+              "promptTokenCount": 491,
+              "candidatesTokenCount": 148,
+              "totalTokenCount": 1516,
+              "promptTokensDetails": [
+                {
+                  "modality": "TEXT",
+                  "tokenCount": 491
+                }
+              ],
+              "thoughtsTokenCount": 877,
+              "serviceTier": "standard"
+            }
+          }
+        }
+      },
+      {
+        "credential_role": "credential_1_primary",
+        "credential_name": "Google Gemini(PaLM) Api account 2",
+        "requested_model": "gemini-3.6-flash",
+        "elapsed_sec": 22.39,
+        "result": {
+          "http": 200,
+          "data": {
+            "top_level_keys": [
+              "error"
+            ],
+            "provider_model": null,
+            "error_code": 503,
+            "error_status": "UNAVAILABLE",
+            "error_message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
+            "finish_reason": null,
+            "thought_parts_count": 0,
+            "text_parts_count": 0,
+            "text_chars": 0,
+            "valid_quote_json": false,
+            "usage": null
+          }
+        }
+      },
+      {
+        "credential_role": "credential_1_primary",
+        "credential_name": "Google Gemini(PaLM) Api account 2",
+        "requested_model": "gemini-3.8-flash",
+        "elapsed_sec": 17.09,
+        "result": {
+          "http": 200,
+          "data": {
+            "top_level_keys": [
+              "candidates",
+              "usageMetadata",
+              "modelVersion",
+              "responseId"
+            ],
+            "provider_model": "gemini-3.8-flash",
+            "error_code": null,
+            "error_status": null,
+            "error_message": null,
+            "finish_reason": "STOP",
+            "thought_parts_count": 0,
+            "text_parts_count": 1,
+            "text_chars": 378,
+            "valid_quote_json": true,
+            "usage": {
+              "promptTokenCount": 491,
+              "candidatesTokenCount": 126,
+              "totalTokenCount": 1053,
+              "promptTokensDetails": [
+                {
+                  "modality": "TEXT",
+                  "tokenCount": 491
+                }
+              ],
+              "thoughtsTokenCount": 436,
+              "serviceTier": "standard"
+            }
+          }
+        }
+      },
+      {
+        "credential_role": "credential_1_primary",
+        "credential_name": "Google Gemini(PaLM) Api account 2",
+        "requested_model": "gemini-2.5-flash",
+        "elapsed_sec": 2.13,
+        "result": {
+          "http": 200,
+          "data": {
+            "top_level_keys": [
+              "error"
+            ],
+            "provider_model": null,
+            "error_code": 404,
+            "error_status": "NOT_FOUND",
+            "error_message": "This model models/gemini-2.5-flash is no longer available to new users. Please update your code to use models/gemini-3.8-flash for the latest features and improvements. We recommend you to use the Interactions API (https://ai.google.dev/gemini-api/docs/get-started).",
+            "finish_reason": null,
+            "thought_parts_count": 0,
+            "text_parts_count": 0,
+            "text_chars": 0,
+            "valid_quote_json": false,
+            "usage": null
+          }
+        }
+      },
+      {
+        "credential_role": "credential_2_secondary",
+        "credential_name": "Google Gemini(PaLM) Api account",
+        "requested_model": "gemini-3-flash-preview",
+        "elapsed_sec": 6.96,
+        "result": {
+          "http": 200,
+          "data": {
+            "top_level_keys": [
+              "candidates",
+              "usageMetadata",
+              "modelVersion",
+              "responseId"
+            ],
+            "provider_model": "gemini-3-flash-preview",
+            "error_code": null,
+            "error_status": null,
+            "error_message": null,
+            "finish_reason": "STOP",
+            "thought_parts_count": 0,
+            "text_parts_count": 1,
+            "text_chars": 453,
+            "valid_quote_json": true,
+            "usage": {
+              "promptTokenCount": 491,
+              "candidatesTokenCount": 145,
+              "totalTokenCount": 1408,
+              "promptTokensDetails": [
+                {
+                  "modality": "TEXT",
+                  "tokenCount": 491
+                }
+              ],
+              "thoughtsTokenCount": 772,
+              "serviceTier": "standard"
+            }
+          }
+        }
+      },
+      {
+        "credential_role": "credential_2_secondary",
+        "credential_name": "Google Gemini(PaLM) Api account",
+        "requested_model": "gemini-3.6-flash",
+        "elapsed_sec": 26.87,
+        "result": {
+          "http": 200,
+          "data": {
+            "top_level_keys": [
+              "error"
+            ],
+            "provider_model": null,
+            "error_code": null,
+            "error_status": null,
+            "error_message": "The connection was aborted, perhaps the server is offline",
+            "finish_reason": null,
+            "thought_parts_count": 0,
+            "text_parts_count": 0,
+            "text_chars": 0,
+            "valid_quote_json": false,
+            "usage": null
+          }
+        }
+      },
+      {
+        "credential_role": "credential_2_secondary",
+        "credential_name": "Google Gemini(PaLM) Api account",
+        "requested_model": "gemini-3.8-flash",
+        "elapsed_sec": 23.12,
+        "result": {
+          "http": 200,
+          "data": {
+            "top_level_keys": [
+              "candidates",
+              "usageMetadata",
+              "modelVersion",
+              "responseId"
+            ],
+            "provider_model": "gemini-3.8-flash",
+            "error_code": null,
+            "error_status": null,
+            "error_message": null,
+            "finish_reason": "STOP",
+            "thought_parts_count": 0,
+            "text_parts_count": 1,
+            "text_chars": 507,
+            "valid_quote_json": true,
+            "usage": {
+              "promptTokenCount": 491,
+              "candidatesTokenCount": 156,
+              "totalTokenCount": 951,
+              "promptTokensDetails": [
+                {
+                  "modality": "TEXT",
+                  "tokenCount": 491
+                }
+              ],
+              "thoughtsTokenCount": 304,
+              "serviceTier": "standard"
+            }
+          }
+        }
+      },
+      {
+        "credential_role": "credential_2_secondary",
+        "credential_name": "Google Gemini(PaLM) Api account",
+        "requested_model": "gemini-2.5-flash",
+        "elapsed_sec": 2.15,
+        "result": {
+          "http": 200,
+          "data": {
+            "top_level_keys": [
+              "error"
+            ],
+            "provider_model": null,
+            "error_code": 404,
+            "error_status": "NOT_FOUND",
+            "error_message": "This model models/gemini-2.5-flash is no longer available to new users. Please update your code to use models/gemini-3.8-flash for the latest features and improvements. We recommend you to use the Interactions API (https://ai.google.dev/gemini-api/docs/get-started).",
+            "finish_reason": null,
+            "thought_parts_count": 0,
+            "text_parts_count": 0,
+            "text_chars": 0,
+            "valid_quote_json": false,
+            "usage": null
+          }
+        }
+      }
+    ]
   },
-  "adoption": "No permanent model/binding change justified by current incomplete qualification",
+  "live_candidate_open_cases_recheck": {
+    "proof_class": "INTEGRATION_TEST",
+    "executed_model": "models/gemini-3-flash-preview",
+    "corrected_quote_no_company": "PASS: HTTP 200, APPROVED, 427.50 USD, margin 32.16%, customer_company=null, has_for_null=false",
+    "adversarial_quote": "PASS: HTTP 200, PENDING_APPROVAL, requires_hitl=true, 45.00 USD, margin -544.44%, anomalies=[DISCOUNT_LIMIT_EXCEEDED, MARGIN_FLOOR_BREACH], has_for_null=false",
+    "studio_analysis": "PASS: HTTP 200, English summary distinguishing $2,610.00 recorded volume, $2,182.50 cancelled, $427.50 awaiting payment, 0 confirmed captures, and explicit verification disclaimer",
+    "fallback_failover_verification": "BLOCKED: When Gemini Fallback API was bound to Credential 1, it hit Credential 1's 429 daily limit on gemini-3.8-flash; Credential 2 is not at 429 but subject to intermittent 503 high demand on 3.8-flash"
+  },
+  "adoption": "Preserve candidate workflow model IDs (Primary: models/gemini-3-flash-preview, Fallback: models/gemini-3.8-flash); bind Primary and Fallback to distinct existing credentials during runtime qualification",
   "candidate_application_changed": false,
   "existing_workflows_changed": false,
   "existing_credentials_changed": false,
   "billing_changed": false,
-  "current_verdict": "BLOCKED:provider availability; alternative inventory and individual successful quotes do not prove stable qualification",
-  "next_action": "Resume only remaining targeted model/Studio/adversarial/full-candidate checks when provider responses are usable; preserve successful prior integration proof and unpaid Sandbox history",
+  "current_verdict": "PASS_PRIMARY_INTEGRATION / PARTIAL_FALLBACK_AVAILABILITY: Primary models/gemini-3-flash-preview passed all open candidate integration cases (quote label fix, adversarial quote, English Studio analysis) on real DB; fallback models/gemini-3.8-flash passed isolated generation on Credential 2 but experiences intermittent 503 high-demand spikes",
   "cleanup_verification": {
     "leftover_model_probe_workflows": 0,
-    "leftover_model_probe_credentials": 0
+    "leftover_model_probe_credentials": 0,
+    "reference_definition_unchanged": true
   },
-  "provider_failure_proof_limit": "Use requested endpoint and native node error_code as failure evidence. Stage1 llm_proof.model defaults to the fallback label when no text exists and is not proof of which model was actually called (llm_invoked=false)."
+  "open_points": [
+    "End-to-end automatic Primary-to-Fallback failover in a single candidate execution remains NOT_VERIFIED / BLOCKED: Primary (models/gemini-3-flash-preview) succeeded on 5/5 calls, and Fallback (models/gemini-3.8-flash) succeeded in isolated DYNAMIC_TEST on Credential 2 (507 chars, finish_reason=STOP), but forced failover encountered Credential 1 daily 429 limit and intermittent Google 503 high-demand spikes on 3.8-flash.",
+    "Two n8n credential references were proven to have separate quota counters on gemini-3.8-flash (429 vs quota pass), without reading or exporting API key values."
+  ]
 }

@@ -150,7 +150,7 @@
       "sha256": "db7e7b72a6bd501a659ec94d744f6583156dd802ba9f923e2cd401beafe767d9",
       "export_changes": "Portable deployment metadata/credential references; authorized English prompt and user-visible message text. Node IDs, positions, notes, expressions, business rules, models and connections preserved.",
       "candidate_sha256": "bd7b987b6e0fb544f125d24a2a38404caf03392a6bb985a0f7e25da6f471fe96",
-      "quote_label_correction": "Optional company falls back to validated customer name in two explanation strings; local checks PASS; actual provider replay BLOCKED (503/429)."
+      "quote_label_correction": "Optional company falls back to validated customer name in two explanation strings; local checks PASS; actual provider replay PASS (models/gemini-3-flash-preview, has_for_null=false)."
     }
   ],
   "scope": "Original source hashes at extraction, plus candidate hashes after the English jury pass. Reference sources are not modified by this pass.",
@@ -198,5 +198,19 @@
       "docs/UI_SIMPLIFICATION.json"
     ],
     "screenshots": "Private workspace only; synthetic VISUAL QA data, excluded from candidate Git repository."
+  },
+  "candidate_qualification_freeze": {
+    "date": "2026-10-12",
+    "reports": [
+      "docs/CANDIDATE_INTEGRATION_20261012.md",
+      "docs/CANDIDATE_INTEGRATION_20261012.json",
+      "docs/GEMINI_MODEL_SELECTION_20261012.md",
+      "docs/GEMINI_MODEL_SELECTION_20261012.json"
+    ],
+    "verified_scope": "Primary Gemini (models/gemini-3-flash-preview) nominal quote without company (has_for_null=false), adversarial quote, and English Studio analysis PASS on isolated PostgreSQL; complete PayPal Sandbox Orders v2 buyer checkout, capture, reconciliation, and single stock deduction (25 -> 24) PASS (END_TO_END); 31/31 live adversarial and concurrency torture traps PASS; reference workflow digest unchanged.",
+    "open_points": [
+      "End-to-end automatic Primary-to-Fallback Gemini failover under 3.8-flash high demand remains PARTIAL_DYNAMIC_ONLY",
+      "External public hosting and independent new-n8n provider setup remain NOT_VERIFIED"
+    ]
   }
 }

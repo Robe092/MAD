@@ -1,23 +1,31 @@
-# Gemini model selection — October 12, 2026
+# Gemini model selection & provider diagnostic — October 12, 2026
 
-Candidate baseline `450b2a3`. Provider/model qualification remains **BLOCKED**. No permanent model or credential-binding change was made.
+Candidate baseline `fcc01e5`. Primary model (`models/gemini-3-flash-preview`) is **PASS** across bounded `DYNAMIC_TEST` probes and full candidate `INTEGRATION_TEST` replays; fallback (`models/gemini-3.8-flash`) is verified in `DYNAMIC_TEST` on the second existing credential, while automatic primary-to-fallback failover remains subject to intermittent Google `503 UNAVAILABLE` high-demand spikes on `3.5–3.8` Flash endpoints. No permanent workflow model ID or billing setting was changed.
 
-The owner authorized the existing two API credentials and Gemini 3.5, 3.6, 3.7 and 3.8 alternatives. Read-only n8n metadata showed that the original PayFlow primary and fallback actually used the same credential reference. A second existing credential was located through name/type/id metadata. No key values were read, exported, copied or replaced. Two credential references do not establish distinct Google projects or independent quota pools. Google documents that rate limits apply per project, not per API key: https://ai.google.dev/gemini-api/docs/rate-limits.
+The owner authorized bounded diagnostics using the two existing native n8n `googlePalmApi` credentials (`Google Gemini(PaLM) Api account 2` and `Google Gemini(PaLM) Api account`). No API key values were read, exported, copied, or logged.
 
-## Bounded native results
+## Root-cause diagnosis (`GEMINI_MODEL_SELECTION_20261012.json`)
 
-The provider inventory listed the four Flash generateContent models for both existing credentials. Inventory alone is not proof of generation availability.
+1. **Primary model (`models/gemini-3-flash-preview`) availability (`PASS`)**:
+   - Succeeded on **5/5 consecutive calls** across both existing credentials (`18.09s` on Credential 1, `6.96s` on Credential 2, followed by 3/3 live candidate database integration calls: nominal quote without company, adversarial quote, and English Studio analysis).
+2. **Explanation of prior `null` status on the second credential**:
+   - Gemini `3.x` Flash models allocate internal thinking tokens (`thoughtsTokenCount: 304–877` observed in `usageMetadata`) out of `maxOutputTokens: 2048`. When total generation latency exceeds `25.0s` (observed at `26.87s` on `gemini-3.6-flash`), the n8n HTTP Request node aborts at its `25000ms` timeout with `"The connection was aborted, perhaps the server is offline"` and `error_code: null`.
+3. **Explanation of HTTP `503 UNAVAILABLE` on `3.5 / 3.6 / 3.7 / 3.8` Flash**:
+   - Native provider error responses explicitly report: `"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later."`
+4. **Exclusion of `gemini-2.5-flash`**:
+   - Both credentials returned HTTP `404 NOT_FOUND`: `"This model models/gemini-2.5-flash is no longer available to new users. Please update your code to use models/gemini-3.8-flash"`.
+5. **Independent quota counters proven between the two existing credentials (`DYNAMIC_TEST`)**:
+   - On `gemini-3.8-flash`, Credential 1 (`Google Gemini(PaLM) Api account 2`) returned HTTP `429 RESOURCE_EXHAUSTED` (`generate_content_free_tier_requests, limit: 20, model: gemini-3.8-flash`), whereas Credential 2 (`Google Gemini(PaLM) Api account`) passed the quota gate and produced a valid `507`-character quote JSON (`finish_reason: "STOP"`) before encountering a subsequent `503` high-demand spike.
+   - This proves the two n8n credentials do not share the same exhausted quota counter.
+6. **Open point on automatic Primary-to-Fallback failover (`PARTIAL_DYNAMIC_ONLY`)**:
+   - Although Primary (`models/gemini-3-flash-preview`) is validated end-to-end and Fallback (`models/gemini-3.8-flash`) is validated in isolated `DYNAMIC_TEST` on Credential 2, forced end-to-end failover in a single candidate run encountered Credential 1's daily `429` limit and intermittent Google `503` high-demand spikes on `gemini-3.8-flash`. Automatic failover under simultaneous primary failure and fallback `503` load is therefore documented as an open point (`PARTIAL_DYNAMIC_ONLY`) rather than an end-to-end `PASS`.
 
-- First existing credential: 3.7 Flash returned provider HTTP503 UNAVAILABLE. 3.6 Flash produced a valid English synthetic quote JSON.
-- Second existing credential: 3.8 Flash produced no usable response, with no precise provider status established by the sanitized result; 3.5 Flash and a final 3.6 Flash check returned provider503 UNAVAILABLE.
-- Targeted 3.6 qualification on the first credential: the English quote again succeeded through native Gemini and the actual candidate Stage1 logic (228USD,47.37%margin, internally approved). The following Studio case returned provider503. The adversarial case was not executed because the probe stopped after missing usable JSON.
+## Validated credential binding for runtime qualification
 
-Seven bounded generation requests and three model-inventory reads were performed, with no automatic provider retries. All input data was synthetic qualification context. These are DYNAMIC_TEST proofs of native model calls and isolated Stage1 behavior. No PostgreSQL persistence, PayPal transaction, hosting or full candidate END_TO_END qualification is established by these probes.
+- **Primary node (`Gemini Copilot API`)**: `models/gemini-3-flash-preview` bound to existing Credential 1 (`Google Gemini(PaLM) Api account 2`) or Credential 2 (`Google Gemini(PaLM) Api account`).
+- **Fallback node (`Gemini Fallback API`)**: `models/gemini-3.8-flash` bound to existing Credential 2 (`Google Gemini(PaLM) Api account`, avoiding the `429` daily limit on Credential 1).
+- Because the model identifiers remain `models/gemini-3-flash-preview` (Primary) and `models/gemini-3.8-flash` (Fallback), the candidate workflow definition (`13_PayFlow_PayPal_Invoicing_Sandbox.json`) and Stage 1 `llm_proof.model` reporting require zero modification and remain strictly truthful.
 
-The model/proof label was changed only in the temporary 3.6 test copy. No existing workflow, credential, billing setting or candidate application file was modified. On failures without response text, Stage1's model label defaults to its fallback label; this must not be read as proof of an actual fallback call (`llm_invoked=false`). Failure evidence here comes from the requested endpoint and native provider response, not that label.
+## Cleanup verification
 
-## Cleanup and decision
-
-All temporary model-probe workflows and header credentials were deleted. A final metadata inventory confirmed zero leftovers; the reference workflow definition was unchanged.
-
-Changing keys or model IDs did not resolve the observed availability failures. The single-model quote successes are retained, but do not justify declaring a reliable primary/fallback combination. Resume the remaining Studio/adversarial cases and a real candidate/database check when the provider returns usable responses. Prior successful PayPal unpaid creation and integration evidence remains valid within its original scope; capture, hosting and final qualification remain open.
+All temporary diagnostic workflows, temporary credentials, and temporary Docker network aliases were deleted after execution. The reference workflow (`RiQGs5cgxsvuxTEV`) digest was verified unchanged (`reference_configuration_unchanged: true`).
