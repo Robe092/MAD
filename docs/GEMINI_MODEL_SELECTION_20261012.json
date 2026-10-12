@@ -1,0 +1,44 @@
+{
+  "date": "2026-10-12",
+  "candidate_commit": "450b2a3",
+  "scope": "Model availability discovery with existing native n8n credentials, fixed synthetic context, English JSON and actual candidate Stage1; no SQL or PayPal executed",
+  "two_existing_credential_references_found": true,
+  "original_PayFlow_bindings_share_one_reference": true,
+  "key_values_read_or_copied": false,
+  "Google_project_identity_and_independent_quotas": "NOT_VERIFIED",
+  "model_results": {
+    "first_existing_credential": {
+      "3.7_flash": "Provider503 UNAVAILABLE",
+      "3.6_flash": "English synthetic quotes succeeded twice; targeted Studio then503 UNAVAILABLE"
+    },
+    "second_existing_credential": {
+      "3.8_flash": "No usable response; no precise provider status established by sanitized output",
+      "3.5_flash": "Provider503 UNAVAILABLE",
+      "3.6_flash": "Provider503 UNAVAILABLE"
+    }
+  },
+  "primary_36_cases": {
+    "proof_class": "DYNAMIC_TEST",
+    "quote": "PASS:228USD and47.37%margin, actual modelJSON and candidate Stage1",
+    "studio": "BLOCKED:provider503",
+    "adversarial": "NOT_VERIFIED:stopped after Studio failure",
+    "database_persistence": "NOT_VERIFIED:probe does not execute SQL",
+    "cleanup": {
+      "temporary_workflow_deleted": true,
+      "temporary_header_credential_deleted": true
+    },
+    "reference_definition_unchanged": true
+  },
+  "adoption": "No permanent model/binding change justified by current incomplete qualification",
+  "candidate_application_changed": false,
+  "existing_workflows_changed": false,
+  "existing_credentials_changed": false,
+  "billing_changed": false,
+  "current_verdict": "BLOCKED:provider availability; alternative inventory and individual successful quotes do not prove stable qualification",
+  "next_action": "Resume only remaining targeted model/Studio/adversarial/full-candidate checks when provider responses are usable; preserve successful prior integration proof and unpaid Sandbox history",
+  "cleanup_verification": {
+    "leftover_model_probe_workflows": 0,
+    "leftover_model_probe_credentials": 0
+  },
+  "provider_failure_proof_limit": "Use requested endpoint and native node error_code as failure evidence. Stage1 llm_proof.model defaults to the fallback label when no text exists and is not proof of which model was actually called (llm_invoked=false)."
+}
