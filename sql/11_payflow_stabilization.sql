@@ -44,13 +44,13 @@ BEGIN
       shortage := true;
       IF NOT EXISTS (SELECT 1 FROM jsonb_array_elements(flags) f WHERE f->>'code'='INSUFFICIENT_STOCK' AND f->>'sku'=product.sku) THEN
         flags := flags || jsonb_build_array(jsonb_build_object('code','INSUFFICIENT_STOCK','sku',product.sku,'requested',(line->>'quantity')::int,
-          'available',product.stock_on_hand-product.stock_reserved,'message','Stock disponible insuffisant pour ' || product.sku || '.'));
+          'available',product.stock_on_hand-product.stock_reserved,'message','Insufficient available stock for ' || product.sku || '.'));
       END IF;
     END IF;
   END LOOP;
   IF shortage THEN
     p := p || jsonb_build_object('_http_code',422,'status','blocked','order_status','BLOCKED_ANOMALY','requires_hitl',false,'approval_token',null,'anomalies',flags,
-      'copilot_explanation','Commande bloquée : stock disponible insuffisant. Aucun stock réservé.');
+      'copilot_explanation','Order blocked: insufficient available stock. No stock was reserved.');
   END IF;
   FOR line IN SELECT x FROM jsonb_array_elements(p->'lines') x LOOP
     line := line || jsonb_build_object('stock_reserved_qty',CASE WHEN p->>'order_status'='BLOCKED_ANOMALY' THEN 0 ELSE (line->>'quantity')::int END);

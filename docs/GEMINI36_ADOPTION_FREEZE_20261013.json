@@ -1,0 +1,30 @@
+{
+  "proof_class": "DYNAMIC_TEST",
+  "verdict": "PASS",
+  "scope": "Configuration adoption and guarded stock text-only function update; not a new provider execution",
+  "changed_nodes": [
+    "Gemini Copilot API",
+    "Gemini Fallback API",
+    "Stage 1: Auth, Guardrails & PayPal Engine",
+    "Pr\u00e9parer la demande Gemini"
+  ],
+  "candidate_workflow_sha256": "d841b6583b8d85a51051cbd1835056fa22e500492edc64ee72736f6e6e64ad8b",
+  "reference_definition_sha256_before": "7574688104f5d7010b788eaa029fc3c3336f773f78704cd239bb56751067e535",
+  "reference_definition_sha256_after": "5b7f72bed7a63db13dcb5bc46ac1d3ad0025047067b8bee94e8bc8bc2cb4d2e5",
+  "candidate_parameters_match_saved_reference": true,
+  "saved_published_parity": true,
+  "local_reference_export_parity": true,
+  "all_existing_credential_references_preserved": true,
+  "connections_settings_preserved": true,
+  "reference_SQL": {
+    "source_before_md5": "8c19af769789722cb5b31799bf856cbc",
+    "source_after_md5": "da179ec52afee022932785f41a00b6eb",
+    "all_finance_stock_rows_digest_unchanged": true,
+    "privileges_security_search_path_preserved": true,
+    "scope": "Two stock message literals only"
+  },
+  "provider_generation_calls": 0,
+  "paypal_calls": 0,
+  "backups": "Ignored private directory only",
+  "prior_qualification": "Nine scoped successful scenarios collected across runs; exact target hash retained"
+}

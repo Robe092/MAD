@@ -128,7 +128,7 @@
     {
       "source": "sql/11_payflow_stabilization.sql",
       "sha256": "9972364bb65eb1d35a01ac63541b560779ecce11fd0a6e73f6b0487a6a99fc00",
-      "candidate_sha256": "9972364bb65eb1d35a01ac63541b560779ecce11fd0a6e73f6b0487a6a99fc00"
+      "candidate_sha256": "d422709f11e34b617211a956e9780ac4f6aaf5d520412cf31ac9da38758de11a"
     },
     {
       "source": "sql/12_payflow_quote_lifecycle.sql",
@@ -148,9 +148,9 @@
     {
       "source": "workflows/10_payflow_hackathon/13_PayFlow_PayPal_Invoicing_Sandbox.json",
       "sha256": "db7e7b72a6bd501a659ec94d744f6583156dd802ba9f923e2cd401beafe767d9",
-      "export_changes": "Portable deployment metadata/credential references; authorized English prompt and user-visible message text. Node IDs, positions, notes, expressions, business rules, models and connections preserved.",
-      "candidate_sha256": "bd7b987b6e0fb544f125d24a2a38404caf03392a6bb985a0f7e25da6f471fe96",
-      "quote_label_correction": "Optional company falls back to validated customer name in two explanation strings; local checks PASS; actual provider replay PASS (models/gemini-3-flash-preview, has_for_null=false)."
+      "export_changes": "Portable bindings; authorized English text; qualified Gemini3.6 both nodes with low thinking and matching model-proof label. Existing IDs, settings, connections and business logic preserved.",
+      "candidate_sha256": "d841b6583b8d85a51051cbd1835056fa22e500492edc64ee72736f6e6e64ad8b",
+      "quote_label_correction": "Optional company falls back to validated customer name; original preview proof preserved, targeted3.6 nominal and guardrails PASS; see latest adoption/qualification records."
     }
   ],
   "scope": "Original source hashes at extraction, plus candidate hashes after the English jury pass. Reference sources are not modified by this pass.",
@@ -207,10 +207,55 @@
       "docs/GEMINI_MODEL_SELECTION_20261012.md",
       "docs/GEMINI_MODEL_SELECTION_20261012.json"
     ],
-    "verified_scope": "Primary Gemini (models/gemini-3-flash-preview) nominal quote without company (has_for_null=false), adversarial quote, and English Studio analysis PASS on isolated PostgreSQL; complete PayPal Sandbox Orders v2 buyer checkout, capture, reconciliation, and single stock deduction (25 -> 24) PASS (END_TO_END); 31/31 live adversarial and concurrency torture traps PASS; reference workflow digest unchanged.",
+    "verified_scope": "Earlier candidate qualification on e784b00: Primary Gemini (models/gemini-3-flash-preview) nominal quote without company (has_for_null=false), adversarial quote, and English Studio analysis PASS on isolated PostgreSQL; complete PayPal Sandbox Orders v2 buyer checkout, capture, reconciliation, and single stock deduction (25 -> 24) PASS (END_TO_END); 31/31 live adversarial and concurrency torture traps PASS; clean-clone installation check (17/17 dynamic/integration checks + 75/75 unit tests) PASS.",
     "open_points": [
-      "End-to-end automatic Primary-to-Fallback Gemini failover under 3.8-flash high demand remains PARTIAL_DYNAMIC_ONLY",
-      "External public hosting and independent new-n8n provider setup remain NOT_VERIFIED"
+      "Live end-to-end execution of the newly synchronized dual-node models/gemini-3.8-flash configuration remains NOT_VERIFIED pending daily quota reset",
+      "External public hosting (out of scope per Option A local decision) and independent new-n8n live provider setup without evaluator keys remain NOT_VERIFIED"
     ]
+  },
+  "gemini_38_dual_node_sync": {
+    "date": "2026-10-12",
+    "scope": "Owner-requested update setting both Gemini Copilot API (primary) and Gemini Fallback API (fallback) to models/gemini-3.8-flash in candidate and active reference workflow RiQGs5cgxsvuxTEV, with reference primary bound to existing credential 1 and fallback bound to existing credential 2, plus Stage 1 customer_company || customer_name interpolation fallback.",
+    "reference_workflow_file_sha256": "323c61445e5318d25507ed30128de2a0e1ee0478ddd205e879210de3f465a517",
+    "reference_definition_sha256": "7574688104f5d7010b788eaa029fc3c3336f773f78704cd239bb56751067e535",
+    "candidate_workflow_file_sha256": "4475e3c6405a37fba2ec430004f8454d5c3046aea4ba69db1b35708597c165ae",
+    "static_and_unit_verification": "PASS (n8n_code_analyzer.py 0 critical violations; 84/84 unit/packaging/harness tests PASS)",
+    "live_runtime_verification": "NOT_VERIFIED (0 Gemini/PayPal calls executed during sync; scheduled after daily quota reset)"
+  },
+  "stock_English_correction_20261013": {
+    "scope": "Exactly two user-facing stock SQL literals, no business logic changes",
+    "sql_file": "sql/11_payflow_stabilization.sql",
+    "sha256": "d422709f11e34b617211a956e9780ac4f6aaf5d520412cf31ac9da38758de11a",
+    "reports": [
+      "docs/GEMINI36_FINAL_FOUR_20261013.md",
+      "docs/GEMINI36_FINAL_FOUR_20261013.json"
+    ],
+    "verification": "Real dedicatedPG message branches PASS; existing reference DB untouched; overall Gemini3.6 qualification stillBLOCKED onStudio"
+  },
+  "gemini36_targeted_qualification_20261013": {
+    "verdict": "PASS within9scenario scope, existing pre-Gemini email evidence retained",
+    "reports": [
+      "docs/GEMINI36_STUDIO_FINAL_20261013.md",
+      "docs/GEMINI36_STUDIO_FINAL_20261013.json"
+    ],
+    "tested_configuration_sha256": "d841b6583b8d85a51051cbd1835056fa22e500492edc64ee72736f6e6e64ad8b",
+    "permanent_switch_applied": false,
+    "limitations": "Intermittentprovider availability; no newPayPalcheckout; candidate/reference still3.8"
+  },
+  "gemini36_adoption_freeze_20261013": {
+    "verdict": "PASS",
+    "reports": [
+      "docs/GEMINI36_ADOPTION_FREEZE_20261013.md",
+      "docs/GEMINI36_ADOPTION_FREEZE_20261013.json"
+    ],
+    "candidate_workflow_sha256": "d841b6583b8d85a51051cbd1835056fa22e500492edc64ee72736f6e6e64ad8b",
+    "reference_definition_sha256": "5b7f72bed7a63db13dcb5bc46ac1d3ad0025047067b8bee94e8bc8bc2cb4d2e5",
+    "permanent_switch_applied": true,
+    "current_model": "gemini-3.6-flash",
+    "reference_stock_English_applied": true,
+    "existing_credentials_and_financial_rows_preserved": true,
+    "verification": "Exact qualified file hash, saved/published parity, zero blocking static violations,50backendchecksPASS; zero newprovider/payment calls",
+    "qualification_provenance": "Nine cases across multiple runs; pre-Gemini email reused and stock-text SQL recheck; not nine fresh post-sync runs",
+    "earlier_events": "Prior Gemini3.8 and qualification entries are dated historical snapshots, superseded for current configuration by this event."
   }
 }

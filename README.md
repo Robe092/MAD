@@ -93,7 +93,7 @@ Do not click a payment/capture action simply to check installation. Every Sandbo
 - `scripts/`: independent local provisioning, database binding, import and launch.
 - `tests/`: existing isolated engine tests; they do not themselves prove provider success.
 
-The configured Gemini identifiers are `gemini-3-flash-preview` (primary) and `gemini-3.8-flash` (fallback), with bounded calls. They worked on the reference instance; availability and quota can change. Verify availability with your own credential before your demonstration and select supported identifiers in the two HTTP-node URLs if needed. A successful build is not a proof of AI/provider execution.
+The configured Gemini identifier is `gemini-3.6-flash` on both primary and fallback HTTP nodes, with low thinking and bounded JSON responses. The exact configuration passed targeted quote, guardrail, fallback and Studio qualification and is now applied to the candidate and reference workflow. See the [qualification](docs/GEMINI36_STUDIO_FINAL_20261013.md) and [adoption/freeze record](docs/GEMINI36_ADOPTION_FREEZE_20261013.md). Provider availability was intermittent, so verify it with your own credential before your demonstration. A successful build is not a proof of AI/provider execution.
 
 AG Studio uses its commercial package. Local evaluation can display a watermark; an appropriate licence or sponsor/trial permission is needed for the intended hosted demonstration. Confirm that permission and its validity throughout judging; do not redistribute a licence key. See [AG Studio licence installation](https://www.ag-grid.com/studio/react/licence-install/) and the [hackathon sponsor page](https://paypalaihackathon.devpost.com/details/aggrid).
 

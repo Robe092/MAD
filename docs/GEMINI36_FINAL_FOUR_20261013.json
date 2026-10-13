@@ -1,0 +1,99 @@
+{
+  "date": "2026-10-13",
+  "overall_verdict": "BLOCKED",
+  "scope": "Exactly four missing cases; earlier successes not repeated",
+  "new_verdicts": {
+    "stock_prompt_injection": "PASS",
+    "unknown_product": "PASS",
+    "ambiguous_request": "PASS",
+    "studio_false_receipts": "BLOCKED"
+  },
+  "generation_calls": {
+    "primary": 4,
+    "secondary": 3,
+    "total": 7,
+    "usable_responses": 3,
+    "Google_503_UNAVAILABLE": 3,
+    "connection_abort_without_Google_status": 1,
+    "automatic_retries": 0
+  },
+  "cumulative3.6_generation_calls": {
+    "primary": 12,
+    "secondary": 7,
+    "total": 19
+  },
+  "two_projects_provenance": "User confirmed credentials are in two separate Google projects; not inferred from credential reference IDs",
+  "stock_proof": {
+    "proof_class": "INTEGRATION_TEST",
+    "requested": 999,
+    "available": 39,
+    "http": 422,
+    "order_status": "BLOCKED_ANOMALY",
+    "stock_reserved_qty": 0,
+    "fixture_cancelled": true
+  },
+  "unknown_and_ambiguous_proof": {
+    "http": 422,
+    "code": "AI_ITEMS_UNRESOLVED",
+    "no_order_persisted": true
+  },
+  "Studio": "Both actual provider nodes returned genuine Google503UNAVAILABLE/highdemand; no response to review. Not a hallucination/grounding failure or a success.",
+  "stock_English_correction": {
+    "proof_class": "INTEGRATION_TEST",
+    "verdict": "PASS",
+    "cases": [
+      {
+        "mode": "existing_anomaly",
+        "http": 422,
+        "order_status": "BLOCKED_ANOMALY",
+        "message": "Order blocked: insufficient available stock. No stock was reserved.",
+        "stock_reserved_qty": 0,
+        "available": 39,
+        "requested": 999
+      },
+      {
+        "mode": "atomic_anomaly",
+        "http": 422,
+        "order_status": "BLOCKED_ANOMALY",
+        "message": "Order blocked: insufficient available stock. No stock was reserved.",
+        "stock_reserved_qty": 0,
+        "available": 39,
+        "requested": 999
+      }
+    ],
+    "provider_calls": 0,
+    "fixture_changes_rolled_back": true,
+    "all_preexisting_rows_unchanged": true,
+    "privileges_security_search_path_preserved": true,
+    "installed_scope": "Only function text in dedicated qualification PostgreSQL; reference database not touched",
+    "candidate_sql_sha256": "d422709f11e34b617211a956e9780ac4f6aaf5d520412cf31ac9da38758de11a",
+    "source_change": "Exactly2stock message literals; no control-flow/financial/locking changes"
+  },
+  "historical_data_and_stock_preserved": true,
+  "reference_workflow_unchanged": true,
+  "reference_database_changed": false,
+  "cleanup": {
+    "proof_class": "DYNAMIC_TEST",
+    "verdict": "PASS",
+    "temporary_workflows_remaining": [],
+    "temporary_credentials_remaining": [],
+    "temporary_ports_closed": {
+      "3019": true,
+      "5689": true
+    },
+    "runtime_state_absent": true,
+    "added_network_disconnected": true
+  },
+  "review": {
+    "reviewer": "candidate_chain_review",
+    "verdict": "PASS",
+    "findings": [],
+    "scope": "Evidence review and two literal stock English correction, no provider calls",
+    "limits": "Three business casesPASS; StudioBLOCKED. SQL English correction does not certify all language branches. No permanent3.6adoption."
+  },
+  "credential_value_changes": 0,
+  "paypal_calls": 0,
+  "source_change": "Only two candidate SQL stock message literals plus documentation",
+  "permanent_model_switch": false,
+  "remaining": "Studio false-receipts semantic grounding/English test only. Retain all other scoped successes."
+}

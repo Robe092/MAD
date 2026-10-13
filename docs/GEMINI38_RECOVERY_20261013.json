@@ -1,0 +1,116 @@
+{
+  "date": "2026-10-13",
+  "overall_verdict": "BLOCKED",
+  "proof_class": "DYNAMIC_TEST",
+  "scope": "Minimal native Gemini3.8 generation diagnostics; not a completed adversarial qualification",
+  "generation_attempts": 3,
+  "results": [
+    {
+      "role": "primary",
+      "mode": "original",
+      "generation_config": {
+        "maxOutputTokens": 256,
+        "responseMimeType": "application/json",
+        "temperature": 0.1
+      },
+      "proof_class": "DYNAMIC_TEST",
+      "scope": "Minimal native generation only; not full application qualification",
+      "elapsed_seconds": 26.91,
+      "result": {
+        "http": 200,
+        "data": {
+          "provider_http": null,
+          "error_code": null,
+          "error_status": null,
+          "error_message": "The connection was aborted, perhaps the server is offline",
+          "model": null,
+          "finish_reason": null,
+          "text_chars": 0,
+          "parsed": null,
+          "usage": null
+        }
+      },
+      "reference_unchanged": true,
+      "verdict": "BLOCKED"
+    },
+    {
+      "role": "primary",
+      "mode": "documented",
+      "generation_config": {
+        "maxOutputTokens": 256,
+        "responseMimeType": "application/json",
+        "thinkingConfig": {
+          "thinkingLevel": "low"
+        }
+      },
+      "proof_class": "DYNAMIC_TEST",
+      "scope": "Minimal native generation only; not full application qualification",
+      "elapsed_seconds": 26.88,
+      "result": {
+        "http": 200,
+        "data": {
+          "provider_http": null,
+          "error_code": null,
+          "error_status": null,
+          "error_message": "The connection was aborted, perhaps the server is offline",
+          "model": null,
+          "finish_reason": null,
+          "text_chars": 0,
+          "parsed": null,
+          "usage": null
+        }
+      },
+      "reference_unchanged": true,
+      "verdict": "BLOCKED"
+    },
+    {
+      "role": "secondary",
+      "mode": "documented",
+      "generation_config": {
+        "maxOutputTokens": 256,
+        "responseMimeType": "application/json",
+        "thinkingConfig": {
+          "thinkingLevel": "low"
+        }
+      },
+      "proof_class": "DYNAMIC_TEST",
+      "scope": "Minimal native generation only; not full application qualification",
+      "elapsed_seconds": 26.86,
+      "result": {
+        "http": 200,
+        "data": {
+          "provider_http": null,
+          "error_code": null,
+          "error_status": null,
+          "error_message": "The connection was aborted, perhaps the server is offline",
+          "model": null,
+          "finish_reason": null,
+          "text_chars": 0,
+          "parsed": null,
+          "usage": null
+        }
+      },
+      "reference_unchanged": true,
+      "verdict": "BLOCKED"
+    }
+  ],
+  "cleanup": {
+    "proof_class": "DYNAMIC_TEST",
+    "verdict": "PASS",
+    "temporary_probe_workflows_remaining": [],
+    "temporary_probe_credentials_remaining": []
+  },
+  "product_changes": 0,
+  "credential_value_changes": 0,
+  "business_writes": 0,
+  "paypal_calls": 0,
+  "finding": "Documented low thinking without temperature did not restore generation in either credential probe. Native requests aborted without Google HTTP/error code or model output. No exclusive cause established.",
+  "reference_unchanged": true,
+  "remaining": "Restore authenticated generation; then resume six adversarial cases and full nominal/fallback proof. No new valid generation calls under this three-attempt circuit breaker.",
+  "contradictory_review": {
+    "reviewer": "candidate_chain_review",
+    "verdict": "PASS",
+    "findings": [],
+    "limits": "Probe HTTP200 is harness response, not provider success. Elapsed times include harness overhead. Basic unauthenticated POST403 proves connectivity only."
+  }
+}

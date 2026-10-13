@@ -1,0 +1,76 @@
+{
+  "date": "2026-10-13",
+  "overall_verdict": "BLOCKED",
+  "scope": "User-authorized Gemini3.7 alternative check; no permanent model switch",
+  "metadata": {
+    "date": "2026-10-13",
+    "proof_class": "DYNAMIC_TEST",
+    "scope": "Authenticated native model metadata GET only, no generation",
+    "requested_model": "gemini-3.7-flash",
+    "elapsed_seconds": 2.17,
+    "result": {
+      "http": 200,
+      "data": {
+        "name": "models/gemini-3.7-flash",
+        "base_model": null,
+        "version": "3.7-flash-08-2026",
+        "display_name": "Gemini 3.7 Flash",
+        "supports_generateContent": true,
+        "error_code": null,
+        "error_status": null,
+        "error_message": ""
+      }
+    },
+    "reference_unchanged": true,
+    "generation_requests": 0
+  },
+  "generation": {
+    "role": "primary",
+    "mode": "documented",
+    "generation_config": {
+      "maxOutputTokens": 256,
+      "responseMimeType": "application/json",
+      "thinkingConfig": {
+        "thinkingLevel": "low"
+      }
+    },
+    "proof_class": "DYNAMIC_TEST",
+    "scope": "Minimal native generation only; not full application qualification",
+    "elapsed_seconds": 26.87,
+    "result": {
+      "http": 200,
+      "data": {
+        "provider_http": null,
+        "error_code": null,
+        "error_status": null,
+        "error_message": "The connection was aborted, perhaps the server is offline",
+        "model": null,
+        "finish_reason": null,
+        "text_chars": 0,
+        "parsed": null,
+        "usage": null
+      }
+    },
+    "reference_unchanged": true,
+    "verdict": "BLOCKED",
+    "requested_model": "gemini-3.7-flash"
+  },
+  "generation_attempts": 1,
+  "cleanup": {
+    "proof_class": "DYNAMIC_TEST",
+    "verdict": "PASS",
+    "temporary_probe_workflows_remaining": [],
+    "temporary_probe_credentials_remaining": []
+  },
+  "application_changes": 0,
+  "credential_value_changes": 0,
+  "business_writes": 0,
+  "paypal_calls": 0,
+  "official_documentation": {
+    "url": "https://ai.google.dev/gemini-api/docs/generate-content/whats-new-gemini-3.7",
+    "last_updated": "2026-10-12",
+    "statement": "Gemini3.7 is deprecated; API requests to3.7 automatically routed to3.8"
+  },
+  "limits": "Metadata3.7 does not prove independent backend. No generated modelVersion was returned, so actual routing was not verified dynamically. Connection abort cause unknown; no Google quota error demonstrated.",
+  "decision": "Do not permanently switch to3.7: no successful generation and no documented independent alternative to3.8."
+}
