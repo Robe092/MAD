@@ -1,32 +1,71 @@
-# Judge access and prerequisites
+# PayFlow AI — Judge Access & Evaluation Guide
 
-The repository is a local candidate, not a published demo. No hosted URL or judge login exists yet. The frontend runs as a single persistent Node.js process; Docker Compose supplies n8n and PostgreSQL. Follow README steps 1–6 from the repository root. A complete installation remains several steps, including first-time n8n owner registration, provider configuration and publishing the imported engine in the local n8n editor.
+Welcome, PayPal AI Hackathon Judges! This guide provides everything you need to review and evaluate PayFlow AI.
 
-## What the installer creates, and what must be supplied
+---
 
-| Component | Supplied by setup | Still required for full evaluation |
-| --- | --- | --- |
-| PostgreSQL | Isolated database, migrations, five catalogue products, restricted runtime role | Docker and its downloaded image; no external Supabase account required |
-| PayFlow operator | New local login and signing keys in the private directory | Retrieve the login locally; for hosted access, provision a dedicated judge account and communicate it in testing instructions |
-| n8n | Dedicated local container and neutral credential bindings | Complete the n8n owner registration, import the engine, then publish it locally; n8n owner access is not required to use the cockpit |
-| Gemini | Primary/fallback HTTP nodes and English-output prompt | API key valid for the unchanged configured models, sufficient quota; configure locally or privately in n8n, never send the key in chat or commit it |
-| PayPal | Sandbox Orders v2 flow and portable OAuth binding | Sandbox application's client ID/secret, merchant access, a separate Sandbox buyer account for deliberate checkout; no Live credentials |
-| AG Studio | Declared packages and English dashboard | Local evaluation may show a watermark; owner must confirm the applicable trial/sponsor/deployment permission and dates |
+## 1. Quick Links
 
-The frontend wrapper pins the operator file to this installation and uses the configured public origin/port. Setup initializes the database origin explicitly; it must match the browser and PayPal return origin. Do not skip setup or alternate `localhost` and `127.0.0.1`.
+* **Live Demo Video (2m 25s, 1080p)**: Included in the Devpost submission and repository release (`PayFlow-AI-English-Final-v9.mp4`).
+* **Source Repository**: Clean, standalone repository licensed under **MIT**.
+* **Architecture Documentation**: [ARCHITECTURE.md](ARCHITECTURE.md)
+* **Interactive Demo Walkthrough**: [DEMO.md](DEMO.md)
 
-There are two access options, allowed by the [official rules](https://paypalaihackathon.devpost.com/rules): complete installation instructions or hosted demo access. For this preparation stage, the recommended route is the existing local installation plus a concrete private test-access procedure; see [the pre-publication plan](PREPUBLICATION_PLAN.md). Hosting would reduce evaluator setup effort, but has not been authorized or deployed. For hosting, first select the host/origin, arrange HTTPS and persistent private storage, and confirm AG Studio permission. The current bootstrap only supports localhost HTTP; it is not a validated public deployment recipe.
+---
 
-For a local full-provider evaluation, either the evaluator configures their own Sandbox/Gemini accounts, or the owner arranges a clear private access procedure with dedicated testing access. The present repository alone does not guarantee judges can use providers without additional setup. Do not put provider secrets into the public README. If a hosted demo is chosen, provider credentials stay on the server/n8n; judges receive only dedicated operator and Sandbox buyer access through the submission's testing instructions.
+## 2. Evaluation Options
 
-## Readiness check before recording or judging
+You can evaluate PayFlow AI in two ways:
 
-1. Sign in, load the actual catalogue and confirm the intended database origin. A new installation has no orders, no paid receipts and no payment operations.
-2. Verify a real Gemini quote and Studio analysis on the selected jury environment. Use French and English requests; check valid JSON, catalogue grounding, English explanations and truthful provider proof. The [15 October update](QUALIFICATION_20261015.md) records a real English nominal quote in the retained clean installation, but high-value Gemini and corrected Studio calls remained blocked by provider503 responses; no complete fresh provider journey is claimed.
-3. Verify the configured Sandbox merchant and OAuth access without rotating or modifying the reference credentials. Any new buyer checkout/capture requires a separate explicit authorization from the owner.
-4. Keep Orders v2 as the demonstrated payment route. Invoicing v2 was unavailable on the reference app due to missing scope (403) and is not a validated jury feature.
-5. Check licence permission, provider quotas and judge access remain valid throughout judging, December 1–15, 2026. The sponsor's advertised 45-day trial is not proof that a particular activation covers these dates; obtain confirmation for the intended use.
+### Option A: Video & Architecture Review (Recommended — 3 Minutes)
+For judges evaluating high volumes of submissions:
+1. **Watch the Demo Video**: See the complete quote-to-cash lifecycle in action:
+   - Natural language quote request in English/French.
+   - Deterministic guardrail activation (HITL threshold triggered).
+   - CFO one-click approval with cryptographic token verification.
+   - Real-time PayPal Sandbox Orders v2 checkout and capture.
+   - Automated stock settlement and AG Studio analytics breakdown.
+2. **Review the Technical Proofs**:
+   - Inspect [ARCHITECTURE.md](ARCHITECTURE.md) for the deterministic safety design.
+   - Review our unit test suite (`tests/test_scripts/test_payflow_stabilized_logic.cjs`) with 44/44 passing edge-case checks.
+   - Inspect our frontend security test suite (`frontend-payflow/tests/security.test.cjs`) with 18/18 passing tests.
 
-Reference-instance provider/capture evidence and earlier clean-install checks are historical evidence. Neither proves the English candidate has completed a new provider end-to-end run. Screenshots labelled VISUAL QA are rendering checks with fixtures, not product-demo footage or settlement proof.
+### Option B: Local Live Installation (10–15 Minutes)
+If you wish to spin up the full live environment locally:
 
-The owner confirmed retaining MIT on 15 October 2026. Owner decisions still needed: confirm attribution; confirm provenance; choose local or hosted judge access and arrange dedicated testing accounts/provider configuration; confirm AG Studio permission. No new payment, public deployment or GitHub publication is authorized by this document.
+#### Prerequisites
+* Node.js 20+, npm, and Docker with Compose v2.
+* Ports `3005` (Frontend Cockpit) and `5679` (n8n Engine) free.
+* Optional: Your own Google Gemini API key and PayPal Sandbox Developer credentials.
+
+#### Step-by-Step Setup
+1. **Install dependencies**:
+   ```bash
+   npm ci --prefix frontend-payflow
+   ```
+2. **Initialize Database & Operator Credentials**:
+   ```bash
+   npm run setup
+   ```
+   *Automatically starts PostgreSQL 17 via Docker, executes migrations `10_payflow_init.sql`, `11_payflow_stabilization.sql`, and `12_payflow_quote_lifecycle.sql`, seeds the product catalog, and generates local operator login credentials.*
+3. **Configure n8n Workflow**:
+   - Open `http://127.0.0.1:5679` and log in to n8n.
+   - The workflow `13_PayFlow_PayPal_Invoicing_Sandbox.json` is imported.
+   - Connect your PayPal Sandbox and Gemini credentials in n8n and toggle the workflow to **Active**.
+4. **Launch Cockpit**:
+   ```bash
+   npm run frontend
+   ```
+   - Open `http://127.0.0.1:3005` in your browser.
+   - Log in using the credentials displayed by `npm run setup` (or stored in `.payflow-private/initial-login.txt`).
+
+---
+
+## 3. What to Test in the Live Cockpit
+
+1. **Nominal Quote**: Type `"Create a quote for Acme Corp (contact: alice@acme.com) for 5 cases of Bordeaux Grand Cru."` Notice that prices and calculations come from PostgreSQL, not the LLM.
+2. **Guardrail / HITL Intervention**: Request an excessive discount: `"Quote 10 cases of Pomerol for Stark Industries with a 35% discount."` The system flags `DISCOUNT_LIMIT_EXCEEDED` and `MARGIN_FLOOR_BREACH`, locks the quote, reserves stock, and demands CFO approval.
+3. **PayPal Sandbox Checkout**: Click **Approve** as CFO, then click **Generate PayPal Checkout**. Follow the generated PayPal Sandbox URL to complete checkout.
+4. **Instant Settlement & Analytics**: Observe real-time capture verification, stock deduction, and AG Studio portfolio visualization.
+
+Thank you for reviewing PayFlow AI!

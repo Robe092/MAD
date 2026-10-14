@@ -29,15 +29,15 @@ BEGIN
  IF inv.id IS NOT NULL THEN
   -- Only engine-generated proof from an authenticated provider lookup may reach
   -- this branch. Browser cancel requests never supply remote proof to SQL.
-  IF reason<>'PROVIDER_VOIDED' OR inv.paypal_invoice_id IS DISTINCT FROM p->>'verified_resource_id'
+   IF reason<>'PROVIDER_VOIDED' OR inv.paypal_invoice_id IS DISTINCT FROM p->>'verified_resource_id'
    OR NOT ((inv.resource_type='PAYPAL_ORDER_V2' AND p->>'verified_status'='VOIDED')
       OR (inv.resource_type='PAYPAL_INVOICE_V2' AND p->>'verified_status'='CANCELLED'))
    OR inv.capture_id IS NOT NULL OR inv.paid_amount>0 THEN
-   RETURN jsonb_build_object('_http_code',409,'status','error','code','PAYMENT_RESOURCE_REQUIRES_VERIFICATION','message','Le stock reste réservé tant que la ressource PayPal est payable ou son état incertain.');
+   RETURN jsonb_build_object('_http_code',409,'status','error','code','PAYMENT_RESOURCE_REQUIRES_VERIFICATION','message','Stock remains reserved while the PayPal resource is payable or in an unverified state.');
   END IF;
  ELSE
-  IF EXISTS(SELECT 1 FROM payflow_payment_operations WHERE order_id=oid) THEN
-   RETURN jsonb_build_object('_http_code',409,'status','error','code','PAYMENT_OPERATION_REQUIRES_VERIFICATION','message','Une émission PayPal a été tentée. Vérifiez sa ressource avant de libérer le stock.');
+  IF EXISTS(SELECT 1 FROM payflow_payment_operations WHERE order_id=oid AND (status <> 'FAILED_TERMINAL' OR paypal_resource_id IS NOT NULL)) THEN
+   RETURN jsonb_build_object('_http_code',409,'status','error','code','PAYMENT_OPERATION_REQUIRES_VERIFICATION','message','A PayPal payment was attempted. Verify the resource before releasing stock.');
   END IF;
  END IF;
  IF reason='EXPIRED' AND NOT (o.due_date<CURRENT_DATE OR (o.status='PENDING_APPROVAL' AND EXISTS(SELECT 1 FROM payflow_approvals WHERE order_id=oid AND status='PENDING' AND expires_at<=now()))) THEN
@@ -59,7 +59,7 @@ BEGIN
  target_status:=CASE WHEN reason='EXPIRED' THEN 'OVERDUE' ELSE 'CANCELLED' END;
  UPDATE payflow_orders SET status=target_status,notes=reason,updated_at=now() WHERE id=oid;
  IF inv.id IS NOT NULL THEN UPDATE payflow_invoices SET paypal_status=p->>'verified_status',last_reconciled_at=now(),updated_at=now() WHERE id=inv.id;END IF;
- RETURN jsonb_build_object('_http_code',200,'status','success','order_id',oid,'order_status',target_status,'released_units',units,'message','Devis clôturé ; réservation libérée, stock physique conservé.');
+ RETURN jsonb_build_object('_http_code',200,'status','success','order_id',oid,'order_status',target_status,'released_units',units,'message','Quote closed; reserved stock released, physical stock preserved.');
 END;
 $$;
 REVOKE ALL ON FUNCTION payflow_close_quote(jsonb) FROM PUBLIC;

@@ -64,11 +64,11 @@ function getEngineConfig(): {
 export async function POST(req: NextRequest) {
     try {
         if (!sameOrigin(req, true)) {
-            return NextResponse.json({status:"error",code:"ORIGIN_DENIED",message:"Origine de la requête refusée."},{status:403});
+            return NextResponse.json({status:"error",code:"ORIGIN_DENIED",message:"Request origin rejected."},{status:403});
         }
         const session = operatorSession(req);
-        if (!session) return NextResponse.json({status:"error",code:"OPERATOR_AUTH_REQUIRED",message:"Connectez-vous avec votre compte opérateur."},{status:401});
-        if (!csrfValid(req, session)) return NextResponse.json({status:"error",code:"CSRF_DENIED",message:"Session de formulaire expirée. Rechargez la page."},{status:403});
+        if (!session) return NextResponse.json({status:"error",code:"OPERATOR_AUTH_REQUIRED",message:"Please log in with your operator account."},{status:401});
+        if (!csrfValid(req, session)) return NextResponse.json({status:"error",code:"CSRF_DENIED",message:"Form session expired. Please reload the page."},{status:403});
         let body;
         try {
             const raw = await req.text();
@@ -76,10 +76,10 @@ export async function POST(req: NextRequest) {
             body = JSON.parse(raw);
         }
         catch {
-            return NextResponse.json({ status: "error", code: "INVALID_BODY", message: "Requête JSON invalide." }, { status: 400 });
+            return NextResponse.json({ status: "error", code: "INVALID_BODY", message: "Invalid JSON payload." }, { status: 400 });
         }
         if (!body || typeof body !== "object" || Array.isArray(body)) {
-            return NextResponse.json({ status: "error", code: "INVALID_BODY", message: "Requête invalide." }, { status: 400 });
+            return NextResponse.json({ status: "error", code: "INVALID_BODY", message: "Invalid request body." }, { status: 400 });
         }
         const action = String(body?.action || "evaluate_order").trim();
         if (!ALLOWED_ACTIONS.has(action)) {
@@ -91,11 +91,11 @@ export async function POST(req: NextRequest) {
             }, { status: 403 });
         }
         if (["ai_copilot_quote", "ai_studio_agent"].includes(action) && (typeof body.prompt !== "string" || !body.prompt.trim() || body.prompt.length > 6000)) {
-            return NextResponse.json({ status: "error", code: "INVALID_PROMPT", message: "Décrivez votre demande en 1 à 6 000 caractères." }, { status: 400 });
+            return NextResponse.json({ status: "error", code: "INVALID_PROMPT", message: "Please describe your request using 1 to 6,000 characters." }, { status: 400 });
         }
         const { secret, webhookUrl } = getEngineConfig();
         if (!secret) {
-            return NextResponse.json({ status: "error", code: "SERVER_SECRET_NOT_CONFIGURED", message: "La connexion au service PayFlow n’est pas configurée." }, { status: 503 });
+            return NextResponse.json({ status: "error", code: "SERVER_SECRET_NOT_CONFIGURED", message: "PayFlow service connection is not configured." }, { status: 503 });
         }
         const cleanBody = { ...body };
         delete cleanBody.operator_key;
@@ -126,7 +126,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json(data, { status: res.status, headers:{"Cache-Control":"no-store"} });
     }
     catch (err: unknown) {
-        const message = "Le service PayFlow est momentanément indisponible. Réessayez.";
+        const message = "The PayFlow service is temporarily unavailable. Please retry.";
         return NextResponse.json({ status: "error", code: "PROXY_ERROR", message }, { status: 502 });
     }
 }

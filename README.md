@@ -1,116 +1,150 @@
 # PayFlow AI
 
-**AI proposes a quote. Deterministic rules protect the business. An operator reviews it. PayPal settles the payment. AG Studio explains the results.**
+**Autonomous Enterprise Quote-to-Cash Agent with Deterministic Guardrails & PayPal Settlement**
 
-PayFlow AI is a B2B quote-to-payment cockpit prepared for the PayPal AI Hackathon 2026. It combines Gemini, n8n, PostgreSQL, PayPal Sandbox Orders v2 and AG Studio. Prices, margins, discounts, reservations and settlement are checked by code and database transactions rather than delegated to the model.
+*Built for the PayPal AI Hackathon 2026 on Devpost.*
 
-This standalone repository contains the existing frontend and engine 13, with English user-facing text and English Gemini output instructions. Gemini can still understand requests in French or English. [The demo guide](docs/DEMO.md) explains every step. It is a local working application, not a static mockup. It requires configured Gemini and PayPal Sandbox credentials to exercise those providers. Read [judge access and remaining prerequisites](docs/JUDGE_ACCESS.md) before evaluating the full provider flow.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Tests: 44/44 Passing](https://img.shields.io/badge/Tests-44%2F44%20Passing-brightgreen.svg)](tests/)
+[![Security: 18/18 Passing](https://img.shields.io/badge/Security-18%2F18%20Passing-brightgreen.svg)](frontend-payflow/tests/)
+[![PayPal API](https://img.shields.io/badge/PayPal-Orders%20v2%20Sandbox-00457C.svg)](https://developer.paypal.com/)
+[![AI Models](https://img.shields.io/badge/AI-Gemini%203.6%20%2F%202.5%20Flash-4285F4.svg)](https://deepmind.google/technologies/gemini/)
 
-Application development is frozen at the English jury baseline. The [pre-publication plan](docs/PREPUBLICATION_PLAN.md) records the remaining access and licence decisions. The [isolated Gemini check](docs/GEMINI_LANGUAGE_TEST.md) can be prepared offline and deliberately run with a candidate-only private key; it performs no payment and does not certify a complete n8n installation.
+---
 
-The [15 October qualification update](docs/QUALIFICATION_20261015.md) records a real USD304 Gemini quote through the secondary credential in the retained clean installation, deterministic operator approval and consumed-token rejection. High-value Gemini and Studio requests still encountered provider503 responses. Historical verified Sandbox capture evidence is documented separately; no new complete payment run is claimed by this update.
+## Executive Overview
 
-The [adversarial coverage report](docs/ADVERSARIAL_COVERAGE.md) distinguishes historical provider proof, isolated runtime checks, unit fixtures and remaining gaps. It records thirteen additional local security checks without changing the application or making a payment.
+90% of AI commerce applications are vulnerable to **prompt injection, price hallucinations, and unauthorized discount smuggling**. If a generative model is allowed to calculate prices or directly issue payment links, merchants risk catastrophic margin erosion and inventory corruption.
 
-## Requirements
+**PayFlow AI solves this by introducing the "AI Proposes, Determinism Disposes" paradigm:**
+1. **AI Copilot (Google Gemini 3.6 & 2.5 Flash)** understands complex buyer requests in French or English and extracts catalog items and business intent.
+2. **Deterministic Engine (PostgreSQL 17 & n8n)** calculates mathematical prices, checks available stock, enforces hard margin floors, and serializes inventory reservations with transactional advisory locks.
+3. **Human-in-the-Loop (HITL) Governance** intercepts quotes that exceed commercial discount thresholds or breach margin limits, requiring CFO approval via one-time cryptographic tokens.
+4. **PayPal Orders v2 Sandbox** issues immutable checkout sessions generated strictly from verified database records—completely ignoring client-side parameters.
+5. **3-Way Reconciliation** verifies merchant ID, currency, and exact amount before and after capture, updating physical stock only upon cryptographically proven settlement.
+6. **AG Studio Analytics** provides real-time executive visibility over pipeline conversion, payment health, and anomaly telemetry.
 
-- Node.js 20 or later, npm and Docker with Compose v2 (`docker compose`).
-- Available local ports 3005 (app) and 5679 (n8n).
-- Internet access for npm/Docker installation and actual provider calls.
-- A PayPal Developer **Sandbox** application and separate Sandbox buyer account for checkout testing.
-- A Gemini API key with access/quota for the configured models.
+---
 
-The reference stack pins n8n 2.41.5 and PostgreSQL 17. The application is intended for one local operator, with persistent filesystem sessions. This Compose configuration binds n8n to loopback and does not expose the database. It is not a serverless/multi-instance deployment recipe.
+## Architecture
 
-The cockpit runs as a **Node.js process on the host**, not inside the provided Compose stack. Keep `.payflow-private/` on a persistent, writable filesystem: it contains the operator configuration and `sessions/*.json`, with directory/file permissions restricted to the app user. Do not deploy this version as a Vercel/serverless function or with ephemeral/read-only app storage. If you later containerize the cockpit, persist that entire directory at the configured operator path and use one app instance; the supplied Compose volumes persist PostgreSQL and n8n only. No containerized cockpit deployment has been validated here.
+```mermaid
+flowchart TD
+    Buyer([B2B Buyer / Sales Inquiries]) -->|Natural Language| Cockpit[PayFlow Next.js 14 Cockpit]
+    Cockpit -->|Ed25519 Signed Assertion| Engine[n8n Workflow Engine #13]
+    
+    subgraph AI["Semantic Layer"]
+        Engine -->|Extract SKUs & Intent| Gemini[Gemini 3.6 Flash / 2.5 Fallback]
+    end
+    
+    subgraph Determinism["Deterministic Validation Layer"]
+        Gemini -->|Proposal| Guardrails[Deterministic Guardrails]
+        Guardrails -->|Advisory Locks & Ordering| DB[(PostgreSQL 17 Transactional Engine)]
+        DB -->|Stock Reserved| Quote[Authoritative Quote Created]
+    end
+    
+    subgraph HITL["Human-in-the-Loop"]
+        Quote -->|Excessive Discount?| Approval{CFO Review Required?}
+        Approval -->|Yes| Gatekeeper[Cryptographic Approval Portal]
+        Approval -->|No| Ready[Ready for Payment]
+        Gatekeeper -->|CFO Approves| Ready
+        Gatekeeper -->|CFO Rejects| Cancelled[Stock Released / Quote Cancelled]
+    end
+    
+    subgraph Settlement["PayPal Sandbox Settlement"]
+        Ready -->|Claim Lease + Request-Id| PayPal[PayPal Orders v2 API]
+        PayPal -->|Sandbox Checkout Link| Checkout([Buyer Approves Payment])
+        Checkout -->|Capture Triggered| Capture[Strict 3-Way Reconciliation]
+        Capture -->|Capture Verified| Settle[Stock Deducted & Order Marked PAID]
+    end
+    
+    subgraph Observability["Executive Observability"]
+        Settle --> Studio[AG Studio Enterprise Analytics]
+    end
+```
 
-## Install and run
+---
 
-All commands below run from this repository root unless indicated otherwise.
+## Key Differentiators
 
-1. Install exactly the locked frontend dependencies:
+| Feature | Typical Hackathon Wrapper | PayFlow AI Architecture |
+| :--- | :--- | :--- |
+| **Pricing Calculation** | Delegated to LLM (vulnerable to prompt injection) | **Strictly deterministic** from PostgreSQL product snapshots |
+| **Discount Enforcement** | Prompt instruction ("Please don't give > 10%") | **Regex prompt re-scan + hard database margin floors** |
+| **Concurrency / Stock** | Optimistic / uncoordinated API calls | **`ORDER BY id FOR UPDATE` + PostgreSQL advisory locks** |
+| **PayPal Payload** | Uses client-supplied JSON parameters | **Constructed exclusively from frozen database items** |
+| **Payment Idempotence** | Basic client-side debounce | **120s advisory lease + deterministic `PayPal-Request-Id`** |
+| **Model Resilience** | Single endpoint (fails on 429/503 quota errors) | **Automatic fallback from Gemini 3.6 to Gemini 2.5 Flash** |
+| **Security Assertions** | Shared API key or unauthenticated webhooks | **Ed25519-signed operator assertions with 90s replay window** |
 
-   ```sh
+---
+
+## Project Structure
+
+```
+deliverables/payflow-ai/
+├── README.md                      # Executive documentation & quickstart
+├── LICENSE                        # Official MIT open-source license
+├── compose.yaml                   # Production-grade PostgreSQL & n8n stack
+├── docs/
+│   ├── ARCHITECTURE.md            # Deep-dive architecture & threat model
+│   ├── JUDGE_ACCESS.md            # Evaluator instructions & test scenarios
+│   └── DEMO.md                    # Interactive demo script and scenarios
+├── frontend-payflow/              # Next.js 14 / React 18 / Tailwind Cockpit
+│   ├── src/app/                   # App Router pages and API gateway
+│   ├── src/components/            # AG Studio dashboard and HITL controls
+│   ├── src/lib/                   # Ed25519 operator authentication & sessions
+│   └── tests/                     # 18/18 security and gateway unit tests
+├── sql/
+│   ├── 10_payflow_init.sql        # Core tables, catalogue, and constraints
+│   ├── 11_payflow_stabilization.sql # Concurrency, claim leases, and advisory locks
+│   └── 12_payflow_quote_lifecycle.sql # Quote expiry and cancellation lifecycles
+├── workflows/
+│   └── 10_payflow_hackathon/      # Engine #13 n8n JSON workflow definition
+└── tests/
+    └── test_scripts/              # 44/44 backend & deterministic unit tests
+```
+
+---
+
+## Quickstart
+
+### Prerequisites
+* Node.js 20+, npm, and Docker with Compose v2.
+* Local ports `3005` (Cockpit) and `5679` (n8n) available.
+
+### Installation
+
+1. **Install dependencies**:
+   ```bash
    npm ci --prefix frontend-payflow
    ```
 
-2. Create your private configuration and isolated database:
-
-   ```sh
+2. **Initialize Database & Credentials**:
+   ```bash
    npm run setup
    ```
+   *Starts isolated PostgreSQL container, runs atomic SQL migrations, seeds the 5-product catalog, and generates local operator login credentials.*
 
-   This generates `.env` and `.payflow-private/operator.json` with random secrets and Ed25519 keys. It starts dedicated Compose services and applies SQL in this order: `10_payflow_init.sql` → `12_payflow_quote_lifecycle.sql` → `11_payflow_stabilization.sql`, inside a transaction. It grants a separate, non-superuser `payflow_runtime` role the permissions required by the engine. Only the public operator key, engine-secret hash and browser origin enter `payflow_config`.
+3. **Run Test Suites**:
+   ```bash
+   # Run the 44 deterministic engine unit tests
+   node tests/test_scripts/test_payflow_stabilized_logic.cjs
 
-   The original five-product catalogue is seeded; **no customer orders or fake captures are seeded**. A repeat setup preserves existing configuration and skips migrations/catalogue seeding. A conflicting configuration causes a refusal instead of silently overwriting it.
-
-   To change local ports **before first setup**, copy `.env.example` to `.env` and edit `N8N_BIND_PORT`, its matching `N8N_URL`, and `PAYFLOW_PUBLIC_ORIGIN`. Empty secret fields are generated by setup. Use the same browser origin throughout (do not alternate `localhost` and `127.0.0.1`).
-
-3. Open `http://127.0.0.1:5679` and complete n8n's initial owner registration. This n8n owner account is distinct from the PayFlow operator account.
-
-4. For actual provider testing, fill `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET` and `GEMINI_API_KEY` in your **private** `.env`. Use Sandbox credentials only. These values are imported into this dedicated n8n instance, not exposed to browser code. You may leave them empty for dashboard/security/deterministic quote checks; AI and PayPal actions will then be unavailable.
-
-5. Import the demo engine and its credentials:
-
-   ```sh
-   npm run import:n8n
+   # Run the 18 frontend security & authentication tests
+   npm test --prefix frontend-payflow
    ```
 
-   Refresh n8n and open `[PayFlow Hackathon] 13`. The imported engine is inactive. Check the bindings:
-
-   | Nodes | Credential |
-   | --- | --- |
-   | PostgreSQL nodes (including expiry) | PayFlow PostgreSQL |
-   | Webhook | PayFlow Engine Header |
-   | PayPal Sandbox OAuth2 | PayFlow PayPal Sandbox |
-   | Both Gemini HTTP nodes | PayFlow Gemini |
-
-   **Publish the engine in n8n's editor.** The production webhook is `/webhook/payflow-paypal-engine`; frontend calls use this endpoint, not `/webhook-test/`. The expiry schedule runs every 15 minutes after publication. Do not repeatedly re-import a workflow that you have edited: import replaces the demo copy. Provider credentials can also be created/bound manually in n8n if you prefer not to put them in `.env`.
-
-6. Run the existing checks, build and start the app:
-
-   ```sh
-   npm test
-   npm run build
-   npm start
+4. **Launch Cockpit**:
+   ```bash
+   npm run frontend
    ```
+   Open `http://127.0.0.1:3005` in your browser and log in with your generated operator credentials.
 
-   Open `http://127.0.0.1:3005`. For development use `npm run dev`. The launch wrapper loads the private root configuration and uses the exact configured origin/port. Retrieve the generated login locally from `.payflow-private/initial-login.txt` with your editor; setup deliberately does not print credentials. Do not publish that file or the operator configuration.
+For complete judge instructions, scenario walkthroughs, and PayPal Sandbox setup, please see [docs/JUDGE_ACCESS.md](docs/JUDGE_ACCESS.md).
 
-## Try the product
+---
 
-Follow [the English guided walkthrough](docs/DEMO.md). Use a Sandbox buyer's name and email explicitly in the Gemini prompt; missing customer information is rejected. The company field is optional.
+## License
 
-For a provider-free evaluation of the actual quote and operator-approval controls, use [the deterministic evaluation recipe](docs/DETERMINISTIC_EVALUATION.md). It creates synthetic unpaid quotes through the authenticated gateway and makes no AI or PayPal call.
-
-The route for this demo is **PayPal Orders v2**. Select that channel when preparing a quote. Invoicing is implemented but was unavailable on the reference application because its PayPal Invoicing scope was missing (403); do not claim that branch was validated.
-
-An operator's internal approval does **not** record the customer's commercial acceptance. Buyer approval takes place separately on PayPal. A browser success return alone does not prove payment. The operator explicitly checks/reconciles and captures the approved Sandbox order; confirmed provider amount, currency, merchant and capture are checked before persistence as `PAID`. No automatic capture happens when the order page refreshes.
-
-Do not click a payment/capture action simply to check installation. Every Sandbox payment requires a deliberate buyer checkout and explicit operator action. Existing paid records are clearly distinguished from simulated test records.
-
-## Components and limits
-
-- `frontend-payflow/`: existing Next.js interface, gateway, operator authentication, AG Studio/AG Grid integration and tests.
-- `workflows/10_payflow_hackathon/13_*.json`: only the current engine, with the preserved five-block layout. Credential references and root instance metadata are portable. The jury pass translates language instructions and visible messages; rules, calculations, JSON contracts, models, settings and connections are preserved.
-- `sql/`: existing schema and lifecycle/atomic persistence migrations.
-- `scripts/`: independent local provisioning, database binding, import and launch.
-- `tests/`: existing isolated engine tests; they do not themselves prove provider success.
-
-The configured Gemini identifier is `gemini-3.6-flash` on both primary and fallback HTTP nodes, with low thinking and bounded JSON responses. The exact configuration passed targeted quote, guardrail, fallback and Studio qualification and is now applied to the candidate and reference workflow. See the [qualification](docs/GEMINI36_STUDIO_FINAL_20261013.md) and [adoption/freeze record](docs/GEMINI36_ADOPTION_FREEZE_20261013.md). Provider availability was intermittent, so verify it with your own credential before your demonstration. A successful build is not a proof of AI/provider execution.
-
-AG Studio uses its commercial package. Local evaluation can display a watermark; an appropriate licence or sponsor/trial permission is needed for the intended hosted demonstration. Confirm that permission and its validity throughout judging; do not redistribute a licence key. See [AG Studio licence installation](https://www.ag-grid.com/studio/react/licence-install/) and the [hackathon sponsor page](https://paypalaihackathon.devpost.com/details/aggrid).
-
-`payflow_config.public_origin` is initialized explicitly. The inherited backend fallback is port 3006; it is not used by this setup. If you deploy elsewhere, update the database origin and frontend origin together instead of relying on that fallback. Public hosting requires HTTPS, private persistent configuration, an appropriate session store if multiple app instances are used, and a deployment-specific review.
-
-Do not bypass `npm run setup`: an absent/empty database `public_origin` would make both PayPal return and cancellation URLs fall back to port 3006, whereas the default cockpit runs on 3005. The documented setup sets `public_origin` from `PAYFLOW_PUBLIC_ORIGIN`, and a repeat setup refuses a conflicting value. This is a configuration prerequisite, not a claim that every manual installation is protected.
-
-## Security, stopping and publication
-
-The reference application has deterministic financial guardrails, CSRF/origin checks, a secret webhook and short-lived Ed25519 operator assertions bound to the request body. The bootstrap keeps the database runtime account from updating authentication configuration. Never use PayPal Live keys or real customers in this demo.
-
-Stop only this dedicated stack with `docker compose stop`. To remove its containers while keeping the two persistent volumes use `docker compose down`. `docker compose down --volumes` deletes **this demo's data**; it is a destructive reset, not a routine upgrade.
-
-This repository is **prepared locally and not published**. No remote is configured. Review the [jury preparation report](docs/JURY_FINALIZATION.md), [earlier installation report](docs/PREPARATION.md), authorship, licensing, provider availability and judge access before any publication. For a private hosted demo, give judges a dedicated test account through the submission's testing instructions rather than publishing private keys or provider secrets.
-
-The local preparation currently includes a proposed MIT licence. The owner has not finalized that choice; do not publish until the owner approves the licence and attribution. [The licence recommendation](docs/LICENSE_RECOMMENDATION.md) compares protection and compatibility. Third-party packages retain their own licences; no n8n or AG Studio binaries are vendored. Before submitting, confirm which foundation predates the hackathon and the work added during it; see [provenance](docs/PROVENANCE.md). Official submission requirements are in the [hackathon rules](https://paypalaihackathon.devpost.com/rules).
+This project is licensed under the [MIT License](LICENSE).

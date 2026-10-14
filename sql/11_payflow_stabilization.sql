@@ -25,7 +25,7 @@ BEGIN
     IF old_lines <> new_lines OR o.customer_email <> p->>'customer_email' OR o.customer_name <> p->>'customer_name'
       OR COALESCE(o.customer_company,'') <> COALESCE(p->>'customer_company','')
       OR o.tax_rate_pct <> (p->>'tax_rate_pct')::numeric OR o.total_amount <> (p->>'total_amount')::numeric THEN
-      RETURN jsonb_build_object('_http_code',409,'status','error','code','ORDER_ID_CONFLICT','message','Cette référence appartient déjà à une commande différente.');
+      RETURN jsonb_build_object('_http_code',409,'status','error','code','ORDER_ID_CONFLICT','message','This order reference already belongs to a different order.');
     END IF;
     RETURN p || jsonb_build_object('_http_code',200,'status','success','order_status',o.status,'requires_hitl',o.requires_hitl,'anomalies',o.anomaly_flags,'idempotent_replay',true,
       'approval_token',(SELECT approval_token FROM payflow_approvals WHERE order_id=oid AND status='PENDING' AND expires_at>now() LIMIT 1),
@@ -38,7 +38,7 @@ BEGIN
     SELECT * INTO product FROM payflow_products WHERE id=line->>'product_id' AND is_active;
     IF NOT FOUND OR product.sku <> line->>'sku' OR product.unit_price <> (line->>'catalog_unit_price')::numeric
       OR product.unit_cost <> (line->>'unit_cost_snapshot')::numeric THEN
-      RETURN jsonb_build_object('_http_code',409,'status','error','code','CATALOG_CHANGED','message','Le catalogue a changé. Relancez la demande.');
+      RETURN jsonb_build_object('_http_code',409,'status','error','code','CATALOG_CHANGED','message','The product catalog has changed. Please refresh and retry.');
     END IF;
     IF (line->>'quantity')::int > product.stock_on_hand-product.stock_reserved THEN
       shortage := true;
@@ -75,7 +75,7 @@ BEGIN
   END IF;
   RETURN p;
 EXCEPTION WHEN unique_violation THEN
-  RETURN jsonb_build_object('_http_code',409,'status','error','code','ORDER_REFERENCE_CONFLICT','message','La référence de devis est déjà utilisée.');
+  RETURN jsonb_build_object('_http_code',409,'status','error','code','ORDER_REFERENCE_CONFLICT','message','The quote reference is already in use.');
 END;
 $$;
 
@@ -103,7 +103,7 @@ BEGIN
   IF channel NOT IN ('ORDERS_V2','INVOICING_V2') THEN RETURN jsonb_build_object('proceed',false,'_http_code',400,'status','error','code','INVALID_PAYMENT_CHANNEL'); END IF;
   IF o.status NOT IN ('APPROVED','INVOICE_SENT','INVOICE_DRAFT_CREATED') THEN RETURN jsonb_build_object('proceed',false,'_http_code',403,'status','error','code','ORDER_NOT_APPROVED'); END IF;
   IF o.customer_name IS NULL OR btrim(o.customer_name)='' OR o.customer_email IS NULL OR o.customer_email !~ '^[^[:space:]@]+@[^[:space:]@]+[.][^[:space:]@]+$' THEN
-    RETURN jsonb_build_object('proceed',false,'_http_code',422,'status','error','code','CUSTOMER_INFORMATION_REQUIRED','message','Renseignez le nom et une adresse email valide avant émission PayPal.');
+    RETURN jsonb_build_object('proceed',false,'_http_code',422,'status','error','code','CUSTOMER_INFORMATION_REQUIRED','message','Provide customer name and a valid email address before PayPal issuance.');
   END IF;
   IF p ? 'total_amount' AND (p->>'total_amount')::numeric <> o.total_amount THEN RETURN jsonb_build_object('proceed',false,'_http_code',422,'status','error','code','PAYLOAD_AMOUNT_TAMPERING_DETECTED'); END IF;
   SELECT * INTO inv FROM payflow_invoices WHERE order_id=oid;
@@ -119,9 +119,9 @@ BEGIN
     RETURN jsonb_build_object('proceed',false,'_http_code',422,'status','error','code','PERSISTED_ORDER_INTEGRITY_MISMATCH');
   END IF;
   IF EXISTS(SELECT 1 FROM payflow_payment_operations WHERE order_id=oid AND status='IN_FLIGHT' AND updated_at>now()-interval '120 seconds') THEN
-    RETURN jsonb_build_object('proceed',false,'_http_code',409,'status','error','code','PAYMENT_OPERATION_IN_PROGRESS','message','Une émission PayPal est déjà en cours.');
+    RETURN jsonb_build_object('proceed',false,'_http_code',409,'status','error','code','PAYMENT_OPERATION_IN_PROGRESS','message','A PayPal payment issuance is already in progress.');
   END IF;
-  IF EXISTS(SELECT 1 FROM payflow_payment_operations WHERE order_id=oid AND operation_type IN ('CREATE_INVOICE_DRAFT','CREATE_ORDER_V2') AND logical_operation_key <> 'create_pay:'||channel||':'||oid) THEN
+  IF EXISTS(SELECT 1 FROM payflow_payment_operations WHERE order_id=oid AND operation_type IN ('CREATE_INVOICE_DRAFT','CREATE_ORDER_V2') AND logical_operation_key <> 'create_pay:'||channel||':'||oid AND (status <> 'FAILED_TERMINAL' OR paypal_resource_id IS NOT NULL)) THEN
     RETURN jsonb_build_object('proceed',false,'_http_code',409,'status','error','code','PAYMENT_CHANNEL_ALREADY_BOUND');
   END IF;
   key := 'create_pay:'||channel||':'||oid;
