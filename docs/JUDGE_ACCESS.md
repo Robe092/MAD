@@ -22,7 +22,7 @@ For a local full-provider evaluation, either the evaluator configures their own 
 ## Readiness check before recording or judging
 
 1. Sign in, load the actual catalogue and confirm the intended database origin. A new installation has no orders, no paid receipts and no payment operations.
-2. Verify a real Gemini quote and Studio analysis on the selected jury environment. Use French and English requests; check valid JSON, catalogue grounding, English explanations and truthful provider proof. The language-only export has unit contract evidence, but no fresh live Gemini response evidence yet.
+2. Verify a real Gemini quote and Studio analysis on the selected jury environment. Use French and English requests; check valid JSON, catalogue grounding, English explanations and truthful provider proof. The [15 October update](QUALIFICATION_20261015.md) records a real English nominal quote in the retained clean installation, but high-value Gemini and corrected Studio calls remained blocked by provider503 responses; no complete fresh provider journey is claimed.
 3. Verify the configured Sandbox merchant and OAuth access without rotating or modifying the reference credentials. Any new buyer checkout/capture requires a separate explicit authorization from the owner.
 4. Keep Orders v2 as the demonstrated payment route. Invoicing v2 was unavailable on the reference app due to missing scope (403) and is not a validated jury feature.
 5. Check licence permission, provider quotas and judge access remain valid throughout judging, December 1–15, 2026. The sponsor's advertised 45-day trial is not proof that a particular activation covers these dates; obtain confirmation for the intended use.

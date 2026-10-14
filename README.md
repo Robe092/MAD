@@ -8,6 +8,8 @@ This standalone repository contains the existing frontend and engine 13, with En
 
 Application development is frozen at the English jury baseline. The [pre-publication plan](docs/PREPUBLICATION_PLAN.md) records the remaining access and licence decisions. The [isolated Gemini check](docs/GEMINI_LANGUAGE_TEST.md) can be prepared offline and deliberately run with a candidate-only private key; it performs no payment and does not certify a complete n8n installation.
 
+The [15 October qualification update](docs/QUALIFICATION_20261015.md) records a real USD304 Gemini quote through the secondary credential in the retained clean installation, deterministic operator approval and consumed-token rejection. High-value Gemini and Studio requests still encountered provider503 responses. Historical verified Sandbox capture evidence is documented separately; no new complete payment run is claimed by this update.
+
 The [adversarial coverage report](docs/ADVERSARIAL_COVERAGE.md) distinguishes historical provider proof, isolated runtime checks, unit fixtures and remaining gaps. It records thirteen additional local security checks without changing the application or making a payment.
 
 ## Requirements
@@ -78,6 +80,8 @@ All commands below run from this repository root unless indicated otherwise.
 ## Try the product
 
 Follow [the English guided walkthrough](docs/DEMO.md). Use a Sandbox buyer's name and email explicitly in the Gemini prompt; missing customer information is rejected. The company field is optional.
+
+For a provider-free evaluation of the actual quote and operator-approval controls, use [the deterministic evaluation recipe](docs/DETERMINISTIC_EVALUATION.md). It creates synthetic unpaid quotes through the authenticated gateway and makes no AI or PayPal call.
 
 The route for this demo is **PayPal Orders v2**. Select that channel when preparing a quote. Invoicing is implemented but was unavailable on the reference application because its PayPal Invoicing scope was missing (403); do not claim that branch was validated.
 
