@@ -9,7 +9,7 @@
 [![Engine: 44 Checks](https://img.shields.io/badge/Engine-44%20Deterministic%20Checks-blue.svg)](tests/test_scripts/)
 [![Security: 31 Checks](https://img.shields.io/badge/Security-31%20Gateway%20Checks-blue.svg)](frontend-payflow/tests/)
 [![PayPal API](https://img.shields.io/badge/PayPal-Orders%20v2%20Sandbox-00457C.svg)](https://developer.paypal.com/)
-[![AI Models](https://img.shields.io/badge/AI-Gemini%203.6%20%2F%202.5%20Flash-4285F4.svg)](https://deepmind.google/technologies/gemini/)
+[![AI Models](https://img.shields.io/badge/AI-Gemini%203.8%20Flash-4285F4.svg)](https://deepmind.google/technologies/gemini/)
 
 ---
 
@@ -18,7 +18,7 @@
 90% of AI commerce applications are vulnerable to **prompt injection, price hallucinations, and unauthorized discount smuggling**. If a generative model is allowed to calculate prices or directly issue payment links, merchants risk catastrophic margin erosion and inventory corruption.
 
 **PayFlow AI solves this by introducing the "AI Proposes, Determinism Disposes" paradigm:**
-1. **AI Copilot (Google Gemini 3.6 & 2.5 Flash)** understands complex buyer requests in French or English and extracts catalog items and business intent.
+1. **AI Copilot (Google Gemini 3.8 Flash)** understands complex buyer requests in French or English and extracts catalog items and business intent.
 2. **Deterministic Engine (PostgreSQL 17 & n8n)** calculates mathematical prices, checks available stock, enforces hard margin floors, and serializes inventory reservations with transactional advisory locks.
 3. **Human-in-the-Loop (HITL) Governance** intercepts quotes that exceed commercial discount thresholds or breach margin limits, requiring CFO approval via one-time cryptographic tokens.
 4. **PayPal Orders v2 Sandbox** issues immutable checkout sessions generated strictly from verified database records—completely ignoring client-side parameters.
@@ -35,7 +35,7 @@ flowchart TD
     Cockpit -->|Ed25519 Signed Assertion| Engine[n8n Workflow Engine #13]
     
     subgraph AI["Semantic Layer"]
-        Engine -->|Extract SKUs & Intent| Gemini[Gemini 3.6 Flash / 2.5 Fallback]
+        Engine -->|Extract SKUs & Intent| Gemini[Gemini 3.8 Flash Dual-Node Resilience]
     end
     
     subgraph Determinism["Deterministic Validation Layer"]
@@ -75,7 +75,7 @@ flowchart TD
 | **Concurrency / Stock** | Optimistic / uncoordinated API calls | **`ORDER BY id FOR UPDATE` + PostgreSQL advisory locks** |
 | **PayPal Payload** | Uses client-supplied JSON parameters | **Constructed exclusively from frozen database items** |
 | **Payment Idempotence** | Basic client-side debounce | **120s advisory lease + deterministic `PayPal-Request-Id`** |
-| **Model Resilience** | Single endpoint (fails on 429/503 quota errors) | **Automatic fallback from Gemini 3.6 to Gemini 2.5 Flash** |
+| **Model Resilience** | Single endpoint (fails on 429/503 quota errors) | **Dual-node failover with independent credentials on Gemini 3.8 Flash** |
 | **Security Assertions** | Shared API key or unauthenticated webhooks | **Ed25519-signed operator assertions with 90s replay window** |
 
 ---
