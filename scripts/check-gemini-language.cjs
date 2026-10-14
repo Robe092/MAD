@@ -28,7 +28,7 @@ function endpoint(workflow) {
   return url;
 }
 async function request(workflow, scenario) {
-  const node = workflow.nodes.find(n=>n.name==='Préparer la demande Gemini');
+  const node = workflow.nodes.find(n=>n.name==='Prepare Gemini Request');
   assert(node && typeof node.parameters.jsCode==='string','Candidate prompt node missing.');
   // Execute only this trusted local export's existing prompt-construction node.
   const selector = name => {

@@ -218,7 +218,7 @@
     "scope": "Owner-requested update setting both Gemini Copilot API (primary) and Gemini Fallback API (fallback) to models/gemini-3.8-flash in candidate and active reference workflow RiQGs5cgxsvuxTEV, with reference primary bound to existing credential 1 and fallback bound to existing credential 2, plus Stage 1 customer_company || customer_name interpolation fallback.",
     "reference_workflow_file_sha256": "323c61445e5318d25507ed30128de2a0e1ee0478ddd205e879210de3f465a517",
     "reference_definition_sha256": "7574688104f5d7010b788eaa029fc3c3336f773f78704cd239bb56751067e535",
-    "candidate_workflow_file_sha256": "4475e3c6405a37fba2ec430004f8454d5c3046aea4ba69db1b35708597c165ae",
+    "candidate_workflow_file_sha256": "69b7703480224f3fe78b360806cd5b0159d457ca6975375ea8e2a2add0f2c32e",
     "static_and_unit_verification": "PASS (n8n_code_analyzer.py 0 critical violations; 84/84 unit/packaging/harness tests PASS)",
     "live_runtime_verification": "NOT_VERIFIED (0 Gemini/PayPal calls executed during sync; scheduled after daily quota reset)"
   },
@@ -257,5 +257,6 @@
     "verification": "Exact qualified file hash, saved/published parity, zero blocking static violations,50backendchecksPASS; zero newprovider/payment calls",
     "qualification_provenance": "Nine cases across multiple runs; pre-Gemini email reused and stock-text SQL recheck; not nine fresh post-sync runs",
     "earlier_events": "Prior Gemini3.8 and qualification entries are dated historical snapshots, superseded for current configuration by this event."
-  }
+  },
+  "candidate_sha256": "69b7703480224f3fe78b360806cd5b0159d457ca6975375ea8e2a2add0f2c32e"
 }

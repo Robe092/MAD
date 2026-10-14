@@ -32,8 +32,8 @@ function createHarness(body, options = {}) {
     "Execute Workflow Trigger": body,
     "Postgres: Load Context & State": context,
     "PayPal Sandbox OAuth2": { access_token: "offline-unit-token", scope: "" },
-    "Vérifier la session opérateur": { auth_valid: true, operator_identity: "payflow:test" },
-    ...(options.paymentClaim ? { "Réserver l’émission PayPal": { payment_claim: options.paymentClaim } } : {}),
+    "Verify Operator Session": { auth_valid: true, operator_identity: "payflow:test" },
+    ...(options.paymentClaim ? { "Reserve PayPal Issuance": { payment_claim: options.paymentClaim } } : {}),
     ...options.nodeOutputs,
   };
   const selector = (name) => {
@@ -369,7 +369,7 @@ test("an authenticated quote without an email is stopped before Gemini", async (
   const now = Math.floor(Date.now() / 1000);
   const encoded = Buffer.from(JSON.stringify({ aud: "payflow-engine", sub: "payflow:test", role: "operator", iat: now, exp: now + 90, nonce: crypto.randomUUID(), body_sha256: crypto.createHash("sha256").update(JSON.stringify(body)).digest("hex") })).toString("base64url");
   harness.records["Webhook PayFlow Engine"].headers["x-payflow-operator-assertion"] = encoded + "." + crypto.sign(null, Buffer.from(encoded), keys.privateKey).toString("base64url");
-  const node = workflow.nodes.find((candidate) => candidate.name === "Vérifier la session opérateur");
+  const node = workflow.nodes.find((candidate) => candidate.name === "Verify Operator Session");
   const execute = new AsyncFunction("$input", "$", "require", "Buffer", node.parameters.jsCode);
   const output = await execute.call({ helpers: harness.helpers }, { first: () => ({ json: body }) }, harness.selector, require, Buffer);
   assert.equal(output[0].json.auth_valid, false);

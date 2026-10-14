@@ -4,7 +4,7 @@ const AsyncFunction=Object.getPrototypeOf(async function(){}).constructor;
 const product={id:'LANG-PRODUCT',sku:'LANG-SKU',name:'Language test product',currency:'USD',unit_price:240,unit_cost:120,max_discount_pct:10,min_margin_pct:20,stock_on_hand:15,stock_reserved:0,is_active:true};
 for(const [language,prompt] of [['English','Client: Language QA (language@example.invalid). Order 1 case of LANG-SKU with an 18% discount.'],['French','Client: Language QA (language@example.invalid). Commande : 1 caisse de LANG-SKU avec 18% de remise.']]){
  test(`Gemini request preserves ${language} input and JSON contract with English output instructions`,async()=>{
-  const node=workflow.nodes.find(n=>n.name==='Préparer la demande Gemini');
+  const node=workflow.nodes.find(n=>n.name==='Prepare Gemini Request');
   const selector=name=>({first:()=>({json:name==='Webhook PayFlow Engine'?{body:{action:'ai_copilot_quote',prompt}}:{catalog:[product],portfolio:{total_orders:0}}})});
   const result=await new AsyncFunction('$',node.parameters.jsCode)(selector);
   const request=JSON.parse(result[0].json.gemini_request),text=request.contents[0].parts[0].text;
@@ -19,7 +19,7 @@ for(const [language,prompt] of [['English','Client: Language QA (language@exampl
 }
 test('English generated quote explanation preserves values, anomaly codes and internal-review outcome',async()=>{
  const body={action:'ai_copilot_quote',order_id:'LANG-ORDER',prompt:'Client: Language QA (language@example.invalid). Order 1 case of LANG-SKU with an 18% discount.'};
- const records={'Webhook PayFlow Engine':{body,headers:{'x-payflow-secret':'language-unit-fixture'}},'Postgres: Load Context & State':{secret_hash:crypto.createHash('sha256').update('language-unit-fixture').digest('hex'),catalog:[product],target_order:null},'Vérifier la session opérateur':{auth_valid:true,operator_identity:'language-unit'},'Gemini Copilot API':{candidates:[{content:{parts:[{text:JSON.stringify({customer_name:'Language QA',customer_company:'Language QA',customer_email:'language@example.invalid',discount_pct:18,items:[{sku:'LANG-SKU',quantity:1,discount_pct:18}],executive_reasoning:'One catalogue case with the requested discount.'})}]}}]}};
+ const records={'Webhook PayFlow Engine':{body,headers:{'x-payflow-secret':'language-unit-fixture'}},'Postgres: Load Context & State':{secret_hash:crypto.createHash('sha256').update('language-unit-fixture').digest('hex'),catalog:[product],target_order:null},'Verify Operator Session':{auth_valid:true,operator_identity:'language-unit'},'Gemini Copilot API':{candidates:[{content:{parts:[{text:JSON.stringify({customer_name:'Language QA',customer_company:'Language QA',customer_email:'language@example.invalid',discount_pct:18,items:[{sku:'LANG-SKU',quantity:1,discount_pct:18}],executive_reasoning:'One catalogue case with the requested discount.'})}]}}]}};
  const selector=name=>({isExecuted:Object.hasOwn(records,name),first:()=>({json:records[name]||{}}),all:()=>Object.hasOwn(records,name)?[{json:records[name]}]:[]});
  const node=workflow.nodes.find(n=>n.name.startsWith('Stage 1:'));
  const result=(await new AsyncFunction('$input','$','require','Buffer',node.parameters.jsCode)({first:()=>({json:body})},selector,require,Buffer))[0].json;
