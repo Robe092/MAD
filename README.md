@@ -5,8 +5,9 @@
 *Built for the PayPal AI Hackathon 2026 on Devpost.*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Tests: 44/44 Passing](https://img.shields.io/badge/Tests-44%2F44%20Passing-brightgreen.svg)](tests/)
-[![Security: 18/18 Passing](https://img.shields.io/badge/Security-18%2F18%20Passing-brightgreen.svg)](frontend-payflow/tests/)
+[![Tests: 75/75 Passing](https://img.shields.io/badge/Tests-75%2F75%20Passing-brightgreen.svg)](tests/)
+[![Engine: 44 Checks](https://img.shields.io/badge/Engine-44%20Deterministic%20Checks-blue.svg)](tests/test_scripts/)
+[![Security: 31 Checks](https://img.shields.io/badge/Security-31%20Gateway%20Checks-blue.svg)](frontend-payflow/tests/)
 [![PayPal API](https://img.shields.io/badge/PayPal-Orders%20v2%20Sandbox-00457C.svg)](https://developer.paypal.com/)
 [![AI Models](https://img.shields.io/badge/AI-Gemini%203.6%20%2F%202.5%20Flash-4285F4.svg)](https://deepmind.google/technologies/gemini/)
 
@@ -126,12 +127,12 @@ deliverables/payflow-ai/
    ```
    *Starts isolated PostgreSQL container, runs atomic SQL migrations, seeds the 5-product catalog, and generates local operator login credentials.*
 
-3. **Run Test Suites**:
+3. **Run Test Suites (75/75 Passing Checks)**:
    ```bash
    # Run the 44 deterministic engine unit tests
    node tests/test_scripts/test_payflow_stabilized_logic.cjs
 
-   # Run the 18 frontend security & authentication tests
+   # Run the 31 frontend security & gateway tests
    npm test --prefix frontend-payflow
    ```
 

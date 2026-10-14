@@ -26,9 +26,8 @@ For judges evaluating high volumes of submissions:
    - Real-time PayPal Sandbox Orders v2 checkout and capture.
    - Automated stock settlement and AG Studio analytics breakdown.
 2. **Review the Technical Proofs**:
-   - Inspect [ARCHITECTURE.md](ARCHITECTURE.md) for the deterministic safety design.
-   - Review our unit test suite (`tests/test_scripts/test_payflow_stabilized_logic.cjs`) with 44/44 passing edge-case checks.
-   - Inspect our frontend security test suite (`frontend-payflow/tests/security.test.cjs`) with 18/18 passing tests.
+   - Inspect [ARCHITECTURE.md](ARCHITECTURE.md) for the deterministic safety design and threat model.
+   - Review our unit test suites with **75/75 passing automated checks** (44 deterministic engine checks in `tests/test_scripts/` + 31 frontend gateway and security checks in `frontend-payflow/tests/`).
 
 ### Option B: Local Live Installation (10–15 Minutes)
 If you wish to spin up the full live environment locally:
