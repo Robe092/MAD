@@ -29,4 +29,4 @@ For a local full-provider evaluation, either the evaluator configures their own 
 
 Reference-instance provider/capture evidence and earlier clean-install checks are historical evidence. Neither proves the English candidate has completed a new provider end-to-end run. Screenshots labelled VISUAL QA are rendering checks with fixtures, not product-demo footage or settlement proof.
 
-Owner decisions still needed: approve the source licence and attribution; confirm provenance; choose local or hosted judge access and arrange dedicated testing accounts/provider configuration; confirm AG Studio permission. No new payment, public deployment or GitHub publication is authorized by this document.
+The owner confirmed retaining MIT on 15 October 2026. Owner decisions still needed: confirm attribution; confirm provenance; choose local or hosted judge access and arrange dedicated testing accounts/provider configuration; confirm AG Studio permission. No new payment, public deployment or GitHub publication is authorized by this document.

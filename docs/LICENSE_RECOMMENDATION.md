@@ -1,4 +1,6 @@
-# Source licence recommendation — owner decision pending
+# Source licence recommendation — MIT confirmed
+
+Owner decision, 15 October 2026: retain the existing MIT source licence for this submission. No licence replacement is needed. The comparison and earlier recommendations below are historical preparation notes, not an outstanding source-licence decision. Third-party permissions remain separate.
 
 No licence change is applied in this pass. The existing local MIT file is a proposal from initial preparation, not an owner-approved publication decision. No remote/public repository has been created.
 
