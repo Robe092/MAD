@@ -5,9 +5,6 @@
 *Built for the PayPal AI Hackathon 2026 on Devpost.*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Tests: 84/84 Passing](https://img.shields.io/badge/Tests-84%2F84%20Passing-brightgreen.svg)](tests/)
-[![Engine: 47 Checks](https://img.shields.io/badge/Engine-47%20Deterministic%20Checks-blue.svg)](tests/test_scripts/)
-[![Security: 31 Checks](https://img.shields.io/badge/Security-31%20Gateway%20Checks-blue.svg)](frontend-payflow/tests/)
 [![PayPal API](https://img.shields.io/badge/PayPal-Orders%20v2%20Sandbox-00457C.svg)](https://developer.paypal.com/)
 [![AI Models](https://img.shields.io/badge/AI-Gemini%203.8%20Flash-4285F4.svg)](https://deepmind.google/technologies/gemini/)
 
@@ -75,7 +72,7 @@ flowchart TD
 | **Concurrency / Stock** | Optimistic / uncoordinated API calls | **`ORDER BY id FOR UPDATE` + PostgreSQL advisory locks** |
 | **PayPal Payload** | Uses client-supplied JSON parameters | **Constructed exclusively from frozen database items** |
 | **Payment Idempotence** | Basic client-side debounce | **120s advisory lease + deterministic `PayPal-Request-Id`** |
-| **Model Resilience** | Single endpoint (fails on 429/503 quota errors) | **Dual-node failover with independent credentials on Gemini 3.8 Flash** |
+| **Model Resilience** | Single endpoint (fails on 429/503 quota errors) | **Dual-node failover with configured credentials on Gemini 3.8 Flash** |
 | **Security Assertions** | Shared API key or unauthenticated webhooks | **Ed25519-signed operator assertions with 90s replay window** |
 
 ---
@@ -95,7 +92,7 @@ deliverables/payflow-ai/
 │   ├── src/app/                   # App Router pages and API gateway
 │   ├── src/components/            # AG Studio dashboard and HITL controls
 │   ├── src/lib/                   # Ed25519 operator authentication & sessions
-│   └── tests/                     # 18/18 security and gateway unit tests
+│   └── tests/                     # Gateway and security unit tests
 ├── sql/
 │   ├── 10_payflow_init.sql        # Core tables, catalogue, and constraints
 │   ├── 11_payflow_stabilization.sql # Concurrency, claim leases, and advisory locks
@@ -103,7 +100,7 @@ deliverables/payflow-ai/
 ├── workflows/
 │   └── 10_payflow_hackathon/      # Engine #13 n8n JSON workflow definition
 └── tests/
-    └── test_scripts/              # 44/44 backend & deterministic unit tests
+    └── test_scripts/              # Backend deterministic unit tests
 ```
 
 ---
@@ -127,21 +124,24 @@ deliverables/payflow-ai/
    ```
    *Starts isolated PostgreSQL container, runs atomic SQL migrations, seeds the 5-product catalog, and generates local operator login credentials.*
 
-3. **Import Workflow & Credentials into n8n**:
+3. **Register n8n owner and import the workflow**:
+
+   Open `http://127.0.0.1:5679` and create the local n8n owner account. It differs from the cockpit operator. For live AI and payments, configure private Gemini and PayPal Sandbox credentials as described in [the judge guide](docs/JUDGE_ACCESS.md). Then:
    ```bash
    npm run import:n8n
    ```
-   *Imports demo credentials and the PayFlow engine workflow (#13) directly into the local n8n instance.*
+   *Imports local database/header credentials, configured provider credentials and the inactive engine. Check bindings and publish the imported workflow in n8n before starting the cockpit.*
 
-4. **Run Test Suites (84/84 Passing Checks)**:
+4. **Run the test suites**:
    ```bash
    npm test
    ```
-   *Runs all 47 deterministic engine checks, 31 frontend gateway/security checks, and 6 harness runner checks.*
+   *Runs deterministic engine, frontend gateway/security and packaging tests. These checks do not certify a live provider or payment.*
 
-5. **Launch Cockpit**:
+5. **Build and launch Cockpit**:
    ```bash
-   npm run frontend
+   npm run build
+   npm start
    ```
    Open `http://127.0.0.1:3005` in your browser and log in with your generated operator credentials.
 

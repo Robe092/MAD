@@ -121,7 +121,7 @@ BEGIN
   IF EXISTS(SELECT 1 FROM payflow_payment_operations WHERE order_id=oid AND status='IN_FLIGHT' AND updated_at>now()-interval '120 seconds') THEN
     RETURN jsonb_build_object('proceed',false,'_http_code',409,'status','error','code','PAYMENT_OPERATION_IN_PROGRESS','message','A PayPal payment issuance is already in progress.');
   END IF;
-  IF EXISTS(SELECT 1 FROM payflow_payment_operations WHERE order_id=oid AND operation_type IN ('CREATE_INVOICE_DRAFT','CREATE_ORDER_V2') AND logical_operation_key <> 'create_pay:'||channel||':'||oid AND (status <> 'FAILED_TERMINAL' OR paypal_resource_id IS NOT NULL)) THEN
+  IF EXISTS(SELECT 1 FROM payflow_payment_operations WHERE order_id=oid AND operation_type IN ('CREATE_INVOICE_DRAFT','CREATE_ORDER_V2') AND logical_operation_key <> 'create_pay:'||channel||':'||oid) THEN
     RETURN jsonb_build_object('proceed',false,'_http_code',409,'status','error','code','PAYMENT_CHANNEL_ALREADY_BOUND');
   END IF;
   key := 'create_pay:'||channel||':'||oid;

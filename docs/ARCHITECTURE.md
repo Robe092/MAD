@@ -6,7 +6,7 @@ PayFlow AI is an enterprise-grade autonomous quote-to-cash agent designed for B2
 
 ## 1. Core Architectural Principle: "AI Proposes, Determinism Disposes"
 
-Most AI chatbots in commerce suffer from critical financial vulnerabilities: prompt injections, hallucinated prices, unauthorized discounts, and race conditions. PayFlow AI completely eliminates these risks by enforcing a strict architectural boundary:
+Most AI chatbots in commerce suffer from critical financial vulnerabilities: prompt injections, hallucinated prices, unauthorized discounts, and race conditions. PayFlow AI addresses these risks with explicit deterministic checks by enforcing a strict architectural boundary:
 
 ```mermaid
 flowchart TD
@@ -54,7 +54,7 @@ flowchart TD
 
 ### B. Dual-Node Gemini Copilot (`workflows/10_payflow_hackathon/`)
 * **Model**: `gemini-3.8-flash` via native n8n HTTP API nodes.
-* **Resilient Failover**: Dual independent nodes bound to distinct credentials for automatic failover in case of 429 quota exhaustion or transient provider errors.
+* **Resilient Failover**: Two HTTP nodes support primary and fallback credentials. If GEMINI_API_KEY_FALLBACK is omitted, both use the primary key; distinct credential IDs do not imply separate provider accounts or independent capacity.
 * **Grounding & Guardrails**:
   * Extracts only verified SKUs present in the active catalog.
   * Re-extracts raw discounts from prompt text to prevent prompt-injection discount smuggling.

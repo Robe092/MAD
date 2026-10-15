@@ -36,7 +36,7 @@ BEGIN
    RETURN jsonb_build_object('_http_code',409,'status','error','code','PAYMENT_RESOURCE_REQUIRES_VERIFICATION','message','Stock remains reserved while the PayPal resource is payable or in an unverified state.');
   END IF;
  ELSE
-  IF EXISTS(SELECT 1 FROM payflow_payment_operations WHERE order_id=oid AND (status <> 'FAILED_TERMINAL' OR paypal_resource_id IS NOT NULL)) THEN
+  IF EXISTS(SELECT 1 FROM payflow_payment_operations WHERE order_id=oid) THEN
    RETURN jsonb_build_object('_http_code',409,'status','error','code','PAYMENT_OPERATION_REQUIRES_VERIFICATION','message','A PayPal payment was attempted. Verify the resource before releasing stock.');
   END IF;
  END IF;
