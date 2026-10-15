@@ -80,7 +80,7 @@ flowchart TD
 ## Project Structure
 
 ```
-deliverables/payflow-ai/
+payflow-ai/
 ├── README.md                      # Executive documentation & quickstart
 ├── LICENSE                        # Official MIT open-source license
 ├── compose.yaml                   # Production-grade PostgreSQL & n8n stack

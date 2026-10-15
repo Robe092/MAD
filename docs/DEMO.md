@@ -6,23 +6,16 @@ PayFlow AI turns a commercial request into a controlled B2B quote and a PayPal S
 
 ## Main interface labels
 
-| Earlier French label | Current English label / meaning |
+| Label | Meaning |
 | --- | --- |
-| Se connecter / Déconnexion | Operator sign in / Sign out |
-| Vue d'ensemble | Overview |
-| Commandes | Orders and quotes |
-| Catalogue | Product catalogue |
-| Préparer un devis / Créer un devis | Prepare / Create a quote |
-| Validation interne requise | Internal operator review required |
-| Validée en interne | Internally approved; customer acceptance is separate |
-| Paiement attendu | Awaiting payment |
-| PayPal capturé | Confirmed PayPal capture |
-| Paiement simulé | Simulated test settlement, not a real capture |
-| Devis expiré / Annulée | Expired / Cancelled quote |
-| Stock disponible | On-hand stock minus reserved stock |
-| Remise / Marge | Discount / Margin |
-| Vérifier / Rapprocher | Check / Reconcile payment; read action does not automatically capture |
-| Capturer | Explicitly capture an approved Sandbox payment |
+| Overview | Sales workspace overview |
+| Orders | Quotes, internal approvals and payment tracking |
+| Catalogue | Product prices and available inventory |
+| AI analytics | AG Studio exploration and Gemini explanations |
+| Internally approved | Operator authorization; customer acceptance and payment are separate |
+| Awaiting payment | No completed capture is established by this label |
+| Confirmed PayPal capture | Settlement must be supported by verified external capture evidence |
+| Cancelled / Expired | Eligible reservations released; physical stock preserved |
 
 ## Functional walkthrough
 
@@ -32,17 +25,14 @@ PayFlow AI turns a commercial request into a controlled B2B quote and a PayPal S
 4. Where review is required, perform the explicit internal decision. That decision is not a signed commercial acceptance by the customer.
 5. To test payment deliberately, create the PayPal Sandbox checkout, inspect its reference/amount, and approve it using the separate Sandbox buyer account. Return to the app, then explicitly reconcile/capture as the operator. Check confirmed capture, order status and catalogue stock. Opening/refreshing the order does not automatically capture a payment.
 6. In AG Studio, explore the same persisted data. Use cross-filtering, inspect orders and product relationships, and ask the Studio agent to focus on awaiting payments or margins. The response must come from the configured Gemini integration and actual current data. An empty freshly installed order list must not be presented as populated analytics.
-7. For an unpaid quote with no live PayPal resource, use Cancel and confirm that the reservation is released. Expired eligible quotes are checked every 15 minutes. An uncertain or still-payable PayPal resource keeps its reservation pending verified terminal status.
+7. For an unpaid quote with no payment issuance attempt, use Cancel and confirm that the reservation is released. A previous payment attempt conservatively blocks local cancellation or a different payment channel until its remote state is verified, even when no resource ID was saved. Expired eligible quotes are checked every 15 minutes. An uncertain or still-payable PayPal resource keeps its reservation pending verified terminal status.
 
-## Three-minute video outline (English narration)
+## Completed demonstration video
 
-| Time | Show | Explain |
-| --- | --- | --- |
-| 0:00–0:20 | Overview and business problem | B2B quoting needs both speed and safe financial controls. |
-| 0:20–0:55 | Real Gemini quote request | AI proposes catalogue items; it does not set authoritative prices or inventory. |
-| 0:55–1:25 | Quote checks and required internal decision | Deterministic checks protect stock, discounts and margins. |
-| 1:25–2:10 | Actual Sandbox checkout and confirmed capture | Buyer approval, capture and persistence are separate verified steps. |
-| 2:10–2:45 | AG Studio cross-filter and native agent | Analysis uses the same actual persisted business data. |
-| 2:45–2:55 | Closing overview | State what was verified and that payment is PayPal Sandbox. |
+The completed English V9 is `PayFlow-AI-English-Final-v9.mp4`: approximately2min25s, with narration and burned English subtitles. Its public YouTube URL must be added to the Devpost submission after upload. The source repository does not claim a published video link or hosted application.
 
-This is a recording plan, not a generated video or payment authorization. Use footage of real executions, English narration/subtitles, and keep the final edit below three minutes. Do not claim that formal customer quote acceptance or PayPal Invoicing was demonstrated.
+The recording distinguishes a standard USD304 quote, a separate USD1282.50 quote requiring internal review, a historically completed USD304 PayPal Sandbox capture, and a real Gemini API response from a separate execution. These scenes must not be described as one uninterrupted fresh end-to-end transaction. The separate API evidence does not constitute a successful Studio interface recording.
+
+The later release check independently verified the current Gemini3.8 high-value quote, human approval and Studio API response. See [the release check](RELEASE_CHECK_20261015.md). These later checks do not change what appears in V9 and made no new payment.
+
+All demonstrated payments are Sandbox tests. Formal customer quote acceptance and PayPal Invoicing are not claimed as validated submission features.
