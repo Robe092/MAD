@@ -151,8 +151,8 @@
       },
       "credentials": {
         "googlePalmApi": {
-          "id": "payflow-demo-gemini",
-          "name": "PayFlow Gemini"
+          "id": "payflow-demo-gemini-primary",
+          "name": "PayFlow Gemini Primary (Account 1)"
         }
       }
     },
@@ -208,8 +208,8 @@
       },
       "credentials": {
         "googlePalmApi": {
-          "id": "payflow-demo-gemini",
-          "name": "PayFlow Gemini"
+          "id": "payflow-demo-gemini-fallback",
+          "name": "PayFlow Gemini Fallback (Account 2)"
         }
       }
     },
