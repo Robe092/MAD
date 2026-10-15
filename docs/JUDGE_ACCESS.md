@@ -27,7 +27,7 @@ For judges evaluating high volumes of submissions:
    - Automated stock settlement and AG Studio analytics breakdown.
 2. **Review the Technical Proofs**:
    - Inspect [ARCHITECTURE.md](ARCHITECTURE.md) for the deterministic safety design and threat model.
-   - Review our unit test suites with **75/75 passing automated checks** (44 deterministic engine checks in `tests/test_scripts/` + 31 frontend gateway and security checks in `frontend-payflow/tests/`).
+   - Review our unit test suites with **84 passing automated checks** (47 deterministic engine checks in `tests/test_scripts/` + 31 frontend gateway and security checks in `frontend-payflow/tests/` + 6 harness runner checks).
 
 ### Option B: Local Live Installation (10–15 Minutes)
 If you wish to spin up the full live environment locally:
@@ -47,10 +47,13 @@ If you wish to spin up the full live environment locally:
    npm run setup
    ```
    *Automatically starts PostgreSQL 17 via Docker, executes migrations `10_payflow_init.sql`, `11_payflow_stabilization.sql`, and `12_payflow_quote_lifecycle.sql`, seeds the product catalog, and generates local operator login credentials.*
-3. **Configure n8n Workflow**:
-   - Open `http://127.0.0.1:5679` and log in to n8n.
-   - The workflow `13_PayFlow_PayPal_Invoicing_Sandbox.json` is imported.
-   - Connect your PayPal Sandbox and Gemini credentials in n8n and toggle the workflow to **Active**.
+3. **Import Workflow & Credentials into n8n**:
+   - Open `http://127.0.0.1:5679` and complete the initial owner registration if prompted (credentials are recorded in `.payflow-private/initial-login.txt`).
+   - Run the automated workflow and credential importer:
+     ```bash
+     npm run import:n8n
+     ```
+   - In n8n, verify that credentials are bound (or enter your PayPal Sandbox and Gemini keys) and toggle the workflow `PayFlow - PayPal Invoicing Sandbox (#13)` to **Active**.
 4. **Launch Cockpit**:
    ```bash
    npm run frontend
@@ -63,7 +66,7 @@ If you wish to spin up the full live environment locally:
 ## 3. What to Test in the Live Cockpit
 
 1. **Nominal Quote**: Type `"Create a quote for Acme Corp (contact: alice@acme.com) for 5 cases of Bordeaux Grand Cru."` Notice that prices and calculations come from PostgreSQL, not the LLM.
-2. **Guardrail / HITL Intervention**: Request an excessive discount: `"Quote 10 cases of Pomerol for Stark Industries with a 35% discount."` The system flags `DISCOUNT_LIMIT_EXCEEDED` and `MARGIN_FLOOR_BREACH`, locks the quote, reserves stock, and demands CFO approval.
+2. **Guardrail / HITL Intervention**: Request an excessive discount: `"Quote 10 cases of Pomerol for Stark Industries (contact: tony@stark.com) with a 35% discount."` The system flags `DISCOUNT_LIMIT_EXCEEDED` and `MARGIN_FLOOR_BREACH`, locks the quote, reserves stock, and demands CFO approval.
 3. **PayPal Sandbox Checkout**: Click **Approve** as CFO, then click **Generate PayPal Checkout**. Follow the generated PayPal Sandbox URL to complete checkout.
 4. **Instant Settlement & Analytics**: Observe real-time capture verification, stock deduction, and AG Studio portfolio visualization.
 

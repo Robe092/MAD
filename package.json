@@ -7,6 +7,7 @@
     "setup": "node scripts/setup.cjs",
     "import:n8n": "node scripts/import-n8n.cjs",
     "dev": "node scripts/frontend.cjs dev",
+    "frontend": "node scripts/frontend.cjs dev",
     "build": "npm --prefix frontend-payflow run build",
     "start": "node scripts/frontend.cjs start",
     "test": "node scripts/test.cjs"

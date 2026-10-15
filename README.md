@@ -5,8 +5,8 @@
 *Built for the PayPal AI Hackathon 2026 on Devpost.*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Tests: 75/75 Passing](https://img.shields.io/badge/Tests-75%2F75%20Passing-brightgreen.svg)](tests/)
-[![Engine: 44 Checks](https://img.shields.io/badge/Engine-44%20Deterministic%20Checks-blue.svg)](tests/test_scripts/)
+[![Tests: 84/84 Passing](https://img.shields.io/badge/Tests-84%2F84%20Passing-brightgreen.svg)](tests/)
+[![Engine: 47 Checks](https://img.shields.io/badge/Engine-47%20Deterministic%20Checks-blue.svg)](tests/test_scripts/)
 [![Security: 31 Checks](https://img.shields.io/badge/Security-31%20Gateway%20Checks-blue.svg)](frontend-payflow/tests/)
 [![PayPal API](https://img.shields.io/badge/PayPal-Orders%20v2%20Sandbox-00457C.svg)](https://developer.paypal.com/)
 [![AI Models](https://img.shields.io/badge/AI-Gemini%203.8%20Flash-4285F4.svg)](https://deepmind.google/technologies/gemini/)
@@ -15,14 +15,14 @@
 
 ## Executive Overview
 
-90% of AI commerce applications are vulnerable to **prompt injection, price hallucinations, and unauthorized discount smuggling**. If a generative model is allowed to calculate prices or directly issue payment links, merchants risk catastrophic margin erosion and inventory corruption.
+Traditional generative AI commerce applications are inherently vulnerable to **prompt injection, price hallucinations, and unauthorized discount smuggling**. If a generative model is allowed to calculate prices or directly issue payment links, merchants risk catastrophic margin erosion and inventory corruption.
 
 **PayFlow AI solves this by introducing the "AI Proposes, Determinism Disposes" paradigm:**
 1. **AI Copilot (Google Gemini 3.8 Flash)** understands complex buyer requests in French or English and extracts catalog items and business intent.
 2. **Deterministic Engine (PostgreSQL 17 & n8n)** calculates mathematical prices, checks available stock, enforces hard margin floors, and serializes inventory reservations with transactional advisory locks.
 3. **Human-in-the-Loop (HITL) Governance** intercepts quotes that exceed commercial discount thresholds or breach margin limits, requiring CFO approval via one-time cryptographic tokens.
 4. **PayPal Orders v2 Sandbox** issues immutable checkout sessions generated strictly from verified database records—completely ignoring client-side parameters.
-5. **3-Way Reconciliation** verifies merchant ID, currency, and exact amount before and after capture, updating physical stock only upon cryptographically proven settlement.
+5. **3-Way Reconciliation** verifies merchant ID, currency, and exact amount before and after capture with PayPal API, updating physical stock only upon verified settlement.
 6. **AG Studio Analytics** provides real-time executive visibility over pipeline conversion, payment health, and anomaly telemetry.
 
 ---
@@ -127,16 +127,19 @@ deliverables/payflow-ai/
    ```
    *Starts isolated PostgreSQL container, runs atomic SQL migrations, seeds the 5-product catalog, and generates local operator login credentials.*
 
-3. **Run Test Suites (75/75 Passing Checks)**:
+3. **Import Workflow & Credentials into n8n**:
    ```bash
-   # Run the 44 deterministic engine unit tests
-   node tests/test_scripts/test_payflow_stabilized_logic.cjs
-
-   # Run the 31 frontend security & gateway tests
-   npm test --prefix frontend-payflow
+   npm run import:n8n
    ```
+   *Imports demo credentials and the PayFlow engine workflow (#13) directly into the local n8n instance.*
 
-4. **Launch Cockpit**:
+4. **Run Test Suites (84/84 Passing Checks)**:
+   ```bash
+   npm test
+   ```
+   *Runs all 47 deterministic engine checks, 31 frontend gateway/security checks, and 6 harness runner checks.*
+
+5. **Launch Cockpit**:
    ```bash
    npm run frontend
    ```

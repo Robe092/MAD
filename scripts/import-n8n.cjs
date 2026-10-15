@@ -8,8 +8,11 @@ try {
     {id:'payflow-demo-postgres',name:'PayFlow PostgreSQL',type:'postgres',data:{host:'postgres',database:'payflow',user:'payflow_runtime',password:c.POSTGRES_RUNTIME_PASSWORD,port:5432,ssl:'disable'}},
     {id:'payflow-demo-header',name:'PayFlow Engine Header',type:'httpHeaderAuth',data:{name:'X-PayFlow-Secret',value:c.PAYFLOW_ENGINE_SECRET}}
   ];
-  if (c.PAYPAL_CLIENT_ID && c.PAYPAL_CLIENT_SECRET) credentials.push({id:'payflow-demo-paypal',name:'PayFlow PayPal Sandbox',type:'httpBasicAuth',data:{user:c.PAYPAL_CLIENT_ID,password:c.PAYPAL_CLIENT_SECRET}});
-  if (c.GEMINI_API_KEY) credentials.push({id:'payflow-demo-gemini',name:'PayFlow Gemini',type:'googlePalmApi',data:{apiKey:c.GEMINI_API_KEY}});
+  if (c.GEMINI_API_KEY) {
+    credentials.push({id:'payflow-demo-gemini',name:'PayFlow Gemini',type:'googlePalmApi',data:{apiKey:c.GEMINI_API_KEY}});
+    credentials.push({id:'payflow-demo-gemini-primary',name:'PayFlow Gemini Primary (Account 1)',type:'googlePalmApi',data:{apiKey:c.GEMINI_API_KEY}});
+    credentials.push({id:'payflow-demo-gemini-fallback',name:'PayFlow Gemini Fallback (Account 2)',type:'googlePalmApi',data:{apiKey:c.GEMINI_API_KEY_FALLBACK || c.GEMINI_API_KEY}});
+  }
   const file = path.join(ROOT, '.payflow-private/n8n-credentials.json');
   fs.writeFileSync(file, JSON.stringify(credentials), {mode:0o600});
   try {
