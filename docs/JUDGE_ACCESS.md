@@ -35,15 +35,15 @@ Open exactly `http://127.0.0.1:3005` and sign in with the cockpit operator from 
 
 ## Evaluation steps
 
-1. Ask: `Client: Acme (alice@example.invalid). Order one case of Pomerol Reserve Speciale 2020 with a five percent discount.` The seeded catalogue gives USD304. An AI request needs the configured Gemini access.
-2. Ask: `Client: Acme (alice@example.invalid). Order three cases of Chateau Margaux Grand Cru 2018 with a five percent discount.` The expected total is USD1282.50 and PENDING_APPROVAL. Review checks and explicitly approve internally. This does not approve or complete a payment.
-3. For an approved quote choose PayPal Ordersv2 and generate a Sandbox checkout. Open the checkout and approve with a separate Sandbox buyer. Return to PayFlow and explicitly capture/reconcile. Verify completed capture, amount and stock deduction. A browser return or an internal PAID label alone is not settlement evidence.
+1. In **Overview**, select **Use fictional demo customer**. Enter `3 cases of Chateau 2018 with a 5% discount.` and select **Prepare quote**. The expected total is USD 1,282.50, with three cases reserved and internal approval required.
+2. Review the amount, discount and stock. Select **Approve internally** and confirm. The buyer still needs to approve the payment.
+3. Select **Create PayPal link** and confirm, then open the checkout and approve with a separate Sandbox buyer. Return to PayFlow and select **Capture payment** once buyer approval appears. Verify the **COMPLETED** status and capture reference under **Payment status & evidence**. On a fresh catalogue the stock for this item goes from 40 to 37 cases. Refresh PayPal status to check that the same capture is shown and stock stays at 37.
 4. Explore AG Studio orders/inventory/operations and cross-filtering. Ask the assistant to explain recorded order statuses and distinguish internal records from actual completed PayPal capture evidence. Provider errors must remain errors, not fabricated answers.
 5. Cancel eligible unpaid quotes to release reservations. If any payment issuance was attempted, local cancellation/channel switching remains conservatively blocked until remote state is verified. A failed response alone is insufficient evidence of no remote resource.
 
 ## Proof boundaries and access arrangements
 
-The demo V9 is about2min25s and distinguishes separate executions. Earlier completed Sandbox capture and Gemini3.6 results are historical evidence. They are not a new successful Gemini3.8 run or a newly configured merchant payment. Current release-check results are recorded separately; do not infer full qualification from a successful build or unit tests.
+The competition video shows one complete Sandbox payment and stock update recorded on October 23 with Gemini 3 Flash Preview. The distributed workflow uses Gemini 3.8 Flash. The October 15 release check covers a separate Gemini 3.8 Flash run. Follow the evaluation steps above to check the actual provider credentials and runtime used for judging.
 
 Provider credentials are never supplied in the public repository. For organizer/judge evaluation, the owner must provide the required dedicated testing access through private submission instructions, or document a verified special-access process. This repository's ability to accept evaluator-owned keys does not by itself establish owner-provided unrestricted judge access. No hosted URL or shared judge account has been confirmed here.
 

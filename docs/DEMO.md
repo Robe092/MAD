@@ -20,8 +20,8 @@ PayFlow AI turns a commercial request into a controlled B2B quote and a PayPal S
 ## Functional walkthrough
 
 1. Complete the README setup, publish the n8n engine and sign into PayFlow using the generated operator account. A new installation shows the five catalogue products and an empty order list.
-2. Read the catalogue prices/available stock. In the quote form choose **Orders v2**, enter an explicit Sandbox customer's name and email, and ask Gemini for one unit of `SPIRIT-RHUM-XO` with no discount. Replace the name/email in your prompt with the actual Sandbox buyer details; do not reuse personal customer data.
-3. Inspect the computed amount, stock reservation and financial checks. For the seeded product, an undiscounted unit is USD 240 before any configured tax. A discount exceeding the product's limit should visibly require internal review; insufficient stock should block the quote without reserving unavailable units. Do not assume every quote requires approval: ordinary quotes can pass automatically.
+2. Read the catalogue prices and available stock. In **Overview**, select **Use fictional demo customer**, enter `3 cases of Chateau 2018 with a 5% discount.` and select **Prepare quote**.
+3. Inspect the USD 1,282.50 total, the three reserved cases and the internal approval requirement. An ordinary quote below the threshold can pass automatically. Insufficient stock blocks a quote without reserving unavailable units.
 4. Where review is required, perform the explicit internal decision. That decision is not a signed commercial acceptance by the customer.
 5. To test payment deliberately, create the PayPal Sandbox checkout, inspect its reference/amount, and approve it using the separate Sandbox buyer account. Return to the app, then explicitly reconcile/capture as the operator. Check confirmed capture, order status and catalogue stock. Opening/refreshing the order does not automatically capture a payment.
 6. In AG Studio, explore the same persisted data. Use cross-filtering, inspect orders and product relationships, and ask the Studio agent to focus on awaiting payments or margins. The response must come from the configured Gemini integration and actual current data. An empty freshly installed order list must not be presented as populated analytics.
@@ -29,10 +29,10 @@ PayFlow AI turns a commercial request into a controlled B2B quote and a PayPal S
 
 ## Completed demonstration video
 
-The completed English V9 is `PayFlow-AI-English-Final-v9.mp4`: approximately2min25s, with narration and burned English subtitles. Its public YouTube URL must be added to the Devpost submission after upload. The source repository does not claim a published video link or hosted application.
+The English competition edit follows one USD 1,282.50 quote through the browser, from the buyer request to the operator’s internal approval and checkout link. It shows the buyer approving the test transaction in PayPal Sandbox, then the operator explicitly capturing the payment. PayFlow displays PayPal's completed capture and updates physical inventory from 40 to 37 cases. The last scenes show the order and AG Studio's confirmed-payment filter.
 
-The recording distinguishes a standard USD304 quote, a separate USD1282.50 quote requiring internal review, a historically completed USD304 PayPal Sandbox capture, and a real Gemini API response from a separate execution. These scenes must not be described as one uninterrupted fresh end-to-end transaction. The separate API evidence does not constitute a successful Studio interface recording.
+The video edits real browser recordings from October 23, 2026. Gemini 3 Flash Preview handled the quote and the pre-payment Studio analysis in those recordings. The analysis appears before checkout, when the same order was still outstanding. The workflow in this repository is configured for Gemini 3.8 Flash.
 
-The later release check independently verified the current Gemini3.8 high-value quote, human approval and Studio API response. See [the release check](RELEASE_CHECK_20261015.md). These later checks do not change what appears in V9 and made no new payment.
+The October 15 release check independently verified a high-value quote, human approval and Studio with Gemini 3.8 Flash. See [the release check](RELEASE_CHECK_20261015.md).
 
 All demonstrated payments are Sandbox tests. Formal customer quote acceptance and PayPal Invoicing are not claimed as validated submission features.
