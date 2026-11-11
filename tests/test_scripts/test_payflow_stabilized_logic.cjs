@@ -230,11 +230,16 @@ test("native Gemini candidate output is parsed without publishing thought parts"
   assert.ok(!JSON.stringify(result).includes("offline-private-thought"), "Thought parts must not appear in the public response");
 });
 
-test("quota failure can use a successful native fallback with truthful proof", async () => {
-  const { result } = await run({ action: "ai_studio_agent", prompt: "Show pending approvals." }, { nodeOutputs: { "Gemini Copilot API": { error: { code: 429 } }, "Gemini Fallback API": nativeReply(studioReply) } });
-  assert.equal(result.status, "success");
-  assert.equal(result.llm_proof.n8n_node, "Gemini Fallback API");
-  assert.equal(result.llm_proof.model, configuredModel("Gemini Fallback API"));
+test("quota or availability failures use a different native Gemini model with truthful proof", async () => {
+  const primary = configuredModel("Gemini Copilot API");
+  const fallback = configuredModel("Gemini Fallback API");
+  assert.notEqual(fallback, primary);
+  for (const code of [429, 503]) {
+    const { result } = await run({ action: "ai_studio_agent", prompt: "Show pending approvals." }, { nodeOutputs: { "Gemini Copilot API": { error: { code } }, "Gemini Fallback API": nativeReply(studioReply) } });
+    assert.equal(result.status, "success");
+    assert.equal(result.llm_proof.n8n_node, "Gemini Fallback API");
+    assert.equal(result.llm_proof.model, fallback);
+  }
 });
 
 test("both native Gemini timeouts produce an honest error without persistence", async () => {

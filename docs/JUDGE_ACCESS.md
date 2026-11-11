@@ -15,7 +15,7 @@ Setup creates private random credentials, a dedicated PostgreSQL database, five 
 
 Open `http://127.0.0.1:5679` and create the local n8n owner account. This is separate from the PayFlow cockpit operator. The generated cockpit credentials are in `.payflow-private/initial-login.txt`; they are not n8n owner credentials and setup does not print their values.
 
-For the AI quote form and Studio assistant, configure `GEMINI_API_KEY` in the private `.env` with permission/quota for the model configured in the workflow (currently `gemini-3.8-flash`). Optional `GEMINI_API_KEY_FALLBACK` uses a separate secondary key; if omitted the secondary node reuses the primary key. This does not guarantee provider availability.
+For the AI quote form and Studio assistant, configure `GEMINI_API_KEY` in the private `.env`. The workflow calls `gemini-3.8-flash` first and falls back to `gemini-3.6-flash` if the primary returns no usable reply. Set `GEMINI_API_KEY_FALLBACK` to use a separate key for the fallback. With a single key, give its project access to both models and sufficient quota.
 
 For checkout/capture, configure a PayPal Sandbox application `PAYPAL_CLIENT_ID` and `PAYPAL_CLIENT_SECRET` in `.env`. A separate Sandbox buyer account is required to approve checkout. Use Sandbox credentials only. Keys are required for their respective provider features; without them, the authenticated catalogue and deterministic quote engine can still be inspected.
 
@@ -43,7 +43,7 @@ Open exactly `http://127.0.0.1:3005` and sign in with the cockpit operator from 
 
 ## Proof boundaries and access arrangements
 
-The competition video shows one complete Sandbox payment and stock update recorded on October 23 with Gemini 3 Flash Preview. The distributed workflow uses Gemini 3.8 Flash. The October 15 release check covers a separate Gemini 3.8 Flash run. Follow the evaluation steps above to check the actual provider credentials and runtime used for judging.
+The competition video shows one complete Sandbox payment and stock update recorded on October 23 with Gemini 3 Flash Preview. The October 15 release check covers a separate Gemini 3.8 Flash run. On November 11, a fresh local installation used the dedicated free-tier evaluator key to generate the USD 1,282.50 quote and query Studio through the Gemini 3.6 Flash fallback. Dedicated PayPal Sandbox app authentication also succeeded. Follow the evaluation steps above to check the actual credentials and runtime used for judging.
 
 Provider credentials are never supplied in the public repository. For organizer/judge evaluation, the owner must provide the required dedicated testing access through private submission instructions, or document a verified special-access process. This repository's ability to accept evaluator-owned keys does not by itself establish owner-provided unrestricted judge access. No hosted URL or shared judge account has been confirmed here.
 

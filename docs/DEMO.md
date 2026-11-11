@@ -31,7 +31,7 @@ PayFlow AI turns a commercial request into a controlled B2B quote and a PayPal S
 
 The English competition edit follows one USD 1,282.50 quote through the browser, from the buyer request to the operator’s internal approval and checkout link. It shows the buyer approving the test transaction in PayPal Sandbox, then the operator explicitly capturing the payment. PayFlow displays PayPal's completed capture and updates physical inventory from 40 to 37 cases. The last scenes show the order and AG Studio's confirmed-payment filter.
 
-The video edits real browser recordings from October 23, 2026. Gemini 3 Flash Preview handled the quote and the pre-payment Studio analysis in those recordings. The analysis appears before checkout, when the same order was still outstanding. The workflow in this repository is configured for Gemini 3.8 Flash.
+The video edits real browser recordings from October 23, 2026. Gemini 3 Flash Preview handled the quote and the pre-payment Studio analysis in those recordings. The analysis appears before checkout, when the same order was still outstanding. The workflow in this repository calls Gemini 3.8 Flash first and can use Gemini 3.6 Flash as a fallback.
 
 The October 15 release check independently verified a high-value quote, human approval and Studio with Gemini 3.8 Flash. See [the release check](RELEASE_CHECK_20261015.md).
 

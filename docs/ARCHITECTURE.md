@@ -14,7 +14,7 @@ flowchart TD
     NextJS -->|Ed25519 Signed Assertion| Engine[n8n Workflow Engine #13]
     
     subgraph Stage1["Stage 1: Semantic Copilot & Guardrails"]
-        Engine -->|Extract SKUs & Discount| Gemini[Google Gemini 3.8 Flash Dual-Node]
+        Engine -->|Extract SKUs & Discount| Gemini[Gemini 3.8 Flash with 3.6 Flash fallback]
         Gemini -->|Raw Proposal| Guardrails[Deterministic Validation Engine]
         Guardrails -->|Check Margin Floor & Stock| Catalog[(PostgreSQL Products)]
     end
@@ -53,7 +53,7 @@ flowchart TD
 * **Cryptographic Signatures**: The frontend gateway strips all client-supplied authority flags (`simulate_*`, `operator_identity`, `approval_threshold`) and signs outgoing requests to the n8n engine with an **Ed25519 private key**, binding the operator identity, nonce, timestamp, and a SHA-256 digest of the request body.
 
 ### B. Dual-Node Gemini Copilot (`workflows/10_payflow_hackathon/`)
-* **Model**: `gemini-3.8-flash` via native n8n HTTP API nodes.
+* **Models** — native n8n HTTP nodes call `gemini-3.8-flash` first and `gemini-3.6-flash` when the primary yields no usable reply.
 * **Resilient Failover**: Two HTTP nodes support primary and fallback credentials. If GEMINI_API_KEY_FALLBACK is omitted, both use the primary key; distinct credential IDs do not imply separate provider accounts or independent capacity.
 * **Grounding & Guardrails**:
   * Extracts only verified SKUs present in the active catalog.
